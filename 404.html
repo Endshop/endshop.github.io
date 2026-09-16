@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>۴۰۴ | End Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+  body {
+    background: #0a0e1a;
+    color: #eef2f8;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(79,127,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,127,255,0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+  }
+  .container { text-align: center; position: relative; z-index: 1; padding: 20px; }
+  .steve-scene { position: relative; width: 260px; height: 260px; margin: 0 auto 30px; }
+  .steve-head {
+    width: 90px; height: 90px;
+    background: linear-gradient(135deg, #d4a574, #c89860);
+    border-radius: 6px;
+    position: absolute; top: 60px; left: 50%;
+    transform: translateX(-50%);
+    border: 3px solid #8b6539;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: steveLook 4s ease-in-out infinite;
+  }
+  .steve-head::before, .steve-head::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    background: #fff;
+    border-radius: 2px;
+    top: 30px;
+  }
+  .steve-head::before { left: 18px; }
+  .steve-head::after { right: 18px; }
+  .steve-head .pupils {
+    position: absolute; top: 32px; left: 0; right: 0;
+    display: flex; justify-content: space-around; padding: 0 20px;
+  }
+  .steve-head .pupils::before, .steve-head .pupils::after {
+    content: ''; width: 6px; height: 6px;
+    background: #2c3e50; border-radius: 1px;
+    animation: pupilMove 4s ease-in-out infinite;
+  }
+  .steve-mouth {
+    position: absolute; bottom: 15px; left: 50%;
+    transform: translateX(-50%);
+    width: 30px; height: 6px;
+    background: #8b4513; border-radius: 2px;
+  }
+  .camera {
+    position: absolute; top: 40px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 60px;
+    background: #2c3e50;
+    border: 3px solid #1a252f;
+    border-radius: 8px;
+    z-index: 3;
+    animation: cameraShake 4s ease-in-out infinite;
+  }
+  .camera::before {
+    content: '';
+    position: absolute; top: 15px; left: 50%;
+    transform: translateX(-50%);
+    width: 30px; height: 30px;
+    background: radial-gradient(circle, #4f7fff, #1a252f);
+    border-radius: 50%;
+    border: 3px solid #1a252f;
+  }
+  .camera::after {
+    content: '';
+    position: absolute; top: -12px; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 12px;
+    background: #1a252f;
+    border-radius: 4px 4px 0 0;
+  }
+  .camera-flash {
+    position: absolute; top: 35px; right: 8px;
+    width: 8px; height: 8px;
+    background: #fbbf24; border-radius: 50%;
+    animation: flash 4s ease-in-out infinite;
+    box-shadow: 0 0 10px #fbbf24;
+  }
+  .item { position: absolute; font-size: 2rem; opacity: 0.7; }
+  .item:nth-child(1) { top: 20px; left: 20px; animation: itemPop 4s ease-in-out infinite; }
+  .item:nth-child(2) { top: 20px; right: 20px; animation: itemPop 4s ease-in-out infinite 0.5s; }
+  .item:nth-child(3) { bottom: 20px; left: 30px; animation: itemPop 4s ease-in-out infinite 1s; }
+  .item:nth-child(4) { bottom: 20px; right: 30px; animation: itemPop 4s ease-in-out infinite 1.5s; }
+  @keyframes steveLook {
+    0%, 100% { transform: translateX(-50%) rotate(-5deg); }
+    25% { transform: translateX(-50%) rotate(5deg); }
+    50% { transform: translateX(-50%) rotate(-3deg); }
+    75% { transform: translateX(-50%) rotate(7deg); }
+  }
+  @keyframes pupilMove {
+    0%, 100% { transform: translateX(-3px); }
+    50% { transform: translateX(3px); }
+  }
+  @keyframes cameraShake {
+    0%, 100% { transform: translateX(-50%) rotate(-2deg); }
+    50% { transform: translateX(-50%) rotate(2deg); }
+  }
+  @keyframes flash {
+    0%, 90%, 100% { opacity: 0.3; }
+    95% { opacity: 1; box-shadow: 0 0 25px #fbbf24; }
+  }
+  @keyframes itemPop {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+    50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+  }
+  h1 {
+    font-size: 5rem; font-weight: 900;
+    background: linear-gradient(135deg, #4f7fff, #a855f7, #06d6a0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+  }
+  h2 { font-size: 1.6rem; color: #eef2f8; margin-bottom: 15px; }
+  p { color: #8a94a8; font-size: 1.05rem; line-height: 1.9; max-width: 500px; margin: 0 auto 30px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 36px;
+    background: linear-gradient(135deg, #4f7fff, #a855f7);
+    color: white; text-decoration: none;
+    border-radius: 14px; font-weight: 700; font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 30px rgba(79,127,255,0.3);
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(79,127,255,0.5); }
+  @media (max-width: 600px) {
+    h1 { font-size: 3.5rem; }
+    h2 { font-size: 1.3rem; }
+    p { font-size: 0.95rem; }
+    .steve-scene { width: 200px; height: 200px; }
+    .steve-head { width: 70px; height: 70px; }
+    .camera { width: 50px; height: 50px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="steve-scene">
+    <div class="item">🟫</div>
+    <div class="item">🟩</div>
+    <div class="item">💎</div>
+    <div class="item">⬛</div>
+    <div class="steve-head">
+      <div class="pupils"></div>
+      <div class="steve-mouth"></div>
+    </div>
+    <div class="camera">
+      <div class="camera-flash"></div>
+    </div>
+  </div>
+  <h1>۴۰۴</h1>
+  <h2>🧐 استیو داره دنبال صفحه‌ات می‌گرده...</h2>
+  <p>اوه! به نظر می‌رسه این صفحه توی دنیای ماینکرفت گم شده! 🎮<br>استیو با دوربینش همه جا رو گشته، ولی پیداش نکرده!</p>
+  <a href="/Endshop/" class="btn">🏠 برگرد به فروشگاه</a>
+</div>
+<script>
+  setTimeout(() => { window.location.href = '/Endshop/'; }, 10000);
+</script>
+</body>
+  </html>
