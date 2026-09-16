@@ -33,6 +33,11 @@
     --text: #0f1626;
     --text-2: #64748b;
   }
+  body.theme-purple { --primary: #a855f7; --secondary: #ec4899; --accent: #fbbf24; }
+  body.theme-green { --primary: #10b981; --secondary: #06d6a0; --accent: #fbbf24; }
+  body.theme-red { --primary: #ef4444; --secondary: #ec4899; --accent: #fbbf24; }
+  body.theme-orange { --primary: #f59e0b; --secondary: #ec4899; --accent: #06d6a0; }
+  
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   body {
@@ -41,22 +46,141 @@
     min-height: 100vh;
     overflow-x: hidden;
     transition: background 0.3s, color 0.3s;
+    position: relative;
   }
   button:focus, a:focus, input:focus, select:focus, textarea:focus { outline: none; }
 
+  /* ===== لودینگ ===== */
+  #loading {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s;
+  }
+  #loading.hide { opacity: 0; pointer-events: none; }
+  .loader-diamond {
+    width: 80px; height: 80px;
+    animation: diamondFloat 2s ease-in-out infinite, diamondGlow 1.5s ease-in-out infinite;
+    margin-bottom: 20px;
+  }
+  .loader-text {
+    color: var(--primary);
+    font-size: 1.2rem;
+    font-weight: 700;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* ===== پس‌زمینه کهکشانی ===== */
+  .galaxy-bg {
+    position: fixed; inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .galaxy-star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+  }
+  .galaxy-shooting {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: linear-gradient(90deg, white, transparent);
+    border-radius: 50%;
+    animation: shooting 4s linear infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+  @keyframes shooting {
+    0% { transform: translateX(0) translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateX(500px) translateY(300px); opacity: 0; }
+  }
+
+  /* ===== ذرات شناور ===== */
+  .particles {
+    position: fixed; inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.4;
+    animation: particleFloat 10s linear infinite;
+  }
+  @keyframes particleFloat {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  /* ===== تیکر خبری ===== */
+  .news-ticker {
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+  .news-ticker-content {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+    padding-left: 100%;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .news-ticker-content span { margin: 0 30px; }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* ===== شمارش معکوس ===== */
+  .countdown-bar {
+    background: linear-gradient(90deg, #ef4444, #f59e0b, #ef4444);
+    background-size: 200% 100%;
+    animation: gradientMove 3s ease infinite;
+    text-align: center;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: white;
+  }
+  @keyframes gradientMove {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* ===== انیمیشن‌ها ===== */
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { transform: translateX(-50%) translateY(50px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
   @keyframes diamondFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
   @keyframes diamondGlow { 0%, 100% { filter: drop-shadow(0 0 20px rgba(6,214,160,0.5)); } 50% { filter: drop-shadow(0 0 40px rgba(6,214,160,0.9)); } }
   @keyframes cubeFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
   @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
+  /* ===== نوار بالا ===== */
   nav {
     position: sticky; top: 0; z-index: 200;
     background: rgba(15, 22, 38, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
-    padding: 16px 40px;
+    padding: 14px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -66,18 +190,18 @@
   nav .logo img { width: 46px; height: 46px; border-radius: 14px; object-fit: cover; border: 2px solid var(--primary); }
   nav .logo-text { font-size: 1.5rem; font-weight: 900; color: var(--text); }
   nav .logo-text span { color: var(--primary); }
-  .nav-btns { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .nav-btns { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .nav-btns button, .nav-btns a {
-    padding: 10px 18px; border-radius: 12px; border: 1px solid var(--border);
+    padding: 10px 16px; border-radius: 12px; border: 1px solid var(--border);
     background: var(--card); color: var(--text); font-weight: 600; cursor: pointer;
-    text-decoration: none; font-family: inherit; font-size: 0.88rem;
-    display: flex; align-items: center; gap: 7px; position: relative;
+    text-decoration: none; font-family: inherit; font-size: 0.85rem;
+    display: flex; align-items: center; gap: 6px; position: relative;
     transition: border-color 0.15s;
   }
   .nav-btns button:hover, .nav-btns a:hover { border-color: var(--primary); }
   .nav-btns .primary { background: var(--primary); border: none; color: white; }
   .nav-btns .logout { background: var(--danger); border-color: var(--danger); color: white; }
-  .nav-btns .icon-btn { padding: 10px 13px; }
+  .nav-btns .icon-btn { padding: 10px 12px; }
   .nav-btns .badge {
     position: absolute; top: -6px; right: -6px;
     background: var(--secondary); color: white; border-radius: 50%;
@@ -85,12 +209,24 @@
     display: flex; align-items: center; justify-content: center;
     font-weight: 700;
   }
+  .xp-bar-mini {
+    width: 50px; height: 6px;
+    background: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 5px;
+  }
+  .xp-bar-mini-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.5s;
+  }
 
   .container { max-width: 1600px; margin: 0 auto; padding: 0 40px; }
 
   /* ===== لابی ===== */
   .lobby {
-    min-height: 90vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -99,7 +235,6 @@
     padding: 60px 20px;
     position: relative;
     overflow: hidden;
-    background: radial-gradient(circle at 50% 50%, rgba(6,214,160,0.08), transparent 60%);
   }
   .lobby::before {
     content: '';
@@ -134,13 +269,13 @@
   .cube:nth-child(5) { top: 45%; left: 4%; animation-delay: 4s; }
   .cube:nth-child(6) { top: 55%; right: 4%; animation-delay: 5s; }
 
-  .diamond-container { position: relative; z-index: 2; margin-bottom: 30px; perspective: 1000px; }
+  .diamond-container { position: relative; z-index: 2; margin-bottom: 25px; }
   .diamond-3d {
     width: 140px; height: 140px; position: relative;
     animation: diamondFloat 4s ease-in-out infinite, diamondGlow 3s ease-in-out infinite;
     display: flex; align-items: center; justify-content: center;
   }
-  .diamond-svg { width: 140px; height: 140px; filter: drop-shadow(0 10px 20px rgba(6,214,160,0.3)); }
+  .diamond-svg { width: 140px; height: 140px; }
   .diamond-svg polygon { stroke: rgba(255,255,255,0.4); stroke-width: 1.5; }
   .diamond-sparkle { position: absolute; font-size: 1.5rem; animation: diamondFloat 2s ease-in-out infinite; }
   .diamond-sparkle:nth-child(2) { top: -10px; right: -10px; animation-delay: 0.5s; }
@@ -160,9 +295,10 @@
     margin-bottom: 32px; line-height: 2; position: relative; z-index: 1;
   }
   .lobby-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; position: relative; z-index: 1; }
-  .lobby-btns a {
+  .lobby-btns a, .lobby-btns button {
     padding: 15px 34px; border-radius: 14px; text-decoration: none;
-    font-weight: 700; font-size: 0.98rem;
+    font-weight: 700; font-size: 0.98rem; border: none; cursor: pointer;
+    font-family: inherit;
     display: inline-flex; align-items: center; gap: 8px;
     transition: transform 0.2s, box-shadow 0.2s;
   }
@@ -170,6 +306,8 @@
   .lobby-btns .primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(6,214,160,0.5); }
   .lobby-btns .secondary { background: var(--card); border: 1px solid var(--border); color: var(--text); }
   .lobby-btns .secondary:hover { border-color: var(--primary); transform: translateY(-3px); }
+  .lobby-btns .lucky { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #000; box-shadow: 0 10px 30px rgba(251,191,36,0.3); }
+  .lobby-btns .lucky:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(251,191,36,0.5); }
 
   .section { padding: 70px 0; position: relative; }
   .section:nth-child(even) { background: rgba(15, 22, 38, 0.3); }
@@ -198,7 +336,6 @@
     padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border);
     background: var(--card); color: var(--text); font-weight: 600;
     cursor: pointer; font-family: inherit; font-size: 0.85rem;
-    transition: border-color 0.15s;
   }
   .cat-btn:hover { border-color: var(--primary); }
   .cat-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; color: white; }
@@ -211,10 +348,11 @@
   .card {
     background: var(--card); border: 1px solid var(--border);
     border-radius: 20px; overflow: hidden;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.3s;
     position: relative;
+    transform-style: preserve-3d;
   }
-  .card:hover { border-color: var(--primary); box-shadow: 0 15px 35px rgba(79,127,255,0.15); }
+  .card:hover { border-color: var(--primary); box-shadow: 0 25px 50px rgba(79,127,255,0.25); }
   .card .img-box {
     height: 180px; display: flex; align-items: center; justify-content: center;
     font-size: 5.5rem;
@@ -240,6 +378,12 @@
     color: white; padding: 4px 12px; border-radius: 50px;
     font-size: 0.7rem; font-weight: 700; z-index: 3;
   }
+  .card .hot-badge {
+    position: absolute; top: 14px; right: 14px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white; padding: 4px 12px; border-radius: 50px;
+    font-size: 0.7rem; font-weight: 700; z-index: 3;
+  }
   .card .content { padding: 24px; }
   .card .tag { display: inline-block; background: rgba(79,127,255,0.15); color: var(--primary); font-size: 0.75rem; padding: 5px 14px; border-radius: 50px; margin-bottom: 14px; font-weight: 700; }
   .card h3 { font-size: 1.15rem; margin-bottom: 16px; color: var(--text); font-weight: 700; }
@@ -258,7 +402,6 @@
   .news-card {
     background: var(--card); border: 1px solid var(--border);
     border-radius: 20px; padding: 24px;
-    transition: border-color 0.15s;
   }
   .news-card:hover { border-color: var(--primary); }
   .news-card img { width: 100%; height: 200px; border-radius: 14px; object-fit: cover; margin-bottom: 16px; }
@@ -429,6 +572,127 @@
   .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 15px 30px; border-radius: 14px; font-weight: 700; z-index: 1000; animation: slideUp 0.25s ease; font-size: 0.92rem; }
   .toast.error { background: var(--danger); }
 
+  /* ===== جعبه شانس ===== */
+  .lucky-box {
+    width: 200px; height: 200px; margin: 30px auto;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    cursor: pointer;
+    border: 4px solid #d97706;
+    box-shadow: 0 20px 50px rgba(251,191,36,0.4);
+    transition: transform 0.3s;
+    animation: cubeFloat 3s ease-in-out infinite;
+  }
+  .lucky-box:hover { transform: scale(1.05) rotate(5deg); }
+  .lucky-box:active { transform: scale(0.95); }
+  .lucky-box.opened { animation: shake 0.5s; }
+
+  /* ===== تم‌ها ===== */
+  .theme-selector {
+    display: flex; gap: 8px; justify-content: center; margin: 20px 0;
+  }
+  .theme-dot {
+    width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    border: 2px solid var(--border); transition: transform 0.2s;
+  }
+  .theme-dot:hover { transform: scale(1.2); }
+  .theme-dot.blue { background: #4f7fff; }
+  .theme-dot.purple { background: #a855f7; }
+  .theme-dot.green { background: #10b981; }
+  .theme-dot.red { background: #ef4444; }
+  .theme-dot.orange { background: #f59e0b; }
+
+  /* ===== تاس ===== */
+  .dice-container { text-align: center; margin: 20px 0; }
+  .dice {
+    width: 80px; height: 80px;
+    background: white;
+    border-radius: 12px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+    color: #0a0e1a;
+  }
+  .dice.rolling { animation: spin 0.5s linear infinite; }
+
+  /* ===== لیست امتیازات ===== */
+  .leaderboard-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 18px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 8px; font-size: 0.9rem;
+  }
+  .leaderboard-item .rank {
+    width: 30px; height: 30px;
+    background: var(--primary); color: white;
+    border-radius: 50%; display: flex;
+    justify-content: center; align-items: center;
+    font-weight: 900; font-size: 0.85rem;
+  }
+  .leaderboard-item .rank.gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+  .leaderboard-item .rank.silver { background: linear-gradient(135deg, #94a3b8, #64748b); }
+  .leaderboard-item .rank.bronze { background: linear-gradient(135deg, #d97706, #92400e); }
+
+  /* ===== تقویم ===== */
+  .calendar-item {
+    padding: 15px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 10px;
+    border-right: 4px solid var(--primary);
+  }
+  .calendar-date { color: var(--primary); font-weight: 700; font-size: 0.85rem; }
+  .calendar-title { color: var(--text); font-weight: 700; margin: 5px 0; }
+  .calendar-desc { color: var(--text-2); font-size: 0.85rem; }
+
+  /* ===== نظرسنجی ===== */
+  .poll-option {
+    padding: 12px 18px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 8px; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: border-color 0.2s;
+  }
+  .poll-option:hover { border-color: var(--primary); }
+  .poll-option.voted { border-color: var(--success); }
+  .poll-bar {
+    height: 6px; background: var(--border);
+    border-radius: 5px; margin-top: 8px; overflow: hidden;
+  }
+  .poll-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.5s;
+  }
+
+  /* ===== کارت پستال ===== */
+  .postcard {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 25px;
+    margin-bottom: 15px;
+  }
+  .postcard img { width: 100%; border-radius: 12px; margin-bottom: 15px; }
+  .postcard h4 { color: var(--text); margin-bottom: 8px; }
+  .postcard p { color: var(--text-2); font-size: 0.9rem; }
+
+  /* ===== زبان ===== */
+  .lang-selector {
+    display: flex; gap: 5px;
+  }
+  .lang-btn {
+    padding: 6px 12px; border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card); color: var(--text);
+    font-weight: 700; cursor: pointer;
+    font-family: inherit; font-size: 0.8rem;
+  }
+  .lang-btn.active { background: var(--primary); color: white; border: none; }
+
   @media (max-width: 900px) {
     .cart-layout { grid-template-columns: 1fr; }
     .cart-summary-box { position: static; }
@@ -439,16 +703,33 @@
     .lobby .diamond-svg { width: 110px; height: 110px; }
     nav { padding: 12px 20px; }
     nav .logo-text { font-size: 1.2rem; }
-    .nav-btns button, .nav-btns a { padding: 7px 12px; font-size: 0.78rem; }
+    .nav-btns button, .nav-btns a { padding: 7px 10px; font-size: 0.75rem; }
     .container { padding: 0 20px; }
     .admin-panel { padding: 20px; margin: 30px 15px; }
     .cart-item-new { flex-direction: column; }
     .notif-dropdown { width: 280px; }
     .cube { width: 30px; height: 30px; }
+    .lucky-box { width: 150px; height: 150px; font-size: 4rem; }
   }
 </style>
 </head>
 <body>
+
+<!-- لودینگ -->
+<div id="loading">
+  <svg class="loader-diamond" viewBox="0 0 100 100">
+    <polygon points="50,5 90,35 50,95 10,35" fill="#06d6a0" opacity="0.9"/>
+    <polygon points="50,5 90,35 50,50" fill="#4ade80" opacity="0.8"/>
+    <polygon points="50,5 10,35 50,50" fill="#34d399" opacity="0.9"/>
+  </svg>
+  <div class="loader-text">در حال بارگذاری...</div>
+</div>
+
+<!-- پس‌زمینه کهکشانی -->
+<div class="galaxy-bg" id="galaxyBg"></div>
+
+<!-- ذرات شناور -->
+<div class="particles" id="particles"></div>
 
 <nav>
   <a class="logo" onclick="navigateTo('home')">
@@ -458,7 +739,19 @@
   <div class="nav-btns" id="navBtns"></div>
 </nav>
 
-<div style="background: linear-gradient(90deg, var(--accent), #059669); text-align: center; padding: 15px; font-weight: 700; font-size: 0.95rem; color: white;">🎉 تخفیف ویژه! کد 20ENDSHOP → ۲۰٪ تخفیف 🎉</div>
+<!-- تیکر خبری -->
+<div class="news-ticker">
+  <div class="news-ticker-content">
+    <span>🔥 تخفیف ویژه ۲۰٪ با کد 20ENDSHOP</span>
+    <span>💎 محصولات جدید اضافه شد</span>
+    <span>🎁 جعبه شانس روزانه</span>
+    <span>⚡ ارسال سریع</span>
+    <span>🎮 بهترین تامبنیل‌های ماینکرفت</span>
+  </div>
+</div>
+
+<!-- شمارش معکوس -->
+<div class="countdown-bar" id="countdownBar">⏰ تخفیف ویژه تا: ۷ روز</div>
 
 <div id="mainPage">
 
@@ -487,12 +780,22 @@
       </div>
     </div>
     
-    <h1>End Shop</h1>
-    <p>بهترین تامبنیل‌ها، آواتارها، اسکین‌ها و ادیت‌های ماینکرفت — با کیفیت بالا و قیمت مناسب</p>
+    <h1 id="heroTitle">End Shop</h1>
+    <p id="heroDesc">بهترین تامبنیل‌ها، آواتارها، اسکین‌ها و ادیت‌های ماینکرفت — با کیفیت بالا و قیمت مناسب</p>
     
     <div class="lobby-btns">
-      <a href="#productsSection" class="primary">🛒 مشاهده محصولات</a>
-      <a href="https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG" target="_blank" class="secondary">💬 پشتیبانی روبیکا</a>
+      <a href="#productsSection" class="primary" id="btnProducts">🛒 مشاهده محصولات</a>
+      <button class="lucky" onclick="openLuckyBox()" id="btnLucky">🎁 جعبه شانس</button>
+      <a href="https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG" target="_blank" class="secondary" id="btnSupport">💬 پشتیبانی</a>
+    </div>
+
+    <!-- تم‌ها -->
+    <div class="theme-selector">
+      <div class="theme-dot blue" onclick="setTheme('blue')" title="آبی"></div>
+      <div class="theme-dot purple" onclick="setTheme('purple')" title="بنفش"></div>
+      <div class="theme-dot green" onclick="setTheme('green')" title="سبز"></div>
+      <div class="theme-dot red" onclick="setTheme('red')" title="قرمز"></div>
+      <div class="theme-dot orange" onclick="setTheme('orange')" title="نارنجی"></div>
     </div>
   </section>
 
@@ -515,7 +818,7 @@
 
     <h3>📦 مدیریت محصولات</h3>
     <input type="text" id="productName" placeholder="اسم محصول...">
-    <input type="number" id="productPrice" placeholder="قیمت (تومان)...">
+    <input type="number" id="productPrice" placeholder="قیمت...">
     <input type="text" id="productEmoji" placeholder="ایموجی...">
     <input type="text" id="productTag" placeholder="برچسب...">
     <label style="color:var(--text-2); font-size:12px; font-weight:700; margin-top:5px; display:flex; align-items:center; gap:8px;">
@@ -530,8 +833,8 @@
     <div id="categoryList" style="margin-top:15px;"></div>
 
     <h3>🎟️ مدیریت کدهای تخفیف</h3>
-    <input type="text" id="discountCode" placeholder="کد تخفیف (مثلاً OFF20)...">
-    <input type="number" id="discountPercent" placeholder="درصد تخفیف...">
+    <input type="text" id="discountCode" placeholder="کد تخفیف...">
+    <input type="number" id="discountPercent" placeholder="درصد...">
     <select id="discountDuration">
       <option value="1h">⏱ ۱ ساعت</option>
       <option value="6h">⏱ ۶ ساعت</option>
@@ -544,6 +847,13 @@
     <button onclick="addDiscount()">➕ افزودن کد تخفیف</button>
     <div id="discountList" style="margin-top:15px;"></div>
 
+    <h3>📅 مدیریت رویدادها</h3>
+    <input type="text" id="eventTitle" placeholder="عنوان رویداد...">
+    <input type="text" id="eventDate" placeholder="تاریخ (۱۴۰۳/۰۵/۱۵)...">
+    <input type="text" id="eventDesc" placeholder="توضیحات...">
+    <button onclick="addEvent()">➕ افزودن رویداد</button>
+    <div id="eventList" style="margin-top:15px;"></div>
+
     <h3>📥 سفارشات</h3>
     <div id="ordersList" style="margin-top:15px;"></div>
   </div>
@@ -551,9 +861,9 @@
   <section class="section" id="productsSection">
     <div class="container">
       <div class="section-title">
-        <h2>🎯 محصولات ما</h2>
+        <h2 id="productsTitle">🎯 محصولات ما</h2>
         <span></span>
-        <p>محصول مورد نظرت رو انتخاب کن</p>
+        <p id="productsDesc">محصول مورد نظرت رو انتخاب کن</p>
       </div>
       
       <div class="search-bar">
@@ -572,12 +882,77 @@
     </div>
   </section>
 
+  <!-- لیست امتیازات -->
+  <section class="section" id="leaderboardSection">
+    <div class="container" style="max-width:800px;">
+      <div class="section-title">
+        <h2>🏆 جدول امتیازات</h2>
+        <span></span>
+        <p>بهترین خریداران این ماه</p>
+      </div>
+      <div id="leaderboardList"></div>
+    </div>
+  </section>
+
+  <!-- نظرسنجی -->
+  <section class="section" id="pollSection">
+    <div class="container" style="max-width:700px;">
+      <div class="section-title">
+        <h2>📊 نظرسنجی</h2>
+        <span></span>
+        <p>نظرت چیه؟</p>
+      </div>
+      <div id="pollBox"></div>
+    </div>
+  </section>
+
+  <!-- تقویم رویدادها -->
+  <section class="section" id="calendarSection">
+    <div class="container" style="max-width:700px;">
+      <div class="section-title">
+        <h2>📅 رویدادهای آینده</h2>
+        <span></span>
+        <p>تخفیف‌ها و رویدادهای ویژه</p>
+      </div>
+      <div id="calendarList"></div>
+    </div>
+  </section>
+
+  <!-- مینی‌گیم -->
+  <section class="section" id="gameSection">
+    <div class="container" style="max-width:600px;">
+      <div class="section-title">
+        <h2>🎲 تاس شانس</h2>
+        <span></span>
+        <p>تاس بریز و امتیاز بگیر!</p>
+      </div>
+      <div class="dice-container">
+        <div class="dice" id="dice">🎲</div>
+        <br><br>
+        <button onclick="rollDice()" style="padding:15px 40px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;border-radius:14px;font-weight:700;cursor:pointer;font-family:inherit;font-size:1rem;">🎲 تاس بریز</button>
+        <p style="margin-top:15px;color:var(--text-2);">امتیاز شما: <b id="diceScore" style="color:var(--accent);">0</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- کارت پستال -->
+  <section class="section" id="postcardSection">
+    <div class="container" style="max-width:700px;">
+      <div class="section-title">
+        <h2>💌 کارت پستال</h2>
+        <span></span>
+        <p>پیام‌های دوستانه</p>
+      </div>
+      <div id="postcardList"></div>
+    </div>
+  </section>
+
   <section class="section" id="newsSection">
     <div class="container">
       <div class="section-title">
-        <h2>📰 اخبار End Shop</h2>
+        <h2 id="newsTitle2">📰 اخبار End Shop</h2>
         <span></span>
-        <p>جدیدترین خبرها و تخفیف‌های فروشگاه</p>
+        <p id="newsDesc">جدیدترین خبرها و تخفیف‌های فروشگاه</p>
       </div>
       <div class="news-grid" id="newsGrid"></div>
     </div>
@@ -586,25 +961,25 @@
   <section class="section" id="faqSection">
     <div class="container" style="max-width:900px;">
       <div class="section-title">
-        <h2>❓ سوالات متداول</h2>
+        <h2 id="faqTitle">❓ سوالات متداول</h2>
         <span></span>
-        <p>پاسخ سوالات رایج شما</p>
+        <p id="faqDesc">پاسخ سوالات رایج شما</p>
       </div>
       
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">چطور می‌تونم خرید کنم؟</div>
+        <div class="faq-q" data-faq="1">چطور می‌تونم خرید کنم؟</div>
         <div class="faq-a">محصول مورد نظرت رو به سبد خرید اضافه کن، سپس از صفحه سبد خرید، تسویه حساب رو بزن و متن سفارش رو برای پشتیبانی روبیکا بفرست.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">چطور کد تخفیف استفاده کنم؟</div>
+        <div class="faq-q" data-faq="2">چطور کد تخفیف استفاده کنم؟</div>
         <div class="faq-a">توی صفحه سبد خرید، کد تخفیف رو وارد کن و دکمه اعمال رو بزن.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">چه مدت طول می‌کشه سفارش برسه؟</div>
+        <div class="faq-q" data-faq="3">چه مدت طول می‌کشه سفارش برسه؟</div>
         <div class="faq-a">معمولاً بین ۱ تا ۳ روز کاری.</div>
       </div>
       <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">امکان مرجوعی وجود داره؟</div>
+        <div class="faq-q" data-faq="4">امکان مرجوعی وجود داره؟</div>
         <div class="faq-a">بله، تا ۲۴ ساعت بعد از تحویل.</div>
       </div>
     </div>
@@ -653,6 +1028,7 @@
       <a href="#productsSection">محصولات</a>
       <a href="#newsSection">اخبار</a>
       <a href="#faqSection">سوالات متداول</a>
+      <a href="#leaderboardSection">جدول امتیازات</a>
     </div>
     <div class="footer-col">
       <h4>📩 تماس</h4>
@@ -668,6 +1044,7 @@
   <div class="footer-bottom">© 2026 End Shop — تمامی حقوق محفوظ است.</div>
 </footer>
 
+<!-- Modals -->
 <div class="modal" id="authModal">
   <div class="modal-box">
     <h2 id="authTitle">🔑 ورود</h2>
@@ -676,6 +1053,7 @@
     <label>ایمیل</label><input type="email" id="authEmail">
     <label>شماره تماس</label><input type="text" id="authPhone">
     <label>رمز عبور</label><input type="password" id="authPassword">
+    <label>کد معرفی (اختیاری)</label><input type="text" id="authReferral" placeholder="مثلاً REF-TAHA">
     <button onclick="handleAuth()" id="authBtn">ورود</button>
     <div class="switch" id="authSwitch">حساب نداری؟ <a onclick="navigateTo('signup')">ثبت‌نام</a></div>
     <div class="status" id="authStatus"></div>
@@ -694,6 +1072,9 @@
       <div style="text-align:center;margin-bottom:20px;">
         <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:white;margin:0 auto 15px;" id="profileAvatar">?</div>
         <h3 id="profileName" style="color:var(--text);">-</h3>
+        <p style="color:var(--text-2);font-size:0.85rem;margin-top:8px;">سطح: <b id="profileLevel" style="color:var(--primary);">۱</b></p>
+        <div class="xp-bar-mini" style="width:200px;margin:10px auto;"><div class="xp-bar-mini-fill" id="profileXpFill" style="width:0%;"></div></div>
+        <p style="color:var(--text-2);font-size:0.75rem;" id="profileXpText">۰ XP</p>
       </div>
     </div>
     <div class="profile-tab-content" id="tab-orders"><div id="myOrders"></div></div>
@@ -701,6 +1082,8 @@
       <label>نام کامل</label><input type="text" id="editName">
       <label>ایمیل</label><input type="email" id="editEmail">
       <label>شماره تماس</label><input type="text" id="editPhone">
+      <label>کد معرفی خودت (برای دوستانت)</label>
+      <input type="text" id="editReferral" readonly style="background:var(--bg);">
       <button onclick="saveProfile()" style="background:var(--success);">💾 ذخیره</button>
     </div>
     <button onclick="closeModal('profileModal')" style="background:#4f545c;">بستن</button>
@@ -748,15 +1131,27 @@
   </div>
 </div>
 
+<div class="modal" id="luckyModal">
+  <div class="modal-box" style="width:400px;text-align:center;">
+    <h2>🎁 جعبه شانس روزانه</h2>
+    <p style="color:var(--text-2);margin-bottom:20px;">هر روز یه بار می‌تونی جعبه رو باز کنی!</p>
+    <div class="lucky-box" id="luckyBox" onclick="openLuckyBoxNow()">🎁</div>
+    <div id="luckyResult" style="margin-top:20px;color:var(--accent);font-weight:700;min-height:30px;"></div>
+    <button onclick="closeModal('luckyModal')" style="background:#4f545c;">بستن</button>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gun/sea.js"></script>
 <script>
+/* ========== تنظیمات ========== */
 const gun = Gun(['https://gun-manhattan.herokuapp.com/gun','https://gun-us.herokuapp.com/gun']);
 const user = gun.user();
 const OWNER_USERNAME = 'Taha';
 const RUBIKA_SUPPORT = 'https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG';
 const BASE_PATH = '/Endshop';
 
+let currentLang = localStorage.getItem('lang') || 'fa';
 let currentAuthMode = 'login';
 let cart = JSON.parse(localStorage.getItem('end_shop_cart')) || [];
 let favorites = JSON.parse(localStorage.getItem('end_shop_favs')) || [];
@@ -765,24 +1160,214 @@ let currentFilter = 'all';
 let currentSearch = '';
 let currentSort = 'default';
 let currentProductForReview = null;
+let diceScore = parseInt(localStorage.getItem('dice_score')) || 0;
 
 const DEFAULT_PRODUCTS = [
-  { id: 'p1', name: 'تامبنیل سطح ضعیف', price: 5000, emoji: '🖼️', tag: 'ماینکرفت', featured: false, time: Date.now() - 86400000, sales: 5 },
-  { id: 'p2', name: 'تامبنیل سطح متوسط', price: 10000, emoji: '🎨', tag: 'ماینکرفت', featured: false, time: Date.now() - 172800000, sales: 12 },
-  { id: 'p3', name: 'تامبنیل سطح قوی', price: 15000, emoji: '🔥', tag: 'ماینکرفت', featured: true, time: Date.now() - 259200000, sales: 25 },
-  { id: 'p4', name: 'آواتار ماینکرفتی', price: 10000, emoji: '💠', tag: 'آواتار', featured: false, time: Date.now() - 345600000, sales: 8 },
-  { id: 'p5', name: 'ساخت توتم با اسکین', price: 10000, emoji: '✳️', tag: 'Java Edition', featured: false, time: Date.now() - 432000000, sales: 3 },
-  { id: 'p6', name: 'ادیت ویدیو', price: 20000, emoji: '💥', tag: 'ادیت', featured: true, time: Date.now() - 518400000, sales: 15 },
-  { id: 'p7', name: 'ساخت اسکین', price: 10000, emoji: '🔸', tag: 'اسکین', featured: false, time: Date.now() - 604800000, sales: 7 }
+  { id: 'p1', name: 'تامبنیل سطح ضعیف', nameEn: 'Weak Thumbnail', price: 5000, emoji: '🖼️', tag: 'ماینکرفت', tagEn: 'Minecraft', featured: false, time: Date.now() - 86400000, sales: 5 },
+  { id: 'p2', name: 'تامبنیل سطح متوسط', nameEn: 'Medium Thumbnail', price: 10000, emoji: '🎨', tag: 'ماینکرفت', tagEn: 'Minecraft', featured: false, time: Date.now() - 172800000, sales: 12 },
+  { id: 'p3', name: 'تامبنیل سطح قوی', nameEn: 'Strong Thumbnail', price: 15000, emoji: '🔥', tag: 'ماینکرفت', tagEn: 'Minecraft', featured: true, time: Date.now() - 259200000, sales: 25 },
+  { id: 'p4', name: 'آواتار ماینکرفتی', nameEn: 'Minecraft Avatar', price: 10000, emoji: '💠', tag: 'آواتار', tagEn: 'Avatar', featured: false, time: Date.now() - 345600000, sales: 8 },
+  { id: 'p5', name: 'ساخت توتم با اسکین', nameEn: 'Totem with Skin', price: 10000, emoji: '✳️', tag: 'Java Edition', tagEn: 'Java Edition', featured: false, time: Date.now() - 432000000, sales: 3 },
+  { id: 'p6', name: 'ادیت ویدیو', nameEn: 'Video Edit', price: 20000, emoji: '💥', tag: 'ادیت', tagEn: 'Edit', featured: true, time: Date.now() - 518400000, sales: 15 },
+  { id: 'p7', name: 'ساخت اسکین', nameEn: 'Skin Design', price: 10000, emoji: '🔸', tag: 'اسکین', tagEn: 'Skin', featured: false, time: Date.now() - 604800000, sales: 7 }
 ];
+
+const TRANSLATIONS = {
+  fa: {
+    heroDesc: 'بهترین تامبنیل‌ها، آواتارها، اسکین‌ها و ادیت‌های ماینکرفت — با کیفیت بالا و قیمت مناسب',
+    btnProducts: '🛒 مشاهده محصولات',
+    btnLucky: '🎁 جعبه شانس',
+    btnSupport: '💬 پشتیبانی',
+    productsTitle: '🎯 محصولات ما',
+    productsDesc: 'محصول مورد نظرت رو انتخاب کن',
+    newsTitle: '📰 اخبار End Shop',
+    newsDesc: 'جدیدترین خبرها و تخفیف‌های فروشگاه',
+    faqTitle: '❓ سوالات متداول',
+    faqDesc: 'پاسخ سوالات رایج شما',
+    searchPlaceholder: '🔍 جستجوی محصول...',
+    addToCart: '🛒 افزودن به سبد',
+    loginBtn: 'ورود',
+    signupBtn: 'ثبت‌نام',
+    logoutBtn: 'خروج',
+    featured: '🔥 ویژه',
+    new: '✨ جدید',
+    hot: '🔥 پرفروش'
+  },
+  en: {
+    heroDesc: 'Best Minecraft thumbnails, avatars, skins and edits — high quality, great prices',
+    btnProducts: '🛒 View Products',
+    btnLucky: '🎁 Lucky Box',
+    btnSupport: '💬 Support',
+    productsTitle: '🎯 Our Products',
+    productsDesc: 'Choose your product',
+    newsTitle: '📰 End Shop News',
+    newsDesc: 'Latest news and discounts',
+    faqTitle: '❓ FAQ',
+    faqDesc: 'Answers to common questions',
+    searchPlaceholder: '🔍 Search products...',
+    addToCart: '🛒 Add to Cart',
+    loginBtn: 'Login',
+    signupBtn: 'Sign Up',
+    logoutBtn: 'Logout',
+    featured: '🔥 Featured',
+    new: '✨ New',
+    hot: '🔥 Hot'
+  }
+};
+
+function t(key) { return TRANSLATIONS[currentLang][key] || key; }
 
 let PRODUCTS = JSON.parse(localStorage.getItem('end_shop_products')) || DEFAULT_PRODUCTS;
 let DISCOUNTS = JSON.parse(localStorage.getItem('end_shop_discounts')) || [];
 let REVIEWS = JSON.parse(localStorage.getItem('end_shop_reviews')) || {};
 let NOTIFICATIONS = JSON.parse(localStorage.getItem('end_shop_notifs')) || [];
 let CATEGORIES = JSON.parse(localStorage.getItem('end_shop_categories')) || ['ماینکرفت', 'آواتار', 'ادیت', 'اسکین', 'Java Edition'];
+let EVENTS = JSON.parse(localStorage.getItem('end_shop_events')) || [];
 
-/* ===== Router ===== */
+/* ========== راه‌اندازی اولیه ========== */
+window.addEventListener('DOMContentLoaded', () => {
+  // لودینگ
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hide');
+  }, 1200);
+  
+  // پس‌زمینه کهکشانی
+  createGalaxy();
+  createParticles();
+  
+  // اعمال زبان
+  applyLanguage();
+  
+  // اعمال تم
+  const savedTheme = localStorage.getItem('site_theme') || 'blue';
+  setTheme(savedTheme);
+  
+  // نوتیفیکیشن
+  if ('Notification' in window && Notification.permission === 'default') {
+    setTimeout(() => Notification.requestPermission(), 3000);
+  }
+  
+  // رویدادها
+  renderEvents();
+  renderLeaderboard();
+  renderPoll();
+  renderPostcards();
+  
+  // شمارش معکوس
+  startCountdown();
+});
+
+/* ========== پس‌زمینه کهکشانی ========== */
+function createGalaxy() {
+  const bg = document.getElementById('galaxyBg');
+  for (let i = 0; i < 60; i++) {
+    const star = document.createElement('div');
+    star.className = 'galaxy-star';
+    const size = Math.random() * 2 + 1;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    bg.appendChild(star);
+  }
+  for (let i = 0; i < 3; i++) {
+    const shoot = document.createElement('div');
+    shoot.className = 'galaxy-shooting';
+    shoot.style.left = Math.random() * 100 + '%';
+    shoot.style.top = Math.random() * 50 + '%';
+    shoot.style.animationDelay = i * 5 + 's';
+    bg.appendChild(shoot);
+  }
+}
+
+function createParticles() {
+  const p = document.getElementById('particles');
+  const emojis = ['💎', '🟫', '🟩', '⬛', '🟨', '🟦', '🟪', '✨'];
+  for (let i = 0; i < 15; i++) {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.animationDelay = Math.random() * 10 + 's';
+    el.style.animationDuration = (8 + Math.random() * 6) + 's';
+    p.appendChild(el);
+  }
+}
+
+/* ========== تم‌ها ========== */
+function setTheme(theme) {
+  document.body.classList.remove('theme-purple', 'theme-green', 'theme-red', 'theme-orange');
+  if (theme !== 'blue') document.body.classList.add('theme-' + theme);
+  localStorage.setItem('site_theme', theme);
+}
+
+/* ========== زبان ========== */
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+  applyLanguage();
+  updateNav();
+  renderProducts();
+  renderCategories();
+  renderNews();
+}
+
+function applyLanguage() {
+  document.getElementById('heroDesc').textContent = t('heroDesc');
+  document.getElementById('btnProducts').textContent = t('btnProducts');
+  document.getElementById('btnLucky').textContent = t('btnLucky');
+  document.getElementById('btnSupport').textContent = t('btnSupport');
+  document.getElementById('productsTitle').textContent = t('productsTitle');
+  document.getElementById('productsDesc').textContent = t('productsDesc');
+  document.getElementById('newsTitle2').textContent = t('newsTitle');
+  document.getElementById('newsDesc').textContent = t('newsDesc');
+  document.getElementById('faqTitle').textContent = t('faqTitle');
+  document.getElementById('faqDesc').textContent = t('faqDesc');
+  document.getElementById('searchInput').placeholder = t('searchPlaceholder');
+}
+
+/* ========== شمارش معکوس ========== */
+function startCountdown() {
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() + 7);
+  
+  setInterval(() => {
+    const now = new Date();
+    const diff = endDate - now;
+    if (diff <= 0) return;
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    document.getElementById('countdownBar').innerHTML = `⏰ تخفیف ویژه تا: ${days} روز و ${hours}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+  }, 1000);
+}
+
+/* ========== کارت سه‌بعدی ========== */
+function add3DTilt() {
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / 15;
+      const rotateY = (centerX - x) / 15;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+
+/* ========== Router ========== */
 function navigateTo(page) {
   const routes = {
     'home': BASE_PATH + '/',
@@ -824,6 +1409,7 @@ window.addEventListener('DOMContentLoaded', () => {
   else if (path.includes('/profile')) navigateTo('profile');
 });
 
+/* ========== تم روشن/تاریک ========== */
 function toggleTheme() {
   document.body.classList.toggle('light');
   localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
@@ -833,6 +1419,7 @@ if (localStorage.getItem('theme') === 'light') document.body.classList.add('ligh
 
 function toggleFaq(el) { el.classList.toggle('open'); }
 
+/* ========== سبد خرید ========== */
 function openCartPage() {
   document.getElementById('mainPage').style.display = 'none';
   document.getElementById('cartPage').classList.add('open');
@@ -872,6 +1459,7 @@ function renderCartPage() {
   document.getElementById('cartFinalTotal').textContent = finalTotal.toLocaleString('fa-IR') + ' تومان';
 }
 
+/* ========== احراز هویت ========== */
 function openAuth(mode) {
   currentAuthMode = mode;
   document.getElementById('authTitle').textContent = mode === 'login' ? '🔑 ورود' : '✍️ ثبت‌نام';
@@ -900,6 +1488,7 @@ function handleAuth() {
   const email = document.getElementById('authEmail').value.trim();
   const phone = document.getElementById('authPhone').value.trim();
   const password = document.getElementById('authPassword').value.trim();
+  const referral = document.getElementById('authReferral').value.trim();
   const status = document.getElementById('authStatus');
   const btn = document.getElementById('authBtn');
 
@@ -912,12 +1501,21 @@ function handleAuth() {
     user.create(username, password, (ack) => {
       btn.disabled = false;
       if (ack.err) return status.textContent = '❌ ' + ack.err;
-      gun.get('users').get(username).put({ name, username, email, phone, createdAt: Date.now() });
+      const myReferral = 'REF-' + username.toUpperCase().slice(0, 8);
+      gun.get('users').get(username).put({ 
+        name, username, email, phone, 
+        createdAt: Date.now(), 
+        xp: 0, 
+        referral: myReferral,
+        referredBy: referral || null
+      });
+      if (referral) addXP(username, 50);
       status.textContent = '✅ موفق!';
       setTimeout(() => {
         user.auth(username, password, () => {
           localStorage.setItem('currentUser', username);
           addNotification('🎉 خوش اومدی ' + name + '!');
+          sendBrowserNotification('🎉 خوش اومدی!', 'به End Shop خوش آمدی');
           updateNav();
           closeModal('authModal');
           showToast('🎉 خوش اومدی!');
@@ -947,6 +1545,7 @@ function logout() {
   location.reload();
 }
 
+/* ========== نوار بالا ========== */
 function updateNav() {
   const me = localStorage.getItem('currentUser');
   const navBtns = document.getElementById('navBtns');
@@ -955,9 +1554,17 @@ function updateNav() {
   const notifCount = NOTIFICATIONS.filter(n => !n.read).length;
   const isLight = document.body.classList.contains('light');
   const themeIcon = isLight ? '☀️' : '🌙';
+  const langFa = currentLang === 'fa' ? 'active' : '';
+  const langEn = currentLang === 'en' ? 'active' : '';
   
   if (me) {
+    let xp = 0;
+    gun.get('users').get(me).once((d) => { xp = d?.xp || 0; });
     navBtns.innerHTML = `
+      <div class="lang-selector">
+        <button class="lang-btn ${langFa}" onclick="setLanguage('fa')">FA</button>
+        <button class="lang-btn ${langEn}" onclick="setLanguage('en')">EN</button>
+      </div>
       <button class="icon-btn" onclick="navigateTo('home')">🏠</button>
       <button class="icon-btn" onclick="openFavs()">❤️ ${favCount > 0 ? `<span class="badge">${favCount}</span>` : ''}</button>
       <button class="icon-btn" onclick="navigateTo('cart')">🛒 ${cartCount > 0 ? `<span class="badge">${cartCount}</span>` : ''}</button>
@@ -967,19 +1574,24 @@ function updateNav() {
       </div>
       <button class="icon-btn" onclick="toggleTheme()">${themeIcon}</button>
       <button onclick="navigateTo('profile')">👤 ${me}</button>
-      <button class="logout" onclick="logout()">خروج</button>
+      <button class="logout" onclick="logout()">${t('logoutBtn')}</button>
     `;
     checkAdmin();
   } else {
     navBtns.innerHTML = `
+      <div class="lang-selector">
+        <button class="lang-btn ${langFa}" onclick="setLanguage('fa')">FA</button>
+        <button class="lang-btn ${langEn}" onclick="setLanguage('en')">EN</button>
+      </div>
       <button class="icon-btn" onclick="toggleTheme()">${themeIcon}</button>
       <button class="icon-btn" onclick="navigateTo('cart')">🛒 ${cartCount > 0 ? `<span class="badge">${cartCount}</span>` : ''}</button>
-      <button class="primary" onclick="navigateTo('login')">ورود</button>
-      <button onclick="navigateTo('signup')">ثبت‌نام</button>
+      <button class="primary" onclick="navigateTo('login')">${t('loginBtn')}</button>
+      <button onclick="navigateTo('signup')">${t('signupBtn')}</button>
     `;
   }
 }
 
+/* ========== نوتیفیکیشن ========== */
 function toggleNotif(e) {
   e.stopPropagation();
   document.getElementById('notifDropdown').classList.toggle('open');
@@ -995,6 +1607,12 @@ function addNotification(text) {
   NOTIFICATIONS = NOTIFICATIONS.slice(0, 20);
   localStorage.setItem('end_shop_notifs', JSON.stringify(NOTIFICATIONS));
   updateNav();
+}
+
+function sendBrowserNotification(title, body) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification(title, { body, icon: 'https://cdn.imgurl.ir/uploads/a38216_End_shop.png' });
+  }
 }
 
 function renderNotif() {
@@ -1014,6 +1632,240 @@ function renderNotif() {
   }
 }
 
+/* ========== XP ========== */
+function addXP(username, amount) {
+  gun.get('users').get(username).once((data) => {
+    const newXP = (data?.xp || 0) + amount;
+    gun.get('users').get(username).put({ xp: newXP });
+  });
+}
+
+function getLevel(xp) {
+  return Math.floor(xp / 100) + 1;
+}
+
+/* ========== جعبه شانس ========== */
+function openLuckyBox() {
+  const me = localStorage.getItem('currentUser');
+  if (!me) { showToast('⚠️ اول وارد بشی!', true); navigateTo('login'); return; }
+  
+  const lastOpen = localStorage.getItem('lucky_' + me);
+  const today = new Date().toDateString();
+  
+  if (lastOpen === today) {
+    showToast('⏰ امروز جعبه رو باز کردی! فردا دوباره بیا', true);
+    return;
+  }
+  
+  document.getElementById('luckyResult').textContent = '';
+  document.getElementById('luckyModal').classList.add('open');
+}
+
+function openLuckyBoxNow() {
+  const me = localStorage.getItem('currentUser');
+  if (!me) return;
+  
+  const box = document.getElementById('luckyBox');
+  box.classList.add('opened');
+  
+  const prizes = [
+    { text: '🎟️ کد تخفیف ۱۵٪', discount: 15 },
+    { text: '🎟️ کد تخفیف ۱۰٪', discount: 10 },
+    { text: '💎 ۵۰ XP', xp: 50 },
+    { text: '⭐ ۱۰۰ XP', xp: 100 },
+    { text: '🎁 کد تخفیف ۲۰٪', discount: 20 },
+    { text: '💰 ۲۵ XP', xp: 25 }
+  ];
+  
+  const prize = prizes[Math.floor(Math.random() * prizes.length)];
+  
+  setTimeout(() => {
+    box.textContent = '✨';
+    document.getElementById('luckyResult').innerHTML = `
+      <div style="font-size:1.5rem;margin-bottom:10px;">🎉 تبریک!</div>
+      <div style="font-size:1.2rem;color:var(--primary);">${prize.text}</div>
+    `;
+    
+    if (prize.discount) {
+      const code = 'LUCKY' + Math.floor(Math.random() * 9000 + 1000);
+      DISCOUNTS.push({ code, percent: prize.discount, expiresAt: Date.now() + 86400000, createdAt: Date.now() });
+      localStorage.setItem('end_shop_discounts', JSON.stringify(DISCOUNTS));
+      document.getElementById('luckyResult').innerHTML += `<div style="margin-top:10px;font-size:0.9rem;">کد: <b>${code}</b> (۲۴ ساعت اعتبار)</div>`;
+      addNotification('🎁 کد تخفیف ' + prize.discount + '% گرفتی: ' + code);
+      sendBrowserNotification('🎉 تبریک!', 'کد تخفیف ' + prize.discount + '% گرفتی!');
+    }
+    
+    if (prize.xp) {
+      addXP(me, prize.xp);
+      addNotification('⭐ ' + prize.xp + ' XP گرفتی!');
+    }
+    
+    localStorage.setItem('lucky_' + me, new Date().toDateString());
+  }, 800);
+}
+
+/* ========== تاس ========== */
+function rollDice() {
+  const dice = document.getElementById('dice');
+  const faces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+  
+  dice.classList.add('rolling');
+  
+  let count = 0;
+  const interval = setInterval(() => {
+    dice.textContent = faces[Math.floor(Math.random() * 6)];
+    count++;
+    if (count > 10) {
+      clearInterval(interval);
+      dice.classList.remove('rolling');
+      const result = Math.floor(Math.random() * 6) + 1;
+      dice.textContent = faces[result - 1];
+      diceScore += result;
+      document.getElementById('diceScore').textContent = diceScore;
+      localStorage.setItem('dice_score', diceScore);
+      showToast('🎲 ' + result + ' آوردی!');
+      if (result === 6) {
+        addNotification('🎉 شش آوردی!');
+        sendBrowserNotification('🎲 شش!', 'تبریک! شش آوردی');
+      }
+    }
+  }, 50);
+}
+
+/* ========== جدول امتیازات ========== */
+function renderLeaderboard() {
+  const box = document.getElementById('leaderboardList');
+  const users = [];
+  gun.get('users').map().once((u, name) => {
+    if (u && name) users.push({ name, xp: u.xp || 0 });
+  });
+  setTimeout(() => {
+    users.sort((a, b) => b.xp - a.xp);
+    if (users.length === 0) {
+      box.innerHTML = '<p style="color:var(--text-2);text-align:center;">هنوز کسی امتیاز نگرفته</p>';
+      return;
+    }
+    box.innerHTML = users.slice(0, 10).map((u, i) => {
+      let rankClass = '';
+      if (i === 0) rankClass = 'gold';
+      else if (i === 1) rankClass = 'silver';
+      else if (i === 2) rankClass = 'bronze';
+      return `
+        <div class="leaderboard-item">
+          <div style="display:flex;align-items:center;gap:15px;">
+            <div class="rank ${rankClass}">${i + 1}</div>
+            <div>${u.name}</div>
+          </div>
+          <div style="color:var(--accent);font-weight:700;">${u.xp} XP</div>
+        </div>
+      `;
+    }).join('');
+  }, 1500);
+}
+
+/* ========== نظرسنجی ========== */
+function renderPoll() {
+  const box = document.getElementById('pollBox');
+  const votes = JSON.parse(localStorage.getItem('poll_votes')) || { 'thumbnail': 0, 'avatar': 0, 'skin': 0, 'edit': 0 };
+  const total = Object.values(votes).reduce((a, b) => a + b, 0) || 1;
+  const myVote = localStorage.getItem('my_poll_vote');
+  
+  const options = [
+    { key: 'thumbnail', label: '🖼️ تامبنیل' },
+    { key: 'avatar', label: '💠 آواتار' },
+    { key: 'skin', label: '🔸 اسکین' },
+    { key: 'edit', label: '💥 ادیت' }
+  ];
+  
+  box.innerHTML = `
+    <h3 style="color:var(--text);margin-bottom:15px;font-size:1.1rem;">کدوم محصول رو بیشتر دوست داری؟</h3>
+    ${options.map(o => {
+      const percent = Math.round((votes[o.key] / total) * 100);
+      return `
+        <div class="poll-option ${myVote === o.key ? 'voted' : ''}" onclick="votePoll('${o.key}')">
+          <span>${o.label}</span>
+          <span style="color:var(--primary);font-weight:700;">${percent}%</span>
+        </div>
+        <div class="poll-bar"><div class="poll-bar-fill" style="width:${percent}%"></div></div>
+        <br>
+      `;
+    }).join('')}
+    <p style="color:var(--text-2);font-size:0.85rem;text-align:center;margin-top:10px;">مجموع آرا: ${total}</p>
+  `;
+}
+
+function votePoll(key) {
+  if (localStorage.getItem('my_poll_vote')) {
+    showToast('⚠️ قبلاً رای دادی!', true);
+    return;
+  }
+  const votes = JSON.parse(localStorage.getItem('poll_votes')) || { 'thumbnail': 0, 'avatar': 0, 'skin': 0, 'edit': 0 };
+  votes[key]++;
+  localStorage.setItem('poll_votes', JSON.stringify(votes));
+  localStorage.setItem('my_poll_vote', key);
+  renderPoll();
+  showToast('✅ رای ثبت شد!');
+}
+
+/* ========== تقویم رویدادها ========== */
+function renderEvents() {
+  const box = document.getElementById('calendarList');
+  if (EVENTS.length === 0) {
+    box.innerHTML = `
+      <div class="calendar-item">
+        <div class="calendar-date">📅 ۱۰ شهریور ۱۴۰۵</div>
+        <div class="calendar-title">🎉 تخفیف ۲۰٪ ویژه</div>
+        <div class="calendar-desc">با کد 20ENDSHOP تا ۷ روز تخفیف بگیر</div>
+      </div>
+      <div class="calendar-item">
+        <div class="calendar-date">📅 ۱۵ شهریور ۱۴۰۵</div>
+        <div class="calendar-title">🎁 جعبه شانس ویژه</div>
+        <div class="calendar-desc">جایزه‌های جعبه شانس دو برابر میشه!</div>
+      </div>
+    `;
+    return;
+  }
+  box.innerHTML = EVENTS.map(e => `
+    <div class="calendar-item">
+      <div class="calendar-date">📅 ${e.date}</div>
+      <div class="calendar-title">${e.title}</div>
+      <div class="calendar-desc">${e.desc}</div>
+    </div>
+  `).join('');
+}
+
+function addEvent() {
+  const title = document.getElementById('eventTitle').value.trim();
+  const date = document.getElementById('eventDate').value.trim();
+  const desc = document.getElementById('eventDesc').value.trim();
+  if (!title || !date) return showToast('⚠️ عنوان و تاریخ!', true);
+  EVENTS.push({ title, date, desc, time: Date.now() });
+  localStorage.setItem('end_shop_events', JSON.stringify(EVENTS));
+  document.getElementById('eventTitle').value = '';
+  document.getElementById('eventDate').value = '';
+  document.getElementById('eventDesc').value = '';
+  renderEvents();
+  renderAdminLists();
+  showToast('✅ رویداد اضافه شد!');
+}
+
+/* ========== کارت پستال ========== */
+function renderPostcards() {
+  const box = document.getElementById('postcardList');
+  const postcards = [
+    { user: 'Taha', text: 'بهترین فروشگاه ماینکرفت! 🎮', emoji: '💎' },
+    { user: 'Ali', text: 'تامبنیل‌ها فوق‌العاده بودن! 🔥', emoji: '🖼️' }
+  ];
+  box.innerHTML = postcards.map(p => `
+    <div class="postcard">
+      <div style="font-size:3rem;text-align:center;margin-bottom:10px;">${p.emoji}</div>
+      <h4>${p.user}</h4>
+      <p>${p.text}</p>
+    </div>
+  `).join('');
+}
+
+/* ========== محصولات ========== */
 function renderCategories() {
   const cats = ['all', ...CATEGORIES];
   const bar = document.getElementById('categoryBar');
@@ -1035,7 +1887,8 @@ function filterProducts() {
   currentSort = document.getElementById('sortSelect').value;
   
   let filtered = PRODUCTS.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(currentSearch) || p.tag.toLowerCase().includes(currentSearch);
+    const name = currentLang === 'fa' ? p.name : (p.nameEn || p.name);
+    const matchSearch = name.toLowerCase().includes(currentSearch) || p.tag.toLowerCase().includes(currentSearch);
     const matchCat = currentFilter === 'all' || p.tag === currentFilter;
     return matchSearch && matchCat;
   });
@@ -1060,12 +1913,16 @@ function renderProducts(list = PRODUCTS) {
   box.innerHTML = list.map((p) => {
     const isFav = favorites.includes(p.id);
     const isNew = p.time && (Date.now() - p.time < 7 * 24 * 60 * 60 * 1000);
+    const isHot = p.sales && p.sales > 20;
     const rating = getProductRating(p.id);
     const stars = rating.avg > 0 ? '⭐'.repeat(Math.round(rating.avg)) : '';
+    const name = currentLang === 'fa' ? p.name : (p.nameEn || p.name);
+    const tag = currentLang === 'fa' ? p.tag : (p.tagEn || p.tag);
     
     let badge = '';
-    if (p.featured) badge = '<div class="featured-badge">🔥 ویژه</div>';
-    else if (isNew) badge = '<div class="new-badge">✨ جدید</div>';
+    if (p.featured) badge = `<div class="featured-badge">${t('featured')}</div>`;
+    else if (isHot) badge = `<div class="hot-badge">${t('hot')}</div>`;
+    else if (isNew) badge = `<div class="new-badge">${t('new')}</div>`;
     
     return `
       <div class="card">
@@ -1075,21 +1932,23 @@ function renderProducts(list = PRODUCTS) {
           <span onclick="openProductModal('${p.id}')" style="cursor:pointer;">${p.emoji}</span>
         </div>
         <div class="content">
-          <span class="tag">${p.tag}</span>
-          <h3 onclick="openProductModal('${p.id}')" style="cursor:pointer;">${p.name}</h3>
+          <span class="tag">${tag}</span>
+          <h3 onclick="openProductModal('${p.id}')" style="cursor:pointer;">${name}</h3>
           ${rating.count > 0 ? `<div class="rating"><span class="stars">${stars}</span> ${rating.avg} (${rating.count})</div>` : ''}
           <span class="price"><small>تومان</small> ${p.price.toLocaleString('fa-IR')}</span>
-          <button class="btn-buy" onclick="addToCart('${p.id}')">🛒 افزودن به سبد</button>
+          <button class="btn-buy" onclick="addToCart('${p.id}')">${t('addToCart')}</button>
         </div>
       </div>
     `;
   }).join('');
+  add3DTilt();
 }
 
 function openProductModal(id) {
   currentProductForReview = id;
   const p = PRODUCTS.find(x => x.id === id);
-  document.getElementById('pmName').textContent = `${p.emoji} ${p.name}`;
+  const name = currentLang === 'fa' ? p.name : (p.nameEn || p.name);
+  document.getElementById('pmName').textContent = `${p.emoji} ${name}`;
   document.getElementById('pmContent').innerHTML = `
     <p style="color:var(--text-2);margin:10px 0;">برچسب: <b style="color:var(--text);">${p.tag}</b></p>
     <p style="font-size:1.4rem;color:var(--accent);font-weight:900;">${p.price.toLocaleString('fa-IR')} تومان</p>
@@ -1127,7 +1986,8 @@ function submitReview() {
   document.getElementById('pmReviewText').value = '';
   renderReviews();
   renderProducts();
-  showToast('✅ نظر ثبت شد!');
+  addXP(me, 5);
+  showToast('✅ نظر ثبت شد! +۵ XP');
 }
 
 function toggleFav(id) {
@@ -1245,7 +2105,9 @@ function checkout() {
     });
     localStorage.setItem('end_shop_products', JSON.stringify(PRODUCTS));
     
+    addXP(me, Math.floor(finalTotal / 1000));
     addNotification('✅ سفارش ثبت شد!');
+    sendBrowserNotification('✅ سفارش ثبت شد!', 'سفارش شما با موفقیت ثبت شد');
     document.getElementById('checkoutModal').classList.add('open');
   });
 }
@@ -1266,6 +2128,7 @@ function openRubika() {
   showToast('✅ ثبت شد!');
 }
 
+/* ========== پروفایل ========== */
 function openProfile() {
   const me = localStorage.getItem('currentUser');
   if (!me) { navigateTo('login'); return; }
@@ -1274,9 +2137,17 @@ function openProfile() {
   document.getElementById('profileName').textContent = me;
   
   gun.get('users').get(me).once((data) => {
+    const xp = data?.xp || 0;
+    const level = getLevel(xp);
+    const progress = xp % 100;
+    document.getElementById('profileLevel').textContent = level;
+    document.getElementById('profileXpFill').style.width = progress + '%';
+    document.getElementById('profileXpText').textContent = xp + ' XP — سطح ' + level;
+    
     document.getElementById('editName').value = data?.name || '';
     document.getElementById('editEmail').value = data?.email || '';
     document.getElementById('editPhone').value = data?.phone || '';
+    document.getElementById('editReferral').value = data?.referral || ('REF-' + me.toUpperCase().slice(0, 8));
   });
   
   renderMyOrders();
@@ -1324,6 +2195,7 @@ function saveProfile() {
   showToast('✅ ذخیره شد!');
 }
 
+/* ========== اخبار ========== */
 function renderNews() {
   const box = document.getElementById('newsGrid');
   const news = [];
@@ -1345,6 +2217,7 @@ function renderNews() {
 }
 renderNews();
 
+/* ========== پنل ادمین ========== */
 function checkAdmin() {
   const me = localStorage.getItem('currentUser');
   if (me === OWNER_USERNAME) {
@@ -1352,6 +2225,7 @@ function checkAdmin() {
     renderAdminLists();
     renderStats();
     renderOrders();
+    renderEvents();
   }
 }
 
@@ -1402,7 +2276,7 @@ function addProduct() {
   const tag = document.getElementById('productTag').value.trim() || 'محصول';
   const featured = document.getElementById('productFeatured').checked;
   if (!name || !price) return showToast('⚠️ اسم و قیمت!', true);
-  PRODUCTS.push({ id: 'p' + Date.now(), name, price, emoji, tag, featured, time: Date.now(), sales: 0 });
+  PRODUCTS.push({ id: 'p' + Date.now(), name, nameEn: name, price, emoji, tag, tagEn: tag, featured, time: Date.now(), sales: 0 });
   localStorage.setItem('end_shop_products', JSON.stringify(PRODUCTS));
   document.getElementById('productName').value = '';
   document.getElementById('productPrice').value = '';
@@ -1505,8 +2379,50 @@ function renderAdminLists() {
       </div>
     `).join('');
   }
+  
+  const eventList = document.getElementById('eventList');
+  if (eventList) {
+    eventList.innerHTML = EVENTS.map((e, i) => `
+      <div class="admin-item">
+        <span>📅 ${e.date} — ${e.title}</span>
+        <button class="del-btn" onclick="deleteEvent(${i})">حذف</button>
+      </div>
+    `).join('');
+  }
 }
 
+function deleteEvent(i) {
+  EVENTS.splice(i, 1);
+  localStorage.setItem('end_shop_events', JSON.stringify(EVENTS));
+  renderEvents();
+  renderAdminLists();
+  showToast('🗑️ حذف شد!');
+}
+
+/* ========== افکت صوتی ========== */
+function playClickSound() {
+  try {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.1);
+  } catch (e) {}
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') {
+    playClickSound();
+  }
+});
+
+/* ========== ابزارها ========== */
 function showToast(msg, isError = false) {
   const t = document.createElement('div');
   t.className = 'toast' + (isError ? ' error' : '');
@@ -1521,6 +2437,7 @@ function escapeHtml(t) {
   return d.innerHTML;
 }
 
+/* ========== راه‌اندازی ========== */
 user.recall({ sessionStorage: true }, () => {
   if (user.is) {
     localStorage.setItem('currentUser', user.is.alias);
