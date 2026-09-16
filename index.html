@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>End Shop | اند شاپ</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-2: #0f1626;
+    --card: #151f35;
+    --border: #223050;
+    --text: #eef2f8;
+    --text-2: #8a94a8;
+    --primary: #4f7fff;
+    --secondary: #a855f7;
+    --accent: #06d6a0;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+  }
+  body.light {
+    --bg: #f5f7fb;
+    --bg-2: #ffffff;
+    --card: #ffffff;
+    --border: #e4e9f2;
+    --text: #0f1626;
+    --text-2: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+  }
+  button:focus, a:focus, input:focus, select:focus, textarea:focus { outline: none; }
+
+  /* انیمیشن‌ها */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateX(-50%) translateY(50px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+  @keyframes diamondFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+  @keyframes diamondGlow { 0%, 100% { filter: drop-shadow(0 0 20px rgba(6,214,160,0.5)); } 50% { filter: drop-shadow(0 0 40px rgba(6,214,160,0.9)); } }
+  @keyframes cubeFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
+  @keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  @keyframes pickaxe { 0%, 100% { transform: rotate(-20deg); } 50% { transform: rotate(20deg); } }
+
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(15, 22, 38, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  body.light nav { background: rgba(255, 255, 255, 0.95); }
+  nav .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer; }
+  nav .logo img { width: 46px; height: 46px; border-radius: 14px; object-fit: cover; border: 2px solid var(--primary); }
+  nav .logo-text { font-size: 1.5rem; font-weight: 900; color: var(--text); }
+  nav .logo-text span { color: var(--primary); }
+  .nav-btns { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .nav-btns button, .nav-btns a {
+    padding: 10px 18px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text); font-weight: 600; cursor: pointer;
+    text-decoration: none; font-family: inherit; font-size: 0.88rem;
+    display: flex; align-items: center; gap: 7px; position: relative;
+    transition: border-color 0.15s;
+  }
+  .nav-btns button:hover, .nav-btns a:hover { border-color: var(--primary); }
+  .nav-btns .primary { background: var(--primary); border: none; color: white; }
+  .nav-btns .logout { background: var(--danger); border-color: var(--danger); color: white; }
+  .nav-btns .icon-btn { padding: 10px 13px; }
+  .nav-btns .badge {
+    position: absolute; top: -6px; right: -6px;
+    background: var(--secondary); color: white; border-radius: 50%;
+    font-size: 0.7rem; min-width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+
+  .container { max-width: 1600px; margin: 0 auto; padding: 0 40px; }
+
+  /* ===== لابی ===== */
+  .lobby {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, rgba(6,214,160,0.08), transparent 60%);
+  }
+  .lobby::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(79,127,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,127,255,0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    mask-image: radial-gradient(circle, black 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle, black 30%, transparent 80%);
+  }
+  
+  /* مکعب‌های شناور */
+  .lobby-cubes { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .cube {
+    position: absolute;
+    width: 40px; height: 40px;
+    border-radius: 6px;
+    animation: cubeFloat 6s ease-in-out infinite;
+    image-rendering: pixelated;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+  .cube::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: inherit;
+    opacity: 0.4;
+    transform: translate(-3px, -3px);
+  }
+  .cube.grass { background: linear-gradient(180deg, #4ade80 0%, #4ade80 30%, #78350f 30%, #78350f 100%); }
+  .cube.diamond { background: linear-gradient(135deg, #67e8f9, #06b6d4); }
+  .cube.gold { background: linear-gradient(135deg, #fbbf24, #d97706); }
+  .cube.redstone { background: linear-gradient(135deg, #ef4444, #991b1b); }
+  .cube.emerald { background: linear-gradient(135deg, #34d399, #059669); }
+  .cube.obsidian { background: linear-gradient(135deg, #4c1d95, #1e1b4b); }
+  
+  .cube:nth-child(1) { top: 12%; left: 8%; animation-delay: 0s; }
+  .cube:nth-child(2) { top: 22%; right: 12%; animation-delay: 1s; }
+  .cube:nth-child(3) { bottom: 18%; left: 15%; animation-delay: 2s; }
+  .cube:nth-child(4) { bottom: 25%; right: 8%; animation-delay: 3s; }
+  .cube:nth-child(5) { top: 45%; left: 4%; animation-delay: 4s; }
+  .cube:nth-child(6) { top: 55%; right: 4%; animation-delay: 5s; }
+
+  /* الماس سه‌بعدی متحرک */
+  .diamond-container {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 30px;
+    perspective: 1000px;
+  }
+  .diamond-3d {
+    width: 140px;
+    height: 140px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: diamondFloat 4s ease-in-out infinite, diamondGlow 3s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .diamond-svg {
+    width: 140px;
+    height: 140px;
+    filter: drop-shadow(0 10px 20px rgba(6,214,160,0.3));
+  }
+  .diamond-svg polygon {
+    stroke: rgba(255,255,255,0.4);
+    stroke-width: 1.5;
+  }
+  .diamond-sparkle {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: diamondFloat 2s ease-in-out infinite;
+  }
+  .diamond-sparkle:nth-child(2) { top: -10px; right: -10px; animation-delay: 0.5s; }
+  .diamond-sparkle:nth-child(3) { bottom: -10px; left: -10px; animation-delay: 1s; }
+  
+  .lobby h1 {
+    font-size: 3.8rem;
+    font-weight: 900;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    background-size: 200% 200%;
+    animation: shine 4s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .lobby p {
+    color: var(--text-2);
+    font-size: 1.15rem;
+    max-width: 650px;
+    margin-bottom: 32px;
+    line-height: 2;
+    position: relative;
+    z-index: 1;
+  }
+  .lobby-btns {
+    display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+    position: relative; z-index: 1;
+  }
+  .lobby-btns a {
+    padding: 15px 34px; border-radius: 14px; text-decoration: none;
+    font-weight: 700; font-size: 0.98rem;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .lobby-btns .primary {
+    background: linear-gradient(135deg, var(--accent), #059669);
+    color: white;
+    box-shadow: 0 10px 30px rgba(6,214,160,0.3);
+  }
+  .lobby-btns .primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(6,214,160,0.5); }
+  .lobby-btns .secondary {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+  }
+  .lobby-btns .secondary:hover { border-color: var(--primary); transform: translateY(-3px); }
+
+  /* ===== بخش‌ها ===== */
+  .section { padding: 70px 0; position: relative; }
+  .section:nth-child(even) { background: rgba(15, 22, 38, 0.3); }
+  body.light .section:nth-child(even) { background: rgba(245, 247, 251, 0.5); }
+
+  .section-title { text-align: center; margin-bottom: 50px; }
+  .section-title h2 { font-size: 2.2rem; font-weight: 900; color: var(--text); margin-bottom: 14px; }
+  .section-title span { display: inline-block; width: 70px; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 10px; }
+  .section-title p { color: var(--text-2); margin-top: 14px; font-size: 0.98rem; }
+
+  .search-bar {
+    display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; align-items: center;
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 15px;
+  }
+  .search-bar input, .search-bar select {
+    padding: 12px 16px; background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 12px; color: var(--text); font-family: inherit; font-size: 0.9rem;
+    outline: none;
+  }
+  .search-bar input:focus, .search-bar select:focus { border-color: var(--primary); }
+  .search-bar input { flex: 1; min-width: 200px; }
+  .search-bar select { cursor: pointer; }
+
+  .categories { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+  .cat-btn {
+    padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text); font-weight: 600;
+    cursor: pointer; font-family: inherit; font-size: 0.85rem;
+    transition: border-color 0.15s;
+  }
+  .cat-btn:hover { border-color: var(--primary); }
+  .cat-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; color: white; }
+
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 28px;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .card:hover { border-color: var(--primary); box-shadow: 0 15px 35px rgba(79,127,255,0.15); }
+  .card .img-box {
+    height: 180px; display: flex; align-items: center; justify-content: center;
+    font-size: 5.5rem;
+    background: linear-gradient(135deg, rgba(79,127,255,0.08), rgba(168,85,247,0.08));
+    position: relative;
+  }
+  .card .fav-btn {
+    position: absolute; top: 14px; left: 14px;
+    background: rgba(0,0,0,0.5); border: none; color: white;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    font-size: 1.15rem;
+    z-index: 3;
+  }
+  .card .fav-btn.active { background: var(--secondary); }
+  .card .new-badge {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--success); color: white;
+    padding: 4px 12px; border-radius: 50px;
+    font-size: 0.7rem; font-weight: 700; z-index: 3;
+  }
+  .card .featured-badge {
+    position: absolute; top: 14px; right: 14px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: white; padding: 4px 12px; border-radius: 50px;
+    font-size: 0.7rem; font-weight: 700; z-index: 3;
+  }
+  .card .content { padding: 24px; }
+  .card .tag { display: inline-block; background: rgba(79,127,255,0.15); color: var(--primary); font-size: 0.75rem; padding: 5px 14px; border-radius: 50px; margin-bottom: 14px; font-weight: 700; }
+  .card h3 { font-size: 1.15rem; margin-bottom: 16px; color: var(--text); font-weight: 700; }
+  .card .price { font-size: 1.4rem; font-weight: 900; color: var(--accent); margin-bottom: 18px; display: block; }
+  .card .price small { font-size: 0.75rem; color: var(--text-2); font-weight: 400; }
+  .card .rating { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; font-size: 0.85rem; color: var(--text-2); }
+  .card .rating .stars { color: #fbbf24; }
+  .card .btn-buy {
+    display: block; width: 100%; padding: 13px; border: none; border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white; font-family: inherit; font-weight: 700; font-size: 0.92rem;
+    cursor: pointer;
+  }
+
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 28px; }
+  .news-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 24px;
+    transition: border-color 0.15s;
+  }
+  .news-card:hover { border-color: var(--primary); }
+  .news-card img { width: 100%; height: 200px; border-radius: 14px; object-fit: cover; margin-bottom: 16px; }
+  .news-card .news-date { font-size: 0.72rem; color: var(--primary); background: rgba(79,127,255,0.15); padding: 5px 14px; border-radius: 50px; display: inline-block; margin-bottom: 14px; font-weight: 700; }
+  .news-card h3 { font-size: 1.1rem; margin-bottom: 12px; font-weight: 700; color: var(--text); }
+  .news-card p { color: var(--text-2); font-size: 0.9rem; line-height: 1.9; }
+
+  .faq-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; margin-bottom: 12px; overflow: hidden;
+  }
+  .faq-item:hover { border-color: var(--primary); }
+  .faq-q {
+    padding: 18px 22px; cursor: pointer; font-weight: 700;
+    color: var(--text); display: flex; justify-content: space-between;
+    align-items: center; user-select: none;
+  }
+  .faq-q::after { content: '▼'; color: var(--primary); transition: transform 0.2s; font-size: 0.8rem; }
+  .faq-item.open .faq-q::after { transform: rotate(180deg); }
+  .faq-a {
+    padding: 0 22px; max-height: 0; overflow: hidden;
+    transition: max-height 0.25s, padding 0.25s;
+    color: var(--text-2); font-size: 0.9rem; line-height: 1.9;
+  }
+  .faq-item.open .faq-a { max-height: 500px; padding: 0 22px 18px; }
+
+  .admin-panel {
+    max-width: 1200px; margin: 50px auto; padding: 35px;
+    background: var(--card); border: 1px solid var(--primary);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(79,127,255,0.1);
+  }
+  .admin-panel h2 { color: var(--primary); margin-bottom: 25px; font-size: 1.6rem; }
+  .admin-panel h3 { color: var(--text); margin: 30px 0 15px; font-size: 1.1rem; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .admin-panel input, .admin-panel textarea, .admin-panel select {
+    width: 100%; padding: 13px; background: var(--bg-2);
+    border: 1px solid var(--border); border-radius: 12px;
+    color: var(--text); margin-bottom: 12px; font-family: inherit; font-size: 13px;
+    outline: none;
+  }
+  .admin-panel input:focus, .admin-panel textarea:focus, .admin-panel select:focus { border-color: var(--primary); }
+  .admin-panel button {
+    padding: 12px 24px; background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white; border: none; border-radius: 12px; font-weight: 700;
+    cursor: pointer; font-family: inherit; font-size: 0.9rem;
+  }
+  .admin-panel .del-btn { background: var(--danger); }
+  .admin-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px; background: var(--bg-2); border-radius: 12px;
+    margin-bottom: 10px; font-size: 0.88rem;
+    border: 1px solid var(--border);
+  }
+  .admin-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px; margin-bottom: 25px;
+  }
+  .stat-box {
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px; text-align: center;
+  }
+  .stat-box .stat-num { font-size: 2rem; font-weight: 900; color: var(--primary); }
+  .stat-box .stat-label { color: var(--text-2); font-size: 0.85rem; margin-top: 5px; }
+
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 500; justify-content: center; align-items: center; padding: 20px; }
+  .modal.open { display: flex; }
+  .modal-box {
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 22px; padding: 32px; width: 480px;
+    max-width: 100%; max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .modal-box h2 { margin-bottom: 22px; color: var(--text); text-align: center; font-size: 1.35rem; }
+  .modal-box label { display: block; color: var(--text-2); font-size: 12px; margin-bottom: 6px; margin-top: 12px; font-weight: 700; }
+  .modal-box input, .modal-box textarea, .modal-box select {
+    width: 100%; padding: 13px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 12px;
+    color: var(--text); font-size: 14px; outline: none; font-family: inherit;
+  }
+  .modal-box input:focus { border-color: var(--primary); }
+  .modal-box button {
+    width: 100%; padding: 13px; margin-top: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white; border: none; border-radius: 12px;
+    font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.95rem;
+  }
+  .modal-box .switch { text-align: center; margin-top: 16px; color: var(--text-2); font-size: 0.88rem; }
+  .modal-box .switch a { color: var(--primary); cursor: pointer; font-weight: 700; }
+  .modal-box .status { text-align: center; margin-top: 12px; color: var(--warning); font-size: 0.85rem; min-height: 20px; }
+
+  .profile-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .profile-tab {
+    padding: 10px 18px; border: none; background: none;
+    color: var(--text-2); cursor: pointer; font-family: inherit;
+    font-weight: 700; font-size: 0.88rem;
+    border-bottom: 2px solid transparent;
+  }
+  .profile-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .profile-tab-content { display: none; }
+  .profile-tab-content.active { display: block; }
+
+  .order-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 15px; margin-bottom: 10px;
+    font-size: 0.85rem;
+  }
+  .order-status {
+    display: inline-block; padding: 3px 10px;
+    border-radius: 50px; font-size: 0.72rem; font-weight: 700;
+  }
+  .order-status.done { background: rgba(16,185,129,0.2); color: var(--success); }
+
+  .notif-bell { position: relative; }
+  .notif-dropdown {
+    display: none; position: absolute; top: 50px; left: 0;
+    width: 320px; background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 16px; padding: 15px; z-index: 300;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    max-height: 400px; overflow-y: auto;
+  }
+  .notif-dropdown.open { display: block; }
+  .notif-item {
+    padding: 10px; border-radius: 10px; margin-bottom: 8px;
+    background: var(--card); font-size: 0.82rem;
+    border-right: 3px solid var(--primary);
+  }
+  .notif-item .notif-time { color: var(--text-2); font-size: 0.72rem; margin-top: 4px; }
+
+  #cartPage { display: none; min-height: 100vh; padding: 60px 0; }
+  #cartPage.open { display: block; }
+  .cart-page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 20px; }
+  .cart-page-header h1 { font-size: 2rem; font-weight: 900; }
+  .cart-page-header button { padding: 12px 24px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-weight: 700; cursor: pointer; font-family: inherit; }
+  .cart-page-header button:hover { border-color: var(--primary); }
+  .cart-layout { display: grid; grid-template-columns: 1fr 400px; gap: 30px; }
+  .cart-items-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; }
+  .cart-items-box h3 { margin-bottom: 20px; color: var(--text); font-size: 1.2rem; }
+  .cart-summary-box { background: var(--card); border: 1px solid var(--primary); border-radius: 20px; padding: 25px; height: fit-content; position: sticky; top: 100px; }
+  .cart-summary-box h3 { margin-bottom: 20px; color: var(--text); font-size: 1.2rem; }
+  .summary-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .label { color: var(--text-2); }
+  .summary-row .value { color: var(--text); font-weight: 700; }
+  .summary-total { margin-top: 20px; padding: 20px; background: rgba(79,127,255,0.1); border-radius: 14px; text-align: center; border: 1px solid var(--primary); }
+  .summary-total .total-label { color: var(--text-2); font-size: 0.85rem; }
+  .summary-total .total-price { color: var(--accent); font-size: 1.8rem; font-weight: 900; margin-top: 8px; }
+  .empty-cart { text-align: center; padding: 60px 20px; color: var(--text-2); }
+  .empty-cart .icon { font-size: 5rem; margin-bottom: 20px; opacity: 0.5; }
+  .cart-item-new {
+    display: flex; gap: 20px; padding: 20px;
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 16px; margin-bottom: 15px;
+  }
+  .cart-item-new .item-img { width: 90px; height: 90px; border-radius: 14px; background: rgba(79,127,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; flex-shrink: 0; }
+  .cart-item-new .item-info { flex: 1; }
+  .cart-item-new .item-name { font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; }
+  .cart-item-new .item-tag { color: var(--text-2); font-size: 0.8rem; margin-bottom: 8px; }
+  .cart-item-new .item-price { color: var(--accent); font-weight: 900; font-size: 1.15rem; }
+  .cart-item-new .remove-item { padding: 8px 14px; background: var(--danger); color: white; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
+
+  footer { background: var(--bg-2); border-top: 1px solid var(--border); padding: 70px 20px 30px; }
+  .footer-grid { max-width: 1600px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 45px; margin-bottom: 45px; }
+  .footer-col h4 { color: var(--text); margin-bottom: 20px; font-size: 1.05rem; font-weight: 700; }
+  .footer-col a, .footer-col p { display: block; color: var(--text-2); text-decoration: none; font-size: 0.9rem; margin-bottom: 12px; }
+  .footer-col a:hover { color: var(--primary); }
+  .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid var(--border); color: var(--text-2); font-size: 0.88rem; max-width: 1600px; margin: 0 auto; }
+
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 15px 30px; border-radius: 14px; font-weight: 700; z-index: 1000; animation: slideUp 0.25s ease; font-size: 0.92rem; }
+  .toast.error { background: var(--danger); }
+
+  @media (max-width: 900px) {
+    .cart-layout { grid-template-columns: 1fr; }
+    .cart-summary-box { position: static; }
+  }
+  @media (max-width: 768px) {
+    .lobby h1 { font-size: 2.5rem; }
+    .lobby .diamond-3d { width: 110px; height: 110px; }
+    .lobby .diamond-svg { width: 110px; height: 110px; }
+    nav { padding: 12px 20px; }
+    nav .logo-text { font-size: 1.2rem; }
+    .nav-btns button, .nav-btns a { padding: 7px 12px; font-size: 0.78rem; }
+    .container { padding: 0 20px; }
+    .admin-panel { padding: 20px; margin: 30px 15px; }
+    .cart-item-new { flex-direction: column; }
+    .notif-dropdown { width: 280px; }
+    .cube { width: 30px; height: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" onclick="closeCartPage(); goHome();">
+    <img src="https://cdn.imgurl.ir/uploads/a38216_End_shop.png" alt="End Shop" onerror="this.style.display='none'">
+    <span class="logo-text">End <span>Shop</span></span>
+  </a>
+  <div class="nav-btns" id="navBtns"></div>
+</nav>
+
+<div class="discount-bar" style="background: linear-gradient(90deg, var(--accent), #059669); text-align: center; padding: 15px; font-weight: 700; font-size: 0.95rem; color: white;">🎉 تخفیف ویژه! با خرید بالای ۵۰ هزار تومان، ۱۰٪ تخفیف بگیرید 🎉</div>
+
+<div id="mainPage">
+
+  <!-- ===== لابی ===== -->
+  <section class="lobby" id="lobbySection">
+    
+    <div class="lobby-cubes">
+      <div class="cube grass"></div>
+      <div class="cube diamond"></div>
+      <div class="cube gold"></div>
+      <div class="cube redstone"></div>
+      <div class="cube emerald"></div>
+      <div class="cube obsidian"></div>
+    </div>
+    
+    <!-- الماس سه‌بعدی -->
+    <div class="diamond-container">
+      <div class="diamond-3d">
+        <svg class="diamond-svg" viewBox="0 0 100 100">
+          <polygon points="50,5 90,35 50,95 10,35" fill="#06d6a0" opacity="0.9"/>
+          <polygon points="50,5 90,35 50,50" fill="#4ade80" opacity="0.8"/>
+          <polygon points="50,5 10,35 50,50" fill="#34d399" opacity="0.9"/>
+          <polygon points="50,95 90,35 50,50" fill="#059669" opacity="0.7"/>
+          <polygon points="50,95 10,35 50,50" fill="#047857" opacity="0.8"/>
+          <polygon points="10,35 50,5 50,50" fill="#10b981" opacity="0.6"/>
+        </svg>
+        <div class="diamond-sparkle">✨</div>
+        <div class="diamond-sparkle">💎</div>
+      </div>
+    </div>
+    
+    <h1>End Shop</h1>
+    <p>بهترین تامبنیل‌ها، آواتارها، اسکین‌ها و ادیت‌های ماینکرفت — با کیفیت بالا و قیمت مناسب</p>
+    
+    <div class="lobby-btns">
+      <a href="#productsSection" class="primary">🛒 مشاهده محصولات</a>
+      <a href="https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG" target="_blank" class="secondary">💬 پشتیبانی روبیکا</a>
+    </div>
+    
+  </section>
+
+  <!-- ===== پنل ادمین ===== -->
+  <div class="admin-panel" id="adminPanel" style="display:none;">
+    <h2>👑 پنل مدیریت</h2>
+    
+    <h3>📊 آمار فروشگاه</h3>
+    <div class="admin-stats">
+      <div class="stat-box"><div class="stat-num" id="statProducts">0</div><div class="stat-label">محصولات</div></div>
+      <div class="stat-box"><div class="stat-num" id="statOrders">0</div><div class="stat-label">سفارشات</div></div>
+      <div class="stat-box"><div class="stat-num" id="statUsers">0</div><div class="stat-label">کاربران</div></div>
+      <div class="stat-box"><div class="stat-num" id="statRevenue">0</div><div class="stat-label">درآمد</div></div>
+    </div>
+    
+    <h3>📰 مدیریت اخبار</h3>
+    <input type="text" id="newsTitle" placeholder="عنوان خبر...">
+    <textarea id="newsText" placeholder="متن خبر..." rows="3"></textarea>
+    <input type="text" id="newsImage" placeholder="لینک عکس خبر...">
+    <button onclick="addNews()">➕ افزودن خبر</button>
+
+    <h3>📦 مدیریت محصولات</h3>
+    <input type="text" id="productName" placeholder="اسم محصول...">
+    <input type="number" id="productPrice" placeholder="قیمت (تومان)...">
+    <input type="text" id="productEmoji" placeholder="ایموجی (مثلاً 🖼️)...">
+    <input type="text" id="productTag" placeholder="برچسب (مثلاً ماینکرفت)...">
+    <label style="color:var(--text-2); font-size:12px; font-weight:700; margin-top:5px; display:flex; align-items:center; gap:8px;">
+      <input type="checkbox" id="productFeatured" style="width:auto;"> محصول ویژه
+    </label>
+    <button onclick="addProduct()">➕ افزودن محصول</button>
+    <div id="productList" style="margin-top:15px;"></div>
+
+    <h3>🏷️ مدیریت دسته‌بندی‌ها</h3>
+    <input type="text" id="newCategoryName" placeholder="اسم دسته‌بندی...">
+    <button onclick="addCategory()">➕ افزودن دسته‌بندی</button>
+    <div id="categoryList" style="margin-top:15px;"></div>
+
+    <h3>🎟️ مدیریت کدهای تخفیف</h3>
+    <input type="text" id="discountCode" placeholder="کد تخفیف (مثلاً OFF20)...">
+    <input type="number" id="discountPercent" placeholder="درصد تخفیف (1-100)...">
+    <label style="color:var(--text-2); font-size:12px; font-weight:700; margin-top:5px; display:block;">⏰ مدت اعتبار</label>
+    <select id="discountDuration">
+      <option value="1h">⏱ ۱ ساعت</option>
+      <option value="6h">⏱ ۶ ساعت</option>
+      <option value="1d">📅 ۱ روز</option>
+      <option value="1w">📅 ۱ هفته</option>
+      <option value="1m">📅 ۱ ماه</option>
+      <option value="1y">📅 ۱ سال</option>
+      <option value="forever">♾️ همیشه</option>
+    </select>
+    <button onclick="addDiscount()">➕ افزودن کد تخفیف</button>
+    <div id="discountList" style="margin-top:15px;"></div>
+
+    <h3>📥 سفارشات</h3>
+    <div id="ordersList" style="margin-top:15px;"></div>
+  </div>
+
+  <!-- ===== بخش محصولات ===== -->
+  <section class="section" id="productsSection">
+    <div class="container">
+      <div class="section-title">
+        <h2>🎯 محصولات ما</h2>
+        <span></span>
+        <p>محصول مورد نظرت رو انتخاب کن</p>
+      </div>
+      
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 جستجوی محصول..." oninput="filterProducts()">
+        <select id="sortSelect" onchange="filterProducts()">
+          <option value="default">مرتب‌سازی: پیش‌فرض</option>
+          <option value="cheap">ارزان‌ترین</option>
+          <option value="expensive">گران‌ترین</option>
+          <option value="newest">جدیدترین</option>
+          <option value="popular">محبوب‌ترین</option>
+        </select>
+      </div>
+      
+      <div class="categories" id="categoryBar"></div>
+      <section class="products" id="productsGrid"></section>
+    </div>
+  </section>
+
+  <!-- ===== بخش اخبار ===== -->
+  <section class="section" id="newsSection">
+    <div class="container">
+      <div class="section-title">
+        <h2>📰 اخبار End Shop</h2>
+        <span></span>
+        <p>جدیدترین خبرها و تخفیف‌های فروشگاه</p>
+      </div>
+      <div class="news-grid" id="newsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ===== بخش FAQ ===== -->
+  <section class="section" id="faqSection">
+    <div class="container" style="max-width:900px;">
+      <div class="section-title">
+        <h2>❓ سوالات متداول</h2>
+        <span></span>
+        <p>پاسخ سوالات رایج شما</p>
+      </div>
+      
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">چطور می‌تونم خرید کنم؟</div>
+        <div class="faq-a">محصول مورد نظرت رو به سبد خرید اضافه کن، سپس از صفحه سبد خرید، تسویه حساب رو بزن و متن سفارش رو برای پشتیبانی روبیکا بفرست.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">چطور کد تخفیف استفاده کنم؟</div>
+        <div class="faq-a">توی صفحه سبد خرید، کد تخفیف رو وارد کن و دکمه اعمال رو بزن.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">چه مدت طول می‌کشه سفارش برسه؟</div>
+        <div class="faq-a">معمولاً بین ۱ تا ۳ روز کاری.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">امکان مرجوعی وجود داره؟</div>
+        <div class="faq-a">بله، تا ۲۴ ساعت بعد از تحویل.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="cartPage">
+  <div class="container">
+    <div class="cart-page-header">
+      <h1>🛒 سبد خرید</h1>
+      <button onclick="closeCartPage()">← بازگشت</button>
+    </div>
+    <div class="cart-layout">
+      <div class="cart-items-box">
+        <h3>📦 محصولات انتخابی</h3>
+        <div id="cartPageItems"></div>
+      </div>
+      <div class="cart-summary-box">
+        <h3>📋 خلاصه سفارش</h3>
+        <div class="summary-row"><span class="label">تعداد اقلام</span><span class="value" id="cartItemCount">0</span></div>
+        <div class="summary-row"><span class="label">جمع کل</span><span class="value" id="cartSubtotal">0 تومان</span></div>
+        <div class="summary-row" id="discountRow" style="display:none;"><span class="label">🎟️ تخفیف</span><span class="value" id="cartDiscountAmount" style="color:var(--success);">0 تومان</span></div>
+        <div class="summary-total">
+          <div class="total-label">مبلغ قابل پرداخت</div>
+          <div class="total-price" id="cartFinalTotal">0 تومان</div>
+        </div>
+        <label style="color:var(--text-2); font-size:12px; font-weight:700; margin-top:15px; display:block;">🎟️ کد تخفیف</label>
+        <input type="text" id="discountInput" placeholder="مثلاً OFF20" style="width:100%;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);margin-top:6px;font-family:inherit;">
+        <button onclick="applyDiscount()" style="width:100%;padding:12px;margin-top:10px;background:var(--bg-2);color:var(--text);border:1px solid var(--border);border-radius:12px;font-weight:700;cursor:pointer;font-family:inherit;">✅ اعمال</button>
+        <div id="discountResult" style="text-align:center;margin-top:10px;font-size:0.85rem;min-height:20px;"></div>
+        <button onclick="checkout()" style="width:100%;padding:14px;margin-top:15px;background:linear-gradient(135deg,var(--success),#059669);color:white;border:none;border-radius:12px;font-weight:700;cursor:pointer;font-family:inherit;font-size:1rem;">💳 تسویه حساب</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>🏠 End Shop</h4>
+      <p>فروشگاه تخصصی ماینکرفت</p>
+    </div>
+    <div class="footer-col">
+      <h4>🔗 دسترسی سریع</h4>
+      <a href="#productsSection">محصولات</a>
+      <a href="#newsSection">اخبار</a>
+      <a href="#faqSection">سوالات متداول</a>
+    </div>
+    <div class="footer-col">
+      <h4>📩 تماس</h4>
+      <a href="mailto:endshopiran@gmail.com">endshopiran@gmail.com</a>
+      <a href="https://www.rubika.ir/Taha_nistam_TU5" target="_blank">@Taha_nistam_TU5</a>
+    </div>
+    <div class="footer-col">
+      <h4>💫 پشتیبانی</h4>
+      <a href="https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG" target="_blank">گروه پشتیبانی</a>
+      <p>۲۴ ساعته</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 End Shop — تمامی حقوق محفوظ است.</div>
+</footer>
+
+<div class="modal" id="authModal">
+  <div class="modal-box">
+    <h2 id="authTitle">🔑 ورود</h2>
+    <label>نام کامل</label><input type="text" id="authName">
+    <label>نام کاربری</label><input type="text" id="authUsername">
+    <label>ایمیل</label><input type="email" id="authEmail">
+    <label>شماره تماس</label><input type="text" id="authPhone">
+    <label>رمز عبور</label><input type="password" id="authPassword">
+    <button onclick="handleAuth()" id="authBtn">ورود</button>
+    <div class="switch" id="authSwitch">حساب نداری؟ <a onclick="switchAuth()">ثبت‌نام</a></div>
+    <div class="status" id="authStatus"></div>
+  </div>
+</div>
+
+<div class="modal" id="profileModal">
+  <div class="modal-box" style="width:520px;">
+    <h2>👤 پروفایل من</h2>
+    <div class="profile-tabs">
+      <button class="profile-tab active" onclick="switchProfileTab(this, 'info')">اطلاعات</button>
+      <button class="profile-tab" onclick="switchProfileTab(this, 'orders')">سفارشات</button>
+      <button class="profile-tab" onclick="switchProfileTab(this, 'edit')">ویرایش</button>
+    </div>
+    <div class="profile-tab-content active" id="tab-info">
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:white;margin:0 auto 15px;" id="profileAvatar">?</div>
+        <h3 id="profileName" style="color:var(--text);">-</h3>
+      </div>
+    </div>
+    <div class="profile-tab-content" id="tab-orders"><div id="myOrders"></div></div>
+    <div class="profile-tab-content" id="tab-edit">
+      <label>نام کامل</label><input type="text" id="editName">
+      <label>ایمیل</label><input type="email" id="editEmail">
+      <label>شماره تماس</label><input type="text" id="editPhone">
+      <button onclick="saveProfile()" style="background:var(--success);">💾 ذخیره</button>
+    </div>
+    <button onclick="closeModal('profileModal')" style="background:#4f545c;">بستن</button>
+  </div>
+</div>
+
+<div class="modal" id="checkoutModal">
+  <div class="modal-box" style="width:520px;">
+    <h2>📋 خلاصه سفارش</h2>
+    <div id="checkoutSummary" style="background:var(--card);padding:18px;border-radius:14px;margin-bottom:18px;font-size:0.9rem;line-height:1.9;white-space:pre-line;color:var(--text);border:1px solid var(--border);"></div>
+    <button onclick="copyOrder()" style="background:var(--secondary);">📋 کپی متن</button>
+    <button onclick="openRubika()" style="background:var(--accent);">💬 ارسال به روبیکا</button>
+    <button onclick="closeModal('checkoutModal')" style="background:#4f545c;">بستن</button>
+  </div>
+</div>
+
+<div class="modal" id="favModal">
+  <div class="modal-box">
+    <h2>❤️ علاقه‌مندی‌ها</h2>
+    <div id="favItems"></div>
+    <button onclick="closeModal('favModal')" style="background:#4f545c;">بستن</button>
+  </div>
+</div>
+
+<div class="modal" id="productModal">
+  <div class="modal-box" style="width:560px;">
+    <h2 id="pmName">محصول</h2>
+    <div id="pmContent"></div>
+    <div style="margin-top:15px;">
+      <h4 style="color:var(--text);margin-bottom:10px;font-size:0.95rem;">💬 نظرات</h4>
+      <div id="pmReviews"></div>
+      <label>نظر شما</label>
+      <textarea id="pmReviewText" rows="2"></textarea>
+      <label>امتیاز</label>
+      <select id="pmReviewStars">
+        <option value="5">⭐⭐⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="1">⭐</option>
+      </select>
+      <button onclick="submitReview()">💬 ارسال</button>
+    </div>
+    <button onclick="closeModal('productModal')" style="background:#4f545c;">بستن</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gun/sea.js"></script>
+<script>
+const gun = Gun(['https://gun-manhattan.herokuapp.com/gun','https://gun-us.herokuapp.com/gun']);
+const user = gun.user();
+const OWNER_USERNAME = 'Taha';
+const RUBIKA_SUPPORT = 'https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG';
+
+let currentAuthMode = 'login';
+let cart = JSON.parse(localStorage.getItem('end_shop_cart')) || [];
+let favorites = JSON.parse(localStorage.getItem('end_shop_favs')) || [];
+let currentDiscount = 0;
+let currentFilter = 'all';
+let currentSearch = '';
+let currentSort = 'default';
+let currentProductForReview = null;
+
+const DEFAULT_PRODUCTS = [
+  { id: 'p1', name: 'تامبنیل سطح ضعیف', price: 5000, emoji: '🖼️', tag: 'ماینکرفت', featured: false, time: Date.now() - 86400000, sales: 5 },
+  { id: 'p2', name: 'تامبنیل سطح متوسط', price: 10000, emoji: '🎨', tag: 'ماینکرفت', featured: false, time: Date.now() - 172800000, sales: 12 },
+  { id: 'p3', name: 'تامبنیل سطح قوی', price: 15000, emoji: '🔥', tag: 'ماینکرفت', featured: true, time: Date.now() - 259200000, sales: 25 },
+  { id: 'p4', name: 'آواتار ماینکرفتی', price: 10000, emoji: '💠', tag: 'آواتار', featured: false, time: Date.now() - 345600000, sales: 8 },
+  { id: 'p5', name: 'ساخت توتم با اسکین', price: 10000, emoji: '✳️', tag: 'Java Edition', featured: false, time: Date.now() - 432000000, sales: 3 },
+  { id: 'p6', name: 'ادیت ویدیو', price: 20000, emoji: '💥', tag: 'ادیت', featured: true, time: Date.now() - 518400000, sales: 15 },
+  { id: 'p7', name: 'ساخت اسکین', price: 10000, emoji: '🔸', tag: 'اسکین', featured: false, time: Date.now() - 604800000, sales: 7 }
+];
+
+let PRODUCTS = JSON.parse(localStorage.getItem('end_shop_products')) || DEFAULT_PRODUCTS;
+let DISCOUNTS = JSON.parse(localStorage.getItem('end_shop_discounts')) || [];
+let REVIEWS = JSON.parse(localStorage.getItem('end_shop_reviews')) || {};
+let NOTIFICATIONS = JSON.parse(localStorage.getItem('end_shop_notifs')) || [];
+let CATEGORIES = JSON.parse(localStorage.getItem('end_shop_categories')) || ['ماینکرفت', 'آواتار', 'ادیت', 'اسکین', 'Java Edition'];
+
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  updateNav();
+}
+if (localStorage.getItem('theme') === 'light') document.body.classList.add('light');
+
+function goHome() {
+  document.getElementById('cartPage').classList.remove('open');
+  document.getElementById('mainPage').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+function closeCartPage() { goHome(); }
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+function openCartPage() {
+  document.getElementById('mainPage').style.display = 'none';
+  document.getElementById('cartPage').classList.add('open');
+  renderCartPage();
+  window.scrollTo(0, 0);
+}
+
+function renderCartPage() {
+  const box = document.getElementById('cartPageItems');
+  if (cart.length === 0) {
+    box.innerHTML = `<div class="empty-cart"><div class="icon">🛒</div><h3>سبد خرید خالیه</h3></div>`;
+  } else {
+    box.innerHTML = cart.map((item, i) => `
+      <div class="cart-item-new">
+        <div class="item-img">${item.emoji}</div>
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-tag">${item.tag || 'محصول'}</div>
+          <div class="item-price">${item.price.toLocaleString('fa-IR')} تومان</div>
+        </div>
+        <div><button class="remove-item" onclick="removeFromCart(${i})">🗑️ حذف</button></div>
+      </div>
+    `).join('');
+  }
+  const total = cart.reduce((s, i) => s + i.price, 0);
+  const discountAmount = total * currentDiscount / 100;
+  const finalTotal = total - discountAmount;
+  document.getElementById('cartItemCount').textContent = cart.length;
+  document.getElementById('cartSubtotal').textContent = total.toLocaleString('fa-IR') + ' تومان';
+  if (currentDiscount > 0) {
+    document.getElementById('discountRow').style.display = 'flex';
+    document.getElementById('cartDiscountAmount').textContent = '-' + discountAmount.toLocaleString('fa-IR') + ' تومان';
+  } else {
+    document.getElementById('discountRow').style.display = 'none';
+  }
+  document.getElementById('cartFinalTotal').textContent = finalTotal.toLocaleString('fa-IR') + ' تومان';
+}
+
+function openAuth(mode) {
+  currentAuthMode = mode;
+  document.getElementById('authTitle').textContent = mode === 'login' ? '🔑 ورود' : '✍️ ثبت‌نام';
+  document.getElementById('authBtn').textContent = mode === 'login' ? 'ورود' : 'ثبت‌نام';
+  document.getElementById('authSwitch').innerHTML = mode === 'login' ? 'حساب نداری؟ <a onclick="switchAuth()">ثبت‌نام</a>' : 'حساب داری؟ <a onclick="switchAuth()">ورود</a>';
+  document.querySelectorAll('#authModal .modal-box input').forEach((el, i) => {
+    if (mode === 'login') el.parentElement.style.display = (i === 1 || i === 4) ? 'block' : 'none';
+    else el.parentElement.style.display = 'block';
+  });
+  document.getElementById('authModal').classList.add('open');
+}
+function switchAuth() { openAuth(currentAuthMode === 'login' ? 'register' : 'login'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function handleAuth() {
+  const name = document.getElementById('authName').value.trim();
+  const username = document.getElementById('authUsername').value.trim();
+  const email = document.getElementById('authEmail').value.trim();
+  const phone = document.getElementById('authPhone').value.trim();
+  const password = document.getElementById('authPassword').value.trim();
+  const status = document.getElementById('authStatus');
+  const btn = document.getElementById('authBtn');
+
+  if (currentAuthMode === 'register') {
+    if (!name || !username || !email || !phone || !password) return status.textContent = '⚠️ همه فیلدها!';
+    if (!/^[a-zA-Z0-9_.]{3,20}$/.test(username)) return status.textContent = '⚠️ نام کاربری انگلیسی!';
+    if (password.length < 6) return status.textContent = '⚠️ رمز ۶ حرف!';
+    btn.disabled = true;
+    status.textContent = '⏳ در حال ثبت‌نام...';
+    user.create(username, password, (ack) => {
+      btn.disabled = false;
+      if (ack.err) return status.textContent = '❌ ' + ack.err;
+      gun.get('users').get(username).put({ name, username, email, phone, createdAt: Date.now() });
+      status.textContent = '✅ موفق!';
+      setTimeout(() => {
+        user.auth(username, password, () => {
+          localStorage.setItem('currentUser', username);
+          addNotification('🎉 خوش اومدی ' + name + '!');
+          updateNav();
+          closeModal('authModal');
+          showToast('🎉 خوش اومدی!');
+        });
+      }, 500);
+    });
+  } else {
+    const loginUser = document.getElementById('authUsername').value.trim();
+    const loginPass = document.getElementById('authPassword').value.trim();
+    if (!loginUser || !loginPass) return status.textContent = '⚠️ نام و رمز!';
+    btn.disabled = true;
+    status.textContent = '⏳ در حال ورود...';
+    user.auth(loginUser, loginPass, (ack) => {
+      btn.disabled = false;
+      if (ack.err) return status.textContent = '❌ اشتباهه!';
+      localStorage.setItem('currentUser', loginUser);
+      updateNav();
+      closeModal('authModal');
+      showToast('🎉 خوش اومدی!');
+    });
+  }
+}
+
+function logout() {
+  user.leave();
+  localStorage.removeItem('currentUser');
+  location.reload();
+}
+
+function updateNav() {
+  const me = localStorage.getItem('currentUser');
+  const navBtns = document.getElementById('navBtns');
+  const cartCount = cart.length;
+  const favCount = favorites.length;
+  const notifCount = NOTIFICATIONS.filter(n => !n.read).length;
+  const isLight = document.body.classList.contains('light');
+  const themeIcon = isLight ? '☀️' : '🌙';
+  
+  if (me) {
+    navBtns.innerHTML = `
+      <button class="icon-btn" onclick="openFavs()">❤️ ${favCount > 0 ? `<span class="badge">${favCount}</span>` : ''}</button>
+      <button class="icon-btn" onclick="openCartPage()">🛒 ${cartCount > 0 ? `<span class="badge">${cartCount}</span>` : ''}</button>
+      <div class="notif-bell" style="position:relative;">
+        <button class="icon-btn" onclick="toggleNotif(event)">🔔 ${notifCount > 0 ? `<span class="badge">${notifCount}</span>` : ''}</button>
+        <div class="notif-dropdown" id="notifDropdown"></div>
+      </div>
+      <button class="icon-btn" onclick="toggleTheme()">${themeIcon}</button>
+      <button onclick="openProfile()">👤 ${me}</button>
+      <button class="logout" onclick="logout()">خروج</button>
+    `;
+    checkAdmin();
+  } else {
+    navBtns.innerHTML = `
+      <button class="icon-btn" onclick="toggleTheme()">${themeIcon}</button>
+      <button class="icon-btn" onclick="openCartPage()">🛒 ${cartCount > 0 ? `<span class="badge">${cartCount}</span>` : ''}</button>
+      <button class="primary" onclick="openAuth('login')">ورود</button>
+      <button onclick="openAuth('register')">ثبت‌نام</button>
+    `;
+  }
+}
+
+function toggleNotif(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('notifDropdown');
+  dd.classList.toggle('open');
+  renderNotif();
+}
+document.addEventListener('click', () => {
+  const dd = document.getElementById('notifDropdown');
+  if (dd) dd.classList.remove('open');
+});
+
+function addNotification(text) {
+  NOTIFICATIONS.unshift({ text, time: Date.now(), read: false });
+  NOTIFICATIONS = NOTIFICATIONS.slice(0, 20);
+  localStorage.setItem('end_shop_notifs', JSON.stringify(NOTIFICATIONS));
+  updateNav();
+}
+
+function renderNotif() {
+  const dd = document.getElementById('notifDropdown');
+  if (!dd) return;
+  if (NOTIFICATIONS.length === 0) {
+    dd.innerHTML = '<p style="color:var(--text-2);text-align:center;font-size:0.85rem;">نوتیفیکیشنی نداری</p>';
+  } else {
+    dd.innerHTML = NOTIFICATIONS.map(n => `
+      <div class="notif-item">
+        <div>${n.text}</div>
+        <div class="notif-time">${new Date(n.time).toLocaleString('fa-IR')}</div>
+      </div>
+    `).join('');
+    NOTIFICATIONS.forEach(n => n.read = true);
+    localStorage.setItem('end_shop_notifs', JSON.stringify(NOTIFICATIONS));
+  }
+}
+
+function renderCategories() {
+  const cats = ['all', ...CATEGORIES];
+  const bar = document.getElementById('categoryBar');
+  bar.innerHTML = cats.map(c => `
+    <button class="cat-btn ${currentFilter === c ? 'active' : ''}" onclick="setFilter('${c}')">
+      ${c === 'all' ? '🎯 همه' : c}
+    </button>
+  `).join('');
+}
+
+function setFilter(cat) {
+  currentFilter = cat;
+  renderCategories();
+  filterProducts();
+}
+
+function filterProducts() {
+  currentSearch = document.getElementById('searchInput').value.toLowerCase();
+  currentSort = document.getElementById('sortSelect').value;
+  
+  let filtered = PRODUCTS.filter(p => {
+    const matchSearch = p.name.toLowerCase().includes(currentSearch) || p.tag.toLowerCase().includes(currentSearch);
+    const matchCat = currentFilter === 'all' || p.tag === currentFilter;
+    return matchSearch && matchCat;
+  });
+  
+  if (currentSort === 'cheap') filtered.sort((a, b) => a.price - b.price);
+  else if (currentSort === 'expensive') filtered.sort((a, b) => b.price - a.price);
+  else if (currentSort === 'newest') filtered.sort((a, b) => (b.time || 0) - (a.time || 0));
+  else if (currentSort === 'popular') filtered.sort((a, b) => (b.sales || 0) - (a.sales || 0));
+  
+  renderProducts(filtered);
+}
+
+function getProductRating(id) {
+  const revs = REVIEWS[id] || [];
+  if (revs.length === 0) return { avg: 0, count: 0 };
+  const avg = revs.reduce((s, r) => s + r.stars, 0) / revs.length;
+  return { avg: avg.toFixed(1), count: revs.length };
+}
+
+function renderProducts(list = PRODUCTS) {
+  const box = document.getElementById('productsGrid');
+  box.innerHTML = list.map((p) => {
+    const isFav = favorites.includes(p.id);
+    const isNew = p.time && (Date.now() - p.time < 7 * 24 * 60 * 60 * 1000);
+    const rating = getProductRating(p.id);
+    const stars = rating.avg > 0 ? '⭐'.repeat(Math.round(rating.avg)) : '';
+    
+    let badge = '';
+    if (p.featured) badge = '<div class="featured-badge">🔥 ویژه</div>';
+    else if (isNew) badge = '<div class="new-badge">✨ جدید</div>';
+    
+    return `
+      <div class="card">
+        <div class="img-box">
+          <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFav('${p.id}')">${isFav ? '❤️' : '🤍'}</button>
+          ${badge}
+          <span onclick="openProductModal('${p.id}')" style="cursor:pointer;">${p.emoji}</span>
+        </div>
+        <div class="content">
+          <span class="tag">${p.tag}</span>
+          <h3 onclick="openProductModal('${p.id}')" style="cursor:pointer;">${p.name}</h3>
+          ${rating.count > 0 ? `<div class="rating"><span class="stars">${stars}</span> ${rating.avg} (${rating.count})</div>` : ''}
+          <span class="price"><small>تومان</small> ${p.price.toLocaleString('fa-IR')}</span>
+          <button class="btn-buy" onclick="addToCart('${p.id}')">🛒 افزودن به سبد</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openProductModal(id) {
+  currentProductForReview = id;
+  const p = PRODUCTS.find(x => x.id === id);
+  document.getElementById('pmName').textContent = `${p.emoji} ${p.name}`;
+  document.getElementById('pmContent').innerHTML = `
+    <p style="color:var(--text-2);margin:10px 0;">برچسب: <b style="color:var(--text);">${p.tag}</b></p>
+    <p style="font-size:1.4rem;color:var(--accent);font-weight:900;">${p.price.toLocaleString('fa-IR')} تومان</p>
+  `;
+  renderReviews();
+  document.getElementById('productModal').classList.add('open');
+}
+
+function renderReviews() {
+  const box = document.getElementById('pmReviews');
+  const revs = REVIEWS[currentProductForReview] || [];
+  if (revs.length === 0) {
+    box.innerHTML = '<p style="color:var(--text-2);font-size:0.85rem;">هنوز نظری نیست</p>';
+  } else {
+    box.innerHTML = revs.map(r => `
+      <div class="order-item" style="border-right:3px solid #fbbf24;">
+        <div><b>${r.user}</b> — ${'⭐'.repeat(r.stars)}</div>
+        <div style="color:var(--text-2);margin-top:5px;">${r.text}</div>
+      </div>
+    `).join('');
+  }
+}
+
+function submitReview() {
+  const me = localStorage.getItem('currentUser');
+  if (!me) { showToast('⚠️ اول وارد بشی!', true); return; }
+  const text = document.getElementById('pmReviewText').value.trim();
+  const stars = parseInt(document.getElementById('pmReviewStars').value);
+  if (!text) return showToast('⚠️ نظر رو بنویس!', true);
+  
+  if (!REVIEWS[currentProductForReview]) REVIEWS[currentProductForReview] = [];
+  REVIEWS[currentProductForReview].push({ user: me, text, stars, time: Date.now() });
+  localStorage.setItem('end_shop_reviews', JSON.stringify(REVIEWS));
+  
+  document.getElementById('pmReviewText').value = '';
+  renderReviews();
+  renderProducts();
+  showToast('✅ نظر ثبت شد!');
+}
+
+function toggleFav(id) {
+  const idx = favorites.indexOf(id);
+  if (idx > -1) favorites.splice(idx, 1);
+  else favorites.push(id);
+  localStorage.setItem('end_shop_favs', JSON.stringify(favorites));
+  renderProducts();
+  updateNav();
+  showToast(idx > -1 ? '💔 حذف شد' : '❤️ اضافه شد');
+}
+
+function openFavs() {
+  const box = document.getElementById('favItems');
+  if (favorites.length === 0) {
+    box.innerHTML = '<p style="color:var(--text-2);text-align:center;padding:20px;">خالیه</p>';
+  } else {
+    box.innerHTML = favorites.map(id => {
+      const p = PRODUCTS.find(x => x.id === id);
+      if (!p) return '';
+      return `
+        <div class="cart-item-new" style="flex-direction:row;">
+          <div class="item-img" style="width:60px;height:60px;font-size:1.8rem;">${p.emoji}</div>
+          <div class="item-info">
+            <div class="item-name">${p.name}</div>
+            <div class="item-price">${p.price.toLocaleString('fa-IR')} تومان</div>
+          </div>
+          <button class="remove-item" onclick="toggleFav('${p.id}'); openFavs();">✖</button>
+        </div>
+      `;
+    }).join('');
+  }
+  document.getElementById('favModal').classList.add('open');
+}
+
+function addToCart(id) {
+  const me = localStorage.getItem('currentUser');
+  if (!me) { showToast('⚠️ اول وارد بشی!', true); openAuth('login'); return; }
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  if (cart.find(x => x.id === id)) return showToast('⚠️ قبلاً توی سبدته!', true);
+  cart.push({ id: p.id, name: p.name, price: p.price, emoji: p.emoji, tag: p.tag });
+  localStorage.setItem('end_shop_cart', JSON.stringify(cart));
+  updateNav();
+  showToast('✅ اضافه شد!');
+}
+
+function removeFromCart(i) {
+  cart.splice(i, 1);
+  localStorage.setItem('end_shop_cart', JSON.stringify(cart));
+  updateNav();
+  renderCartPage();
+}
+
+function applyDiscount() {
+  const code = document.getElementById('discountInput').value.trim().toUpperCase();
+  const result = document.getElementById('discountResult');
+  const found = DISCOUNTS.find(d => d.code === code);
+  
+  if (!found) {
+    currentDiscount = 0;
+    result.textContent = '❌ نامعتبر!';
+    result.style.color = 'var(--danger)';
+    renderCartPage();
+    return;
+  }
+  if (found.expiresAt && Date.now() > found.expiresAt) {
+    currentDiscount = 0;
+    result.textContent = '⏰ منقضی شده!';
+    result.style.color = 'var(--danger)';
+    renderCartPage();
+    return;
+  }
+  currentDiscount = found.percent;
+  const timeLeft = found.expiresAt ? formatTimeLeft(found.expiresAt - Date.now()) : 'همیشه';
+  result.textContent = `✅ ${found.percent}% (${timeLeft})`;
+  result.style.color = 'var(--success)';
+  renderCartPage();
+}
+
+function formatTimeLeft(ms) {
+  if (ms <= 0) return 'منقضی';
+  const h = Math.floor(ms / 3600000);
+  const d = Math.floor(h / 24);
+  const m = Math.floor((ms % 3600000) / 60000);
+  if (d > 0) return `${d} روز`;
+  if (h > 0) return `${h} ساعت`;
+  return `${m} دقیقه`;
+}
+
+function checkout() {
+  if (cart.length === 0) return showToast('⚠️ سبد خالیه!', true);
+  const me = localStorage.getItem('currentUser');
+  if (!me) { showToast('⚠️ اول وارد بشی!', true); openAuth('login'); return; }
+  
+  gun.get('users').get(me).once((data) => {
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    const finalTotal = total - (total * currentDiscount / 100);
+    const productList = cart.map(i => `• ${i.emoji} ${i.name} — ${i.price.toLocaleString('fa-IR')} تومان`).join('\n');
+    const discountText = currentDiscount > 0 ? `\n🎟️ تخفیف: ${currentDiscount}%` : '\n🎟️ تخفیف: ندارد';
+    
+    const summary = `📋 سفارش جدید از End Shop\n\n👤 نام: ${data?.name || 'نامشخص'}\n📱 شماره: ${data?.phone || 'نامشخص'}\n📧 ایمیل: ${data?.email || 'نامشخص'}\n\n🛒 محصولات:\n${productList}\n${discountText}\n\n💰 مبلغ کل: ${finalTotal.toLocaleString('fa-IR')} تومان`;
+    
+    document.getElementById('checkoutSummary').textContent = summary;
+    window._lastOrder = summary;
+    
+    gun.get('orders').set({
+      user: me, name: data?.name, phone: data?.phone, email: data?.email,
+      products: cart, discount: currentDiscount, total: finalTotal, time: Date.now()
+    });
+    
+    cart.forEach(item => {
+      const p = PRODUCTS.find(x => x.id === item.id);
+      if (p) p.sales = (p.sales || 0) + 1;
+    });
+    localStorage.setItem('end_shop_products', JSON.stringify(PRODUCTS));
+    
+    addNotification('✅ سفارش ثبت شد!');
+    document.getElementById('checkoutModal').classList.add('open');
+  });
+}
+
+function copyOrder() {
+  navigator.clipboard.writeText(window._lastOrder);
+  showToast('📋 کپی شد!');
+}
+
+function openRubika() {
+  window.open(RUBIKA_SUPPORT, '_blank');
+  cart = [];
+  localStorage.setItem('end_shop_cart', JSON.stringify(cart));
+  currentDiscount = 0;
+  updateNav();
+  closeModal('checkoutModal');
+  closeCartPage();
+  showToast('✅ ثبت شد!');
+}
+
+function openProfile() {
+  const me = localStorage.getItem('currentUser');
+  document.getElementById('profileAvatar').textContent = me[0].toUpperCase();
+  document.getElementById('profileName').textContent = me;
+  
+  gun.get('users').get(me).once((data) => {
+    document.getElementById('editName').value = data?.name || '';
+    document.getElementById('editEmail').value = data?.email || '';
+    document.getElementById('editPhone').value = data?.phone || '';
+  });
+  
+  renderMyOrders();
+  document.getElementById('profileModal').classList.add('open');
+}
+
+function switchProfileTab(el, tab) {
+  document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.profile-tab-content').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+function renderMyOrders() {
+  const me = localStorage.getItem('currentUser');
+  const box = document.getElementById('myOrders');
+  const orders = [];
+  gun.get('orders').map().once((o) => { if (o && o.user === me) orders.push(o); });
+  setTimeout(() => {
+    if (orders.length === 0) {
+      box.innerHTML = '<p style="color:var(--text-2);text-align:center;padding:20px;">سفارشی نداری</p>';
+      return;
+    }
+    box.innerHTML = orders.map(o => `
+      <div class="order-item">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <b>سفارش #${String(o.time).slice(-6)}</b>
+          <span class="order-status done">✅ ثبت شده</span>
+        </div>
+        <div>${o.products.map(p => p.emoji + ' ' + p.name).join(' • ')}</div>
+        <div style="color:var(--accent);font-weight:700;margin-top:8px;">${o.total.toLocaleString('fa-IR')} تومان</div>
+      </div>
+    `).join('');
+  }, 800);
+}
+
+function saveProfile() {
+  const me = localStorage.getItem('currentUser');
+  const name = document.getElementById('editName').value.trim();
+  const email = document.getElementById('editEmail').value.trim();
+  const phone = document.getElementById('editPhone').value.trim();
+  gun.get('users').get(me).put({ name, email, phone });
+  showToast('✅ ذخیره شد!');
+}
+
+function renderNews() {
+  const box = document.getElementById('newsGrid');
+  const news = [];
+  gun.get('news').map().once((n) => { if (n && n.title) news.push(n); });
+  setTimeout(() => {
+    if (news.length === 0) {
+      box.innerHTML = `<div class="news-card"><span class="news-date">امروز</span><h3>افتتاح فروشگاه End Shop!</h3><p>فروشگاه ما شروع به کار کرد!</p></div>`;
+      return;
+    }
+    box.innerHTML = news.map(n => `
+      <div class="news-card">
+        ${n.image ? `<img src="${n.image}">` : ''}
+        <span class="news-date">${new Date(n.time).toLocaleDateString('fa-IR')}</span>
+        <h3>${escapeHtml(n.title)}</h3>
+        <p>${escapeHtml(n.text)}</p>
+      </div>
+    `).join('');
+  }, 800);
+}
+renderNews();
+
+function checkAdmin() {
+  const me = localStorage.getItem('currentUser');
+  if (me === OWNER_USERNAME) {
+    document.getElementById('adminPanel').style.display = 'block';
+    renderAdminLists();
+    renderStats();
+    renderOrders();
+  }
+}
+
+function renderStats() {
+  document.getElementById('statProducts').textContent = PRODUCTS.length;
+  let orders = 0, revenue = 0;
+  gun.get('orders').map().once((o) => { if (o && o.total) { orders++; revenue += o.total; } });
+  let users = 0;
+  gun.get('users').map().once(() => users++);
+  setTimeout(() => {
+    document.getElementById('statOrders').textContent = orders;
+    document.getElementById('statRevenue').textContent = revenue.toLocaleString('fa-IR');
+    document.getElementById('statUsers').textContent = users;
+  }, 1000);
+}
+
+function renderOrders() {
+  const box = document.getElementById('ordersList');
+  const orders = [];
+  gun.get('orders').map().once((o) => { if (o && o.user) orders.push(o); });
+  setTimeout(() => {
+    box.innerHTML = orders.length === 0 ? '<p style="color:var(--text-2);">سفارشی نیست</p>' :
+      orders.map(o => `
+        <div class="admin-item">
+          <span>👤 ${o.name} — ${o.products?.map(p => p.name).join(', ') || '?'} — ${o.total?.toLocaleString('fa-IR') || 0} تومان</span>
+        </div>
+      `).join('');
+  }, 800);
+}
+
+function addNews() {
+  const title = document.getElementById('newsTitle').value.trim();
+  const text = document.getElementById('newsText').value.trim();
+  const image = document.getElementById('newsImage').value.trim();
+  if (!title || !text) return showToast('⚠️ عنوان و متن!', true);
+  gun.get('news').set({ title, text, image, time: Date.now() });
+  document.getElementById('newsTitle').value = '';
+  document.getElementById('newsText').value = '';
+  document.getElementById('newsImage').value = '';
+  showToast('✅ خبر اضافه شد!');
+  setTimeout(renderNews, 500);
+}
+
+function addProduct() {
+  const name = document.getElementById('productName').value.trim();
+  const price = parseInt(document.getElementById('productPrice').value);
+  const emoji = document.getElementById('productEmoji').value.trim() || '📦';
+  const tag = document.getElementById('productTag').value.trim() || 'محصول';
+  const featured = document.getElementById('productFeatured').checked;
+  if (!name || !price) return showToast('⚠️ اسم و قیمت!', true);
+  PRODUCTS.push({ id: 'p' + Date.now(), name, price, emoji, tag, featured, time: Date.now(), sales: 0 });
+  localStorage.setItem('end_shop_products', JSON.stringify(PRODUCTS));
+  document.getElementById('productName').value = '';
+  document.getElementById('productPrice').value = '';
+  document.getElementById('productEmoji').value = '';
+  document.getElementById('productTag').value = '';
+  document.getElementById('productFeatured').checked = false;
+  renderProducts(); renderCategories(); renderAdminLists(); renderStats();
+  showToast('✅ محصول اضافه شد!');
+}
+
+function addCategory() {
+  const name = document.getElementById('newCategoryName').value.trim();
+  if (!name) return showToast('⚠️ اسم دسته!', true);
+  if (CATEGORIES.includes(name)) return showToast('⚠️ تکراری!', true);
+  CATEGORIES.push(name);
+  localStorage.setItem('end_shop_categories', JSON.stringify(CATEGORIES));
+  document.getElementById('newCategoryName').value = '';
+  renderCategories();
+  renderAdminLists();
+  showToast('✅ اضافه شد!');
+}
+
+function deleteCategory(name) {
+  if (!confirm('حذف «' + name + '»؟')) return;
+  CATEGORIES = CATEGORIES.filter(c => c !== name);
+  localStorage.setItem('end_shop_categories', JSON.stringify(CATEGORIES));
+  renderCategories();
+  renderAdminLists();
+  showToast('🗑️ حذف شد!');
+}
+
+function addDiscount() {
+  const code = document.getElementById('discountCode').value.trim().toUpperCase();
+  const percent = parseInt(document.getElementById('discountPercent').value);
+  const duration = document.getElementById('discountDuration').value;
+  if (!code || !percent || percent < 1 || percent > 100) return showToast('⚠️ کد و درصد!', true);
+  if (DISCOUNTS.find(d => d.code === code)) return showToast('⚠️ تکراری!', true);
+  
+  const now = Date.now();
+  let expiresAt = null;
+  switch (duration) {
+    case '1h': expiresAt = now + 3600000; break;
+    case '6h': expiresAt = now + 21600000; break;
+    case '1d': expiresAt = now + 86400000; break;
+    case '1w': expiresAt = now + 604800000; break;
+    case '1m': expiresAt = now + 2592000000; break;
+    case '1y': expiresAt = now + 31536000000; break;
+  }
+  
+  DISCOUNTS.push({ code, percent, expiresAt, createdAt: now });
+  localStorage.setItem('end_shop_discounts', JSON.stringify(DISCOUNTS));
+  document.getElementById('discountCode').value = '';
+  document.getElementById('discountPercent').value = '';
+  renderAdminLists();
+  showToast('✅ کد اضافه شد!');
+}
+
+function deleteProduct(id) {
+  if (!confirm('حذف محصول؟')) return;
+  PRODUCTS = PRODUCTS.filter(p => p.id !== id);
+  localStorage.setItem('end_shop_products', JSON.stringify(PRODUCTS));
+  renderProducts(); renderCategories(); renderAdminLists(); renderStats();
+  showToast('🗑️ حذف شد!');
+}
+
+function deleteDiscount(code) {
+  DISCOUNTS = DISCOUNTS.filter(d => d.code !== code);
+  localStorage.setItem('end_shop_discounts', JSON.stringify(DISCOUNTS));
+  renderAdminLists();
+  showToast('🗑️ حذف شد!');
+}
+
+function renderAdminLists() {
+  document.getElementById('productList').innerHTML = PRODUCTS.map(p => `
+    <div class="admin-item">
+      <span>${p.emoji} ${p.name} — ${p.price.toLocaleString('fa-IR')} ${p.featured ? '🔥' : ''}</span>
+      <button class="del-btn" onclick="deleteProduct('${p.id}')">حذف</button>
+    </div>
+  `).join('');
+  
+  const now = Date.now();
+  document.getElementById('discountList').innerHTML = DISCOUNTS.map(d => {
+    const expired = d.expiresAt && now > d.expiresAt;
+    const timeLeft = d.expiresAt ? formatTimeLeft(d.expiresAt - now) : 'همیشه';
+    const status = expired ? '❌ منقضی' : `⏰ ${timeLeft}`;
+    return `
+      <div class="admin-item" style="${expired ? 'opacity:0.5;' : ''}">
+        <span>${d.code} — ${d.percent}% <span style="color:${expired ? 'var(--danger)' : 'var(--success)'};font-size:11px;">${status}</span></span>
+        <button class="del-btn" onclick="deleteDiscount('${d.code}')">حذف</button>
+      </div>
+    `;
+  }).join('');
+  
+  const catList = document.getElementById('categoryList');
+  if (catList) {
+    catList.innerHTML = CATEGORIES.map(c => `
+      <div class="admin-item">
+        <span>🏷️ ${c}</span>
+        <button class="del-btn" onclick="deleteCategory('${c}')">حذف</button>
+      </div>
+    `).join('');
+  }
+}
+
+function showToast(msg, isError = false) {
+  const t = document.createElement('div');
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function escapeHtml(t) {
+  const d = document.createElement('div');
+  d.textContent = t;
+  return d.innerHTML;
+}
+
+user.recall({ sessionStorage: true }, () => {
+  if (user.is) {
+    localStorage.setItem('currentUser', user.is.alias);
+    updateNav();
+  }
+});
+updateNav();
+renderCategories();
+renderProducts();  // ← این خط مشکل نمایش محصولات رو حل می‌کنه
+</script>
+</body>
+</html>
