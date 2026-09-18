@@ -41,11 +41,6 @@
   }
   button:focus, a:focus, input:focus, select:focus, textarea:focus { outline: none; }
 
-  #loading { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s; }
-  #loading.hide { opacity: 0; pointer-events: none; }
-  .loader-diamond { width: 80px; height: 80px; animation: diamondFloat 2s ease-in-out infinite, diamondGlow 1.5s ease-in-out infinite; margin-bottom: 20px; }
-  .loader-text { color: var(--primary); font-size: 1.2rem; font-weight: 700; }
-
   .galaxy-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
   .galaxy-star { position: absolute; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
 
@@ -124,6 +119,8 @@
   .lobby-btns .primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(6,214,160,0.5); }
   .lobby-btns .secondary { background: var(--card); border: 1px solid var(--border); color: var(--text); }
   .lobby-btns .secondary:hover { border-color: var(--primary); transform: translateY(-3px); }
+  .lobby-btns .lucky { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #000; box-shadow: 0 10px 30px rgba(251,191,36,0.3); }
+  .lobby-btns .lucky:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(251,191,36,0.5); }
 
   .theme-selector { display: flex; gap: 8px; justify-content: center; margin: 20px 0; }
   .theme-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid var(--border); transition: transform 0.2s; }
@@ -309,15 +306,6 @@
 </head>
 <body>
 
-<div id="loading">
-  <svg class="loader-diamond" viewBox="0 0 100 100">
-    <polygon points="50,5 90,35 50,95 10,35" fill="#06d6a0" opacity="0.9"/>
-    <polygon points="50,5 90,35 50,50" fill="#4ade80" opacity="0.8"/>
-    <polygon points="50,5 10,35 50,50" fill="#34d399" opacity="0.9"/>
-  </svg>
-  <div class="loader-text">در حال بارگذاری...</div>
-</div>
-
 <div class="galaxy-bg" id="galaxyBg"></div>
 
 <nav>
@@ -365,7 +353,7 @@
     
     <div class="lobby-btns">
       <a href="#productsSection" class="primary">🛒 مشاهده محصولات</a>
-      <button class="secondary" onclick="openLuckyBox()">🎁 جعبه شانس</button>
+      <button class="lucky" onclick="openLuckyBox()">🎁 جعبه شانس</button>
       <a href="https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG" target="_blank" class="secondary">💬 پشتیبانی</a>
     </div>
 
@@ -659,6 +647,7 @@ let currentSort = 'default';
 
 const OWNER_USERNAME = 'endshop2026';
 const RUBIKA_SUPPORT = 'https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG';
+const BASE_PATH = '/Endshop';
 
 const DEFAULT_PRODUCTS = [
   { id: 'p1', name: 'تامبنیل سطح ضعیف', price: 5000, emoji: '🖼️', tag: 'ماینکرفت', featured: false, time: Date.now() - 86400000, sales: 5 },
@@ -685,7 +674,6 @@ let EVENTS = JSON.parse(localStorage.getItem('end_shop_events')) || [];
    راه‌اندازی
    ========================================================= */
 window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => document.getElementById('loading').classList.add('hide'), 1200);
   createGalaxy();
   setTheme(localStorage.getItem('site_theme') || 'blue');
   if (localStorage.getItem('theme') === 'light') document.body.classList.add('light');
@@ -699,8 +687,7 @@ window.addEventListener('DOMContentLoaded', () => {
   handleRoute();
 });
 
-window.addEventListener('hashchange', handleRoute);
-window.addEventListener('load', handleRoute);
+window.addEventListener('popstate', handleRoute);
 
 function createGalaxy() {
   const bg = document.getElementById('galaxyBg');
@@ -732,50 +719,59 @@ function toggleTheme() {
 function toggleFaq(el) { el.classList.toggle('open'); }
 
 /* =========================================================
-   🌐 URL Routing با # (کار می‌کنه!)
+   🌐 URL Routing (برگشت به حالت قبل)
    ========================================================= */
 function navigateTo(page) {
-  window.location.hash = '#' + page;
+  const routes = {
+    'home': '/',
+    'signup': '/signup',
+    'login': '/login',
+    'cart': '/cart',
+    'profile': '/profile'
+  };
+  
+  if (routes[page]) {
+    history.pushState({ page }, '', routes[page]);
+  }
+  
+  handleRoute();
+}
+
+function closeAllModals() {
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
 }
 
 function handleRoute() {
-  const hash = window.location.hash.replace('#', '') || 'home';
+  const path = window.location.pathname;
   
-  // بستن همه مودال‌ها
-  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+  closeAllModals();
+  document.getElementById('mainPage').style.display = 'none';
   document.getElementById('cartPage').classList.remove('open');
   
-  // مخفی کردن mainPage به صورت پیش‌فرض
-  document.getElementById('mainPage').style.display = 'block';
-  
-  switch(hash) {
-    case 'signup':
-      openAuth('register');
-      break;
-    case 'login':
-      openAuth('login');
-      break;
-    case 'cart':
-      document.getElementById('mainPage').style.display = 'none';
-      document.getElementById('cartPage').classList.add('open');
-      renderCartPage();
-      break;
-    case 'profile':
-      openProfile();
-      break;
-    case 'products':
-      document.getElementById('productsSection').scrollIntoView({behavior: 'smooth'});
-      break;
-    case 'news':
-      document.getElementById('newsSection').scrollIntoView({behavior: 'smooth'});
-      break;
-    case 'leaderboard':
-      document.getElementById('leaderboardSection').scrollIntoView({behavior: 'smooth'});
-      break;
-    case 'home':
-    default:
-      window.scrollTo(0, 0);
+  if (path.includes('/signup')) {
+    document.getElementById('mainPage').style.display = 'block';
+    openAuth('register');
+    return;
   }
+  if (path.includes('/login')) {
+    document.getElementById('mainPage').style.display = 'block';
+    openAuth('login');
+    return;
+  }
+  if (path.includes('/cart')) {
+    document.getElementById('cartPage').classList.add('open');
+    renderCartPage();
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (path.includes('/profile')) {
+    document.getElementById('mainPage').style.display = 'block';
+    openProfile();
+    return;
+  }
+  
+  document.getElementById('mainPage').style.display = 'block';
+  window.scrollTo(0, 0);
 }
 
 /* =========================================================
@@ -832,22 +828,12 @@ function removeFromCart(i) {
 }
 
 /* =========================================================
-   🎟️ کد تخفیف (درست!)
+   🎟️ کد تخفیف — به همون حالت ساده و درست قبل
    ========================================================= */
 function applyDiscount() {
   const code = document.getElementById('discountInput').value.trim().toUpperCase();
   const result = document.getElementById('discountResult');
   
-  console.log('جستجو برای کد:', code);
-  console.log('کدهای موجود:', DISCOUNTS);
-  
-  if (!code) {
-    result.textContent = '❌ کد تخفیف رو وارد کن';
-    result.style.color = 'var(--danger)';
-    return;
-  }
-  
-  // جستجو در DISCOUNTS
   const found = DISCOUNTS.find(d => d.code === code);
   
   if (!found) {
@@ -858,7 +844,6 @@ function applyDiscount() {
     return;
   }
   
-  // چک کردن انقضا
   if (found.expiresAt && Date.now() > found.expiresAt) {
     currentDiscount = 0;
     result.textContent = '⏰ کد منقضی شده!';
@@ -867,7 +852,6 @@ function applyDiscount() {
     return;
   }
   
-  // چک کردن تعداد استفاده
   if (found.maxUses && (found.usedCount || 0) >= found.maxUses) {
     currentDiscount = 0;
     result.textContent = '❌ ظرفیت کد پر شده!';
@@ -876,7 +860,6 @@ function applyDiscount() {
     return;
   }
   
-  // اعمال تخفیف
   currentDiscount = found.percent;
   const timeLeft = found.expiresAt ? formatTimeLeft(found.expiresAt - Date.now()) : 'همیشه';
   result.textContent = `✅ ${found.percent}٪ تخفیف اعمال شد (${timeLeft})`;
@@ -896,8 +879,7 @@ function formatTimeLeft(ms) {
 }
 
 /* =========================================================
-   کد پیگیری
-   ========================================================= */
+   کد پیگیری   ========================================================= */
 function generateTrackingCode() {
   const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
   let code = 'END-';
@@ -932,7 +914,7 @@ function checkout() {
   });
   localStorage.setItem('endshop_my_orders', JSON.stringify(myOrders));
   
-  // افزایش شمارنده استفاده از تخفیف
+  // افزایش استفاده از تخفیف
   if (currentDiscount > 0) {
     const d = DISCOUNTS.find(x => x.percent === currentDiscount);
     if (d) {
@@ -1002,7 +984,7 @@ function openAuth(mode) {
 function closeModal(id) {
   document.getElementById(id).classList.remove('open');
   if (id === 'authModal' || id === 'profileModal') {
-    history.replaceState(null, '', ' ');
+    history.pushState(null, '', '/');
   }
 }
 
