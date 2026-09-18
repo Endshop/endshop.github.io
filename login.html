@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ورود | End Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #0a0a14;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .login-box {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.95), rgba(16, 16, 32, 0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 28px;
+            padding: 40px 35px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 1;
+        }
+        .login-logo { text-align: center; margin-bottom: 30px; }
+        .login-logo i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .login-logo h1 { font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: 1px; }
+        .login-logo h1 span {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .login-logo p { color: #8a8aaa; font-size: 0.85rem; margin-top: 6px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            color: #a855f7;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .input-wrap { position: relative; }
+        .input-wrap i {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7c3aed;
+            font-size: 0.9rem;
+        }
+        .input-wrap input {
+            width: 100%;
+            padding: 13px 45px 13px 16px;
+            background: rgba(10, 10, 20, 0.6);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 14px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-wrap input:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-login:hover { transform: scale(0.98); box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4); }
+        .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+        .toggle-mode {
+            text-align: center;
+            margin-top: 20px;
+            color: #8a8aaa;
+            font-size: 0.85rem;
+        }
+        .toggle-mode a { color: #a855f7; text-decoration: none; font-weight: 700; cursor: pointer; }
+        .toggle-mode a:hover { text-decoration: underline; }
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .message.error { display: block; background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3); }
+        .message.success { display: block; background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #8a8aaa;
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: 0.3s;
+        }
+        .back-home:hover { color: #a855f7; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div class="login-logo">
+            <i class="fas fa-dragon"></i>
+            <h1><span>END</span> SHOP</h1>
+            <p id="modeSubtitle">ورود به حساب کاربری</p>
+        </div>
+
+        <div class="message" id="messageBox"></div>
+
+        <!-- فرم ورود -->
+        <form id="loginForm">
+            <div class="form-group">
+                <label>ایمیل</label>
+                <div class="input-wrap">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="example@email.com" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>رمز عبور</label>
+                <div class="input-wrap">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required />
+                </div>
+            </div>
+            <button type="submit" class="btn-login" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> ورود
+            </button>
+        </form>
+
+        <!-- فرم ثبت‌نام -->
+        <form id="registerForm" class="hidden">
+            <div class="form-group">
+                <label>نام کامل</label>
+                <div class="input-wrap">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="regName" placeholder="نام و نام خانوادگی" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>ایمیل</label>
+                <div class="input-wrap">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="regEmail" placeholder="example@email.com" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>رمز عبور</label>
+                <div class="input-wrap">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="regPassword" placeholder="حداقل ۶ کاراکتر" required minlength="6" />
+                </div>
+            </div>
+            <button type="submit" class="btn-login" id="registerBtn">
+                <i class="fas fa-user-plus"></i> ثبت‌نام
+            </button>
+        </form>
+
+        <div class="toggle-mode">
+            <span id="toggleText">حساب نداری؟ </span>
+            <a id="toggleLink">ثبت‌نام کن</a>
+        </div>
+
+        <a href="index.html" class="back-home">
+            <i class="fas fa-arrow-right"></i> بازگشت به فروشگاه
+        </a>
+    </div>
+
+    <script>
+        // ============================================================
+        // ⚙️ CONFIG
+        // ============================================================
+        const OWNER_EMAIL = 'tahadaneshbayan2@gmail.com';
+        const SESSION_KEY = 'endshop_session';
+        const USERS_KEY = 'endshop_users';
+
+        // ============================================================
+        // 💾 STORAGE
+        // ============================================================
+        function getStorage(key, defaultValue = []) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : defaultValue;
+            } catch (e) { return defaultValue; }
+        }
+
+        function setStorage(key, value) {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch (e) { console.error(e); }
+        }
+
+        // ============================================================
+        // 💬 MESSAGE
+        // ============================================================
+        function showMessage(msg, type = 'error') {
+            const box = document.getElementById('messageBox');
+            box.textContent = msg;
+            box.className = 'message ' + type;
+            setTimeout(() => { box.style.display = 'none'; }, 5000);
+        }
+
+        // ============================================================
+        // 🔄 TOGGLE LOGIN/REGISTER
+        // ============================================================
+        let isLoginMode = true;
+        const toggleLink = document.getElementById('toggleLink');
+        const toggleText = document.getElementById('toggleText');
+
+        toggleLink.addEventListener('click', function() {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+                document.getElementById('modeSubtitle').textContent = 'ورود به حساب کاربری';
+                toggleText.textContent = 'حساب نداری؟ ';
+                toggleLink.textContent = 'ثبت‌نام کن';
+            } else {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.remove('hidden');
+                document.getElementById('modeSubtitle').textContent = 'ساخت حساب جدید';
+                toggleText.textContent = 'حساب داری؟ ';
+                toggleLink.textContent = 'وارد شو';
+            }
+            document.getElementById('messageBox').style.display = 'none';
+        });
+
+        // ============================================================
+        // 🔐 LOGIN
+        // ============================================================
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+
+            let users = getStorage(USERS_KEY, []);
+
+            // ⭐ چک مالک اصلی - خودکار ادمین میشه
+            if (email === OWNER_EMAIL.toLowerCase()) {
+                let owner = users.find(u => u.email.toLowerCase() === email);
+                if (owner) {
+                    if (owner.password !== password) {
+                        showMessage('❌ رمز عبور اشتباه است', 'error');
+                        return;
+                    }
+                } else {
+                    owner = {
+                        id: Date.now(),
+                        email: email,
+                        password: password,
+                        full_name: 'مالک اصلی',
+                        role: 'owner',
+                        is_admin: true,
+                        created_at: new Date().toISOString()
+                    };
+                    users.push(owner);
+                    setStorage(USERS_KEY, users);
+                }
+
+                owner.role = 'owner';
+                owner.is_admin = true;
+                setStorage(USERS_KEY, users);
+
+                const session = {
+                    user_id: owner.id,
+                    email: owner.email,
+                    full_name: owner.full_name,
+                    role: 'owner',
+                    is_admin: true
+                };
+                setStorage(SESSION_KEY, session);
+
+                showMessage('👑 خوش آمدید مالک اصلی!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 800);
+                return;
+            }
+
+            // کاربر عادی
+            const user = users.find(u => u.email.toLowerCase() === email);
+            if (!user) {
+                showMessage('❌ کاربری با این ایمیل پیدا نشد', 'error');
+                return;
+            }
+            if (user.password !== password) {
+                showMessage('❌ رمز عبور اشتباه است', 'error');
+                return;
+            }
+
+            const session = {
+                user_id: user.id,
+                email: user.email,
+                full_name: user.full_name,
+                role: user.role || 'user',
+                is_admin: user.is_admin || false
+            };
+            setStorage(SESSION_KEY, session);
+
+            showMessage('✅ ورود موفق!', 'success');
+            setTimeout(() => {
+                if (session.is_admin) {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            }, 800);
+        });
+
+        // ============================================================
+        // 📝 REGISTER
+        // ============================================================
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const full_name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value;
+
+            if (password.length < 6) {
+                showMessage('❌ رمز عبور باید حداقل ۶ کاراکتر باشد', 'error');
+                return;
+            }
+
+            let users = getStorage(USERS_KEY, []);
+
+            if (users.find(u => u.email.toLowerCase() === email)) {
+                showMessage('❌ این ایمیل قبلاً ثبت شده', 'error');
+                return;
+            }
+
+            const isOwner = email === OWNER_EMAIL.toLowerCase();
+
+            const newUser = {
+                id: Date.now(),
+                email: email,
+                password: password,
+                full_name: full_name,
+                role: isOwner ? 'owner' : 'user',
+                is_admin: isOwner,
+                created_at: new Date().toISOString()
+            };
+            users.push(newUser);
+            setStorage(USERS_KEY, users);
+
+            const session = {
+                user_id: newUser.id,
+                email: newUser.email,
+                full_name: newUser.full_name,
+                role: newUser.role,
+                is_admin: newUser.is_admin
+            };
+            setStorage(SESSION_KEY, session);
+
+            if (isOwner) {
+                showMessage('👑 ثبت‌نام مالک اصلی!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 800);
+            } else {
+                showMessage('✅ ثبت‌نام موفق!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 800);
+            }
+        });
+    </script>
+</body>
+</html>
