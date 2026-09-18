@@ -10,7 +10,6 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,13 +30,12 @@
             pointer-events: none;
             z-index: 0;
         }
-        a { text-decoration: none; color: inherit; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0a14; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #a855f7); border-radius: 10px; }
 
         /* ===== SCREENS ===== */
-        .screen { display: none; min-height: 100vh; }
+        .screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
         .screen.active { display: block; }
 
         /* ===== AUTH SCREEN ===== */
@@ -91,7 +89,7 @@
             color: #7c3aed;
             font-size: 0.9rem;
         }
-        .input-wrap input {
+        .input-wrap input, .input-wrap select {
             width: 100%;
             padding: 13px 45px 13px 16px;
             background: rgba(10, 10, 20, 0.6);
@@ -103,7 +101,7 @@
             outline: none;
             transition: 0.3s;
         }
-        .input-wrap input:focus {
+        .input-wrap input:focus, .input-wrap select:focus {
             border-color: #7c3aed;
             box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
         }
@@ -146,6 +144,17 @@
         .message.success { display: block; background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
         .message.info { display: block; background: rgba(124, 58, 237, 0.15); color: #a855f7; border: 1px solid rgba(124, 58, 237, 0.3); }
         .hidden { display: none !important; }
+        .guest-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+        .guest-link a {
+            color: #8a8aaa;
+            font-size: 0.82rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .guest-link a:hover { color: #a855f7; }
 
         /* ===== HEADER ===== */
         .main-header {
@@ -261,14 +270,6 @@
             border-radius: 30px !important;
             font-size: 0.75rem !important;
         }
-        .owner-crown {
-            background: linear-gradient(135deg, #f59e0b, #f97316);
-            color: #000;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.6rem;
-            font-weight: 800;
-        }
 
         /* ===== ANNOUNCEMENT ===== */
         .announcement-bar {
@@ -296,8 +297,7 @@
         }
 
         /* ===== CONTAINER ===== */
-        .container { max-width: 1400px; width: 100%; margin: 0 auto; padding: 0 30px 30px; position: relative; z-index: 1; }
-
+        .container { max-width: 1400px; width: 100%; margin: 0 auto; padding: 0 30px 30px; }
         .page { display: none; animation: fadePage 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadePage { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -434,12 +434,9 @@
             align-items: center;
             justify-content: center;
             border-bottom: 1px solid rgba(124, 58, 237, 0.1);
-            overflow: hidden;
-            position: relative;
         }
         .product-icon i { font-size: 4rem; color: #a855f7; opacity: 0.7; transition: 0.4s; }
         .product-card:hover .product-icon i { opacity: 1; transform: scale(1.15); }
-        .product-icon img { width: 100%; height: 100%; object-fit: cover; }
         .product-info { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
         .product-name { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
         .product-desc { font-size: 0.78rem; color: #8a8aaa; margin-bottom: 12px; flex: 1; min-height: 30px; line-height: 1.5; }
@@ -527,11 +524,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
             flex-shrink: 0;
         }
         .cart-item-img i { font-size: 1.5rem; color: #a855f7; }
-        .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
         .cart-item-name { font-weight: 700; color: #fff; font-size: 0.9rem; }
         .cart-item-price { color: #a855f7; direction: ltr; font-weight: 600; font-size: 0.85rem; }
         .quantity-selector {
@@ -826,8 +821,6 @@
             border-radius: 18px;
             padding: 20px;
             transition: 0.4s;
-            position: relative;
-            overflow: hidden;
         }
         .stat-card:hover {
             border-color: rgba(168, 85, 247, 0.5);
@@ -917,7 +910,6 @@
         .btn-action.success:hover { border-color: #22c55e; color: #22c55e; background: rgba(34, 197, 94, 0.1); }
         .btn-action.primary:hover { border-color: #a855f7; color: #a855f7; background: rgba(168, 85, 247, 0.1); }
         .btn-action.warning:hover { border-color: #f59e0b; color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
-        .btn-action:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .btn-primary-full {
             background: linear-gradient(135deg, #7c3aed, #a855f7);
@@ -984,7 +976,7 @@
             border: 1px solid rgba(124, 58, 237, 0.3);
             border-radius: 24px;
             padding: 30px;
-            max-width: 600px;
+            max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -1033,7 +1025,7 @@
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
     <!-- ============================================================
-         SCREEN: AUTH (LOGIN / REGISTER)
+         SCREEN: AUTH
          ============================================================ -->
     <div class="screen active" id="screen-auth">
         <div class="auth-screen">
@@ -1047,19 +1039,19 @@
                 <div class="message" id="authMessage"></div>
 
                 <!-- ورود -->
-                <form id="loginForm">
+                <form id="loginForm" autocomplete="off">
                     <div class="form-group">
                         <label>ایمیل</label>
                         <div class="input-wrap">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" id="loginEmail" placeholder="example@email.com" required />
+                            <input type="email" id="loginEmail" placeholder="example@email.com" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label>رمز عبور</label>
                         <div class="input-wrap">
                             <i class="fas fa-lock"></i>
-                            <input type="password" id="loginPassword" placeholder="••••••••" required />
+                            <input type="password" id="loginPassword" placeholder="••••••••" />
                         </div>
                     </div>
                     <button type="submit" class="btn-primary" style="margin-top:10px;" id="loginBtn">
@@ -1068,26 +1060,26 @@
                 </form>
 
                 <!-- ثبت‌نام -->
-                <form id="registerForm" class="hidden">
+                <form id="registerForm" class="hidden" autocomplete="off">
                     <div class="form-group">
                         <label>نام کامل</label>
                         <div class="input-wrap">
                             <i class="fas fa-user"></i>
-                            <input type="text" id="regName" placeholder="نام و نام خانوادگی" required />
+                            <input type="text" id="regName" placeholder="نام و نام خانوادگی" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label>ایمیل</label>
                         <div class="input-wrap">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" id="regEmail" placeholder="example@email.com" required />
+                            <input type="email" id="regEmail" placeholder="example@email.com" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label>رمز عبور</label>
                         <div class="input-wrap">
                             <i class="fas fa-lock"></i>
-                            <input type="password" id="regPassword" placeholder="حداقل ۶ کاراکتر" required minlength="6" />
+                            <input type="password" id="regPassword" placeholder="حداقل ۶ کاراکتر" />
                         </div>
                     </div>
                     <button type="submit" class="btn-primary" style="margin-top:10px;" id="registerBtn">
@@ -1100,8 +1092,8 @@
                     <a id="toggleLink">ثبت‌نام کن</a>
                 </div>
 
-                <div style="text-align:center; margin-top:16px;">
-                    <a onclick="showScreen('shop')" style="color:#8a8aaa; font-size:0.82rem; cursor:pointer;">
+                <div class="guest-link">
+                    <a onclick="showScreen('shop')">
                         <i class="fas fa-arrow-right"></i> ورود به فروشگاه بدون حساب
                     </a>
                 </div>
@@ -1140,7 +1132,7 @@
                             <i class="fas fa-user-circle"></i>
                             <span class="user-email" id="userLabel">ورود</span>
                         </button>
-                        <button class="user-btn admin-link hidden" id="adminLink" onclick="showScreen('admin')">
+                        <button class="user-btn admin-link hidden" id="adminLink" onclick="openAdminPanel()">
                             <i class="fas fa-crown"></i> پنل ادمین
                         </button>
                     </div>
@@ -1289,7 +1281,6 @@
                 <div class="nav-item" data-section="admins"><i class="fas fa-crown"></i><span>مدیریت ادمین‌ها</span><span class="badge warning" id="adminsBadge">0</span></div>
 
                 <div class="nav-section">⚙️ سیستم</div>
-                <div class="nav-item" data-section="settings"><i class="fas fa-cogs"></i><span>تنظیمات سایت</span></div>
                 <div class="nav-item" onclick="logout()" style="color:#f43f5e; border-top:1px solid rgba(124,58,237,0.15); margin-top:20px; padding-top:16px;">
                     <i class="fas fa-sign-out-alt"></i><span>خروج</span>
                 </div>
@@ -1446,30 +1437,6 @@
                     </div>
                 </section>
 
-                <!-- SETTINGS -->
-                <section class="section-panel" id="section-settings">
-                    <div class="panel-header">
-                        <h2><i class="fas fa-cogs"></i> تنظیمات سایت</h2>
-                        <button class="btn-primary-full" onclick="saveSettings()" style="padding:10px 24px;">
-                            <i class="fas fa-save"></i> ذخیره
-                        </button>
-                    </div>
-                    <div class="form-grid" style="max-width:600px;">
-                        <div class="form-group full-width">
-                            <label>نام سایت</label>
-                            <input type="text" id="settingSiteName" value="End Shop" />
-                        </div>
-                        <div class="form-group full-width">
-                            <label>متن اطلاعیه</label>
-                            <textarea id="settingAnnouncement">به End Shop خوش آمدید! تخفیف ویژه برای اولین خرید شما!</textarea>
-                        </div>
-                        <div class="form-group full-width">
-                            <label>ایمیل پشتیبانی</label>
-                            <input type="email" id="settingEmail" value="support@endshop.ir" style="direction:ltr;" />
-                        </div>
-                    </div>
-                </section>
-
             </main>
         </div>
     </div>
@@ -1478,7 +1445,7 @@
          MODALS
          ============================================================ -->
     <div class="modal-overlay" id="confirmModal">
-        <div class="modal-box" style="max-width:450px;">
+        <div class="modal-box">
             <h3 id="modalTitle">تأیید</h3>
             <p id="modalMessage" style="color:#8a8aaa;">آیا مطمئن هستید؟</p>
             <div class="modal-actions">
@@ -1506,8 +1473,10 @@
          JAVASCRIPT
          ============================================================ -->
     <script>
+        console.log('🚀 End Shop loaded');
+
         // ============================================================
-        // ⚙️ CONFIG - فقط این ایمیل مالک اصلیه
+        // ⚙️ CONFIG
         // ============================================================
         const OWNER_EMAIL = 'tahadaneshbayan2@gmail.com';
         const SESSION_KEY = 'endshop_session';
@@ -1515,23 +1484,6 @@
         const PRODUCTS_KEY = 'endshop_products';
         const ORDERS_KEY = 'endshop_orders';
 
-        // ============================================================
-        // 🔒 SOURCE PROTECTION
-        // ============================================================
-        document.addEventListener('keydown', function(e) {
-            if (
-                (e.ctrlKey && e.key === 'u') ||
-                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
-                e.key === 'F12'
-            ) {
-                e.preventDefault();
-                return false;
-            }
-        });
-
-        // ============================================================
-        // 🎮 STATE
-        // ============================================================
         let currentUser = null;
         let CART = [];
         let WISHLIST = [];
@@ -1572,31 +1524,21 @@
 
         function loadAllData() {
             PRODUCTS = getStorage(PRODUCTS_KEY, null);
-            if (!PRODUCTS) {
+            if (!PRODUCTS || PRODUCTS.length === 0) {
                 PRODUCTS = [...DEFAULT_PRODUCTS];
                 setStorage(PRODUCTS_KEY, PRODUCTS);
             }
-
             USERS = getStorage(USERS_KEY, []);
             ORDERS = getStorage(ORDERS_KEY, []);
 
-            // اطمینان از وجود مالک
-            if (!USERS.find(u => u.email === OWNER_EMAIL)) {
-                USERS.push({
-                    id: 1,
-                    email: OWNER_EMAIL,
-                    password: 'owner123',
-                    full_name: 'مالک اصلی',
-                    role: 'owner',
-                    is_admin: true,
-                    created_at: new Date().toISOString()
-                });
-                setStorage(USERS_KEY, USERS);
-            }
-
-            // بارگذاری session
             const session = getStorage(SESSION_KEY, null);
             if (session) currentUser = session;
+
+            console.log('📦 Data loaded:', {
+                products: PRODUCTS.length,
+                users: USERS.length,
+                session: currentUser ? currentUser.email : 'none'
+            });
         }
 
         // ============================================================
@@ -1604,12 +1546,13 @@
         // ============================================================
         function showScreen(name) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screen-' + name).classList.add('active');
+            const screen = document.getElementById('screen-' + name);
+            if (screen) screen.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // ============================================================
-        // 💬 TOAST
+        // 💬 MESSAGES
         // ============================================================
         function showToast(msg, color = '#7c3aed') {
             const old = document.querySelector('.temp-msg');
@@ -1629,8 +1572,10 @@
 
         function showAuthMessage(msg, type = 'error') {
             const box = document.getElementById('authMessage');
+            if (!box) return;
             box.textContent = msg;
             box.className = 'message ' + type;
+            box.style.display = 'block';
             setTimeout(() => { box.style.display = 'none'; }, 5000);
         }
 
@@ -1650,46 +1595,54 @@
         }
 
         // ============================================================
-        // 🔐 AUTH
+        // 🔐 AUTH - TOGGLE
         // ============================================================
         let isLoginMode = true;
-        const toggleLink = document.getElementById('toggleLink');
-        const toggleText = document.getElementById('toggleText');
-
-        toggleLink.addEventListener('click', function() {
+        document.getElementById('toggleLink').addEventListener('click', function(e) {
+            e.preventDefault();
             isLoginMode = !isLoginMode;
             if (isLoginMode) {
                 document.getElementById('loginForm').classList.remove('hidden');
                 document.getElementById('registerForm').classList.add('hidden');
                 document.getElementById('authSubtitle').textContent = 'ورود به حساب کاربری';
-                toggleText.textContent = 'حساب نداری؟ ';
-                toggleLink.textContent = 'ثبت‌نام کن';
+                document.getElementById('toggleText').textContent = 'حساب نداری؟ ';
+                document.getElementById('toggleLink').textContent = 'ثبت‌نام کن';
             } else {
                 document.getElementById('loginForm').classList.add('hidden');
                 document.getElementById('registerForm').classList.remove('hidden');
                 document.getElementById('authSubtitle').textContent = 'ساخت حساب جدید';
-                toggleText.textContent = 'حساب داری؟ ';
-                toggleLink.textContent = 'وارد شو';
+                document.getElementById('toggleText').textContent = 'حساب داری؟ ';
+                document.getElementById('toggleLink').textContent = 'وارد شو';
             }
             document.getElementById('authMessage').style.display = 'none';
         });
 
+        // ============================================================
+        // 🔐 LOGIN
+        // ============================================================
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value.trim().toLowerCase();
             const password = document.getElementById('loginPassword').value;
 
-            // 🌟 چک مالک اصلی - اگه ایمیل مالک بود، خودکار ادمین میشه
+            console.log('🔐 Login:', email);
+
+            if (!email || !password) {
+                showAuthMessage('❌ ایمیل و رمز عبور رو پر کن', 'error');
+                return;
+            }
+
+            let users = getStorage(USERS_KEY, []);
+
+            // ⭐ مالک اصلی
             if (email === OWNER_EMAIL.toLowerCase()) {
-                // اگه کاربر وجود داره رمز رو چک کن
-                let owner = USERS.find(u => u.email.toLowerCase() === email);
+                let owner = users.find(u => u.email.toLowerCase() === email);
                 if (owner) {
                     if (owner.password !== password) {
                         showAuthMessage('❌ رمز عبور اشتباه است', 'error');
                         return;
                     }
                 } else {
-                    // اگه وجود نداره، خودکار بسازش
                     owner = {
                         id: Date.now(),
                         email: email,
@@ -1699,14 +1652,11 @@
                         is_admin: true,
                         created_at: new Date().toISOString()
                     };
-                    USERS.push(owner);
-                    setStorage(USERS_KEY, USERS);
+                    users.push(owner);
                 }
-
-                // اطمینان از اینکه نقش مالک داره
                 owner.role = 'owner';
                 owner.is_admin = true;
-                setStorage(USERS_KEY, USERS);
+                setStorage(USERS_KEY, users);
 
                 currentUser = {
                     user_id: owner.id,
@@ -1717,16 +1667,13 @@
                 };
                 setStorage(SESSION_KEY, currentUser);
 
-                showAuthMessage('👑 خوش آمدید مالک اصلی! در حال انتقال به پنل...', 'success');
-                setTimeout(() => {
-                    showScreen('admin');
-                    initAdmin();
-                }, 800);
+                showAuthMessage('👑 خوش آمدید مالک اصلی!', 'success');
+                setTimeout(() => openAdminPanel(), 800);
                 return;
             }
 
             // کاربر عادی
-            const user = USERS.find(u => u.email.toLowerCase() === email);
+            const user = users.find(u => u.email.toLowerCase() === email);
             if (!user) {
                 showAuthMessage('❌ کاربری با این ایمیل پیدا نشد', 'error');
                 return;
@@ -1748,8 +1695,7 @@
             showAuthMessage('✅ ورود موفق!', 'success');
             setTimeout(() => {
                 if (currentUser.is_admin) {
-                    showScreen('admin');
-                    initAdmin();
+                    openAdminPanel();
                 } else {
                     showScreen('shop');
                     initShop();
@@ -1757,24 +1703,28 @@
             }, 800);
         });
 
+        // ============================================================
+        // 📝 REGISTER
+        // ============================================================
         document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const full_name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim().toLowerCase();
             const password = document.getElementById('regPassword').value;
 
-            if (password.length < 6) {
-                showAuthMessage('❌ رمز عبور باید حداقل ۶ کاراکتر باشد', 'error');
-                return;
-            }
+            console.log('📝 Register:', email);
 
-            // چک تکراری
-            if (USERS.find(u => u.email.toLowerCase() === email)) {
+            if (!full_name) { showAuthMessage('❌ نام کامل رو وارد کن', 'error'); return; }
+            if (!email || !email.includes('@')) { showAuthMessage('❌ ایمیل معتبر وارد کن', 'error'); return; }
+            if (password.length < 6) { showAuthMessage('❌ رمز عبور باید حداقل ۶ کاراکتر باشد', 'error'); return; }
+
+            let users = getStorage(USERS_KEY, []);
+
+            if (users.find(u => u.email.toLowerCase() === email)) {
                 showAuthMessage('❌ این ایمیل قبلاً ثبت شده', 'error');
                 return;
             }
 
-            // 🌟 چک اگه ایمیل مالک باشه
             const isOwner = email === OWNER_EMAIL.toLowerCase();
 
             const newUser = {
@@ -1786,8 +1736,8 @@
                 is_admin: isOwner,
                 created_at: new Date().toISOString()
             };
-            USERS.push(newUser);
-            setStorage(USERS_KEY, USERS);
+            users.push(newUser);
+            setStorage(USERS_KEY, users);
 
             currentUser = {
                 user_id: newUser.id,
@@ -1799,11 +1749,8 @@
             setStorage(SESSION_KEY, currentUser);
 
             if (isOwner) {
-                showAuthMessage('👑 ثبت‌نام مالک اصلی! در حال انتقال به پنل...', 'success');
-                setTimeout(() => {
-                    showScreen('admin');
-                    initAdmin();
-                }, 800);
+                showAuthMessage('👑 ثبت‌نام مالک اصلی!', 'success');
+                setTimeout(() => openAdminPanel(), 800);
             } else {
                 showAuthMessage('✅ ثبت‌نام موفق!', 'success');
                 setTimeout(() => {
@@ -1813,6 +1760,9 @@
             }
         });
 
+        // ============================================================
+        // 🚪 LOGOUT
+        // ============================================================
         function logout() {
             if (!confirm('خارج می‌شی؟')) return;
             localStorage.removeItem(SESSION_KEY);
@@ -1827,6 +1777,7 @@
         // 🛒 SHOP INIT
         // ============================================================
         function initShop() {
+            loadAllData();
             updateUserUI();
             renderProducts();
             renderCart();
@@ -1880,7 +1831,7 @@
         });
 
         // ============================================================
-        // 📦 PRODUCTS RENDERING
+        // 📦 PRODUCTS
         // ============================================================
         function renderProducts(filterText = '') {
             const grids = {
@@ -1893,8 +1844,8 @@
 
             Object.values(grids).forEach(g => { if (g) g.innerHTML = ''; });
 
-            const lowerFilter = filterText.toLowerCase().trim();
             const activeProducts = PRODUCTS.filter(p => p.status === 'active');
+            const lowerFilter = filterText.toLowerCase().trim();
             let filtered = activeProducts;
             if (lowerFilter) {
                 filtered = activeProducts.filter(p =>
@@ -1966,10 +1917,10 @@
             const idx = WISHLIST.indexOf(productId);
             if (idx > -1) {
                 WISHLIST.splice(idx, 1);
-                showToast('💔 از علاقه‌مندی حذف شد', '#f43f5e');
+                showToast('💔 حذف شد', '#f43f5e');
             } else {
                 WISHLIST.push(productId);
-                showToast('❤️ به علاقه‌مندی اضافه شد', '#22c55e');
+                showToast('❤️ اضافه شد', '#22c55e');
             }
             updateBadges();
             renderProducts(document.getElementById('searchInput')?.value || '');
@@ -1989,8 +1940,10 @@
         }
 
         function updateBadges() {
-            document.getElementById('wishlistBadge').textContent = WISHLIST.length;
-            document.getElementById('navBadge').textContent = getCartQuantity();
+            const wb = document.getElementById('wishlistBadge');
+            const nb = document.getElementById('navBadge');
+            if (wb) wb.textContent = WISHLIST.length;
+            if (nb) nb.textContent = getCartQuantity();
         }
 
         // ============================================================
@@ -2118,7 +2071,7 @@
             renderCart();
             updateBadges();
 
-            showToast(`✅ سفارش ثبت شد! کد پیگیری: ${tracking}`, '#22c55e');
+            showToast(`✅ سفارش ثبت شد! کد: ${tracking}`, '#22c55e');
         }
 
         // ============================================================
@@ -2156,7 +2109,7 @@
                     <div class="info-row"><i class="fas fa-dollar-sign"></i> <span class="label">مجموع خرید:</span> <span class="value" style="color:#22c55e;">${formatPrice(totalSpent)} تومان</span></div>
                 </div>
                 <div class="profile-actions">
-                    ${currentUser.is_admin ? `<button class="btn-primary" style="width:auto;" onclick="showScreen('admin'); initAdmin();"><i class="fas fa-crown"></i> پنل ادمین</button>` : ''}
+                    ${currentUser.is_admin ? `<button class="btn-primary" style="width:auto;" onclick="openAdminPanel()"><i class="fas fa-crown"></i> پنل ادمین</button>` : ''}
                     <button class="btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
                 </div>
             `;
@@ -2165,20 +2118,24 @@
         // ============================================================
         // 🎛️ ADMIN PANEL
         // ============================================================
-        function initAdmin() {
+        function openAdminPanel() {
             if (!currentUser || !currentUser.is_admin) {
                 showToast('❌ دسترسی ندارید', '#f43f5e');
                 showScreen('shop');
                 return;
             }
+            showScreen('admin');
+            initAdmin();
+        }
 
+        function initAdmin() {
+            loadAllData();
             document.getElementById('adminEmail').textContent = currentUser.email + (currentUser.role === 'owner' ? ' 👑' : '');
             loadAdminDashboard();
             loadAdminProducts();
             loadAdminUsers();
             loadAdminOrders();
             loadAdminAdmins();
-            loadSettings();
         }
 
         document.querySelectorAll('.nav-item[data-section]').forEach(item => {
@@ -2194,14 +2151,14 @@
                     products: loadAdminProducts,
                     users: loadAdminUsers,
                     orders: loadAdminOrders,
-                    admins: loadAdminAdmins,
-                    settings: loadSettings
+                    admins: loadAdminAdmins
                 };
                 if (loads[section]) loads[section]();
             });
         });
 
         function loadAdminDashboard() {
+            loadAllData();
             document.getElementById('statUsers').textContent = USERS.length;
             document.getElementById('statAdmins').textContent = USERS.filter(u => u.is_admin).length;
             document.getElementById('statProducts').textContent = PRODUCTS.length;
@@ -2214,6 +2171,7 @@
         }
 
         function loadAdminProducts() {
+            loadAllData();
             const tbody = document.getElementById('productsTable');
             document.getElementById('productsCount').textContent = `تعداد: ${PRODUCTS.length}`;
 
@@ -2234,10 +2192,10 @@
                     <td><span class="status-badge ${p.status}">${p.status === 'active' ? 'فعال' : 'غیرفعال'}</span></td>
                     <td>
                         <button class="btn-action primary" onclick="editProduct('${p.id}')" title="ویرایش"><i class="fas fa-edit"></i></button>
-                        <button class="btn-action ${p.status === 'active' ? 'warning' : 'success'}" onclick="toggleProductStatus('${p.id}')" title="فعال/غیرفعال">
+                        <button class="btn-action ${p.status === 'active' ? 'warning' : 'success'}" onclick="toggleProductStatus('${p.id}')">
                             <i class="fas ${p.status === 'active' ? 'fa-eye-slash' : 'fa-eye'}"></i>
                         </button>
-                        <button class="btn-action danger" onclick="deleteProduct('${p.id}')" title="حذف"><i class="fas fa-trash"></i></button>
+                        <button class="btn-action danger" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('') || '<tr><td colspan="6" style="text-align:center;">محصولی نیست</td></tr>';
@@ -2285,7 +2243,7 @@
             };
 
             if (!data.id || !data.name || !data.price) {
-                showToast('⚠️ فیلدهای ضروری را پر کن', '#f59e0b');
+                showToast('⚠️ فیلدهای ضروری رو پر کن', '#f59e0b');
                 return;
             }
 
@@ -2295,7 +2253,7 @@
                 showToast('✅ ویرایش شد', '#22c55e');
             } else {
                 if (PRODUCTS.find(p => p.id === data.id)) {
-                    showToast('❌ شناسه تکراری است', '#f43f5e');
+                    showToast('❌ شناسه تکراری', '#f43f5e');
                     return;
                 }
                 PRODUCTS.push(data);
@@ -2333,6 +2291,7 @@
         }
 
         function loadAdminUsers() {
+            loadAllData();
             const tbody = document.getElementById('usersTable');
             document.getElementById('usersCount').textContent = `تعداد: ${USERS.length}`;
 
@@ -2354,7 +2313,7 @@
                         <td>${new Date(u.created_at).toLocaleDateString('fa-IR')}</td>
                         <td>
                             ${canManage ? `
-                                <button class="btn-action ${u.is_admin ? 'warning' : 'success'}" onclick="toggleUserAdmin(${u.id})" title="${u.is_admin ? 'حذف ادمینی' : 'ادمین کن'}">
+                                <button class="btn-action ${u.is_admin ? 'warning' : 'success'}" onclick="toggleUserAdmin(${u.id})">
                                     <i class="fas ${u.is_admin ? 'fa-crown' : 'fa-user-shield'}"></i>
                                 </button>
                                 <button class="btn-action danger" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>
@@ -2362,12 +2321,12 @@
                         </td>
                     </tr>
                 `;
-            }).join('');
+            }).join('') || '<tr><td colspan="6" style="text-align:center;">کاربری نیست</td></tr>';
         }
 
         function toggleUserAdmin(id) {
             if (currentUser.role !== 'owner') {
-                showToast('❌ فقط مالک می‌تونه ادمین بده', '#f43f5e');
+                showToast('❌ فقط مالک', '#f43f5e');
                 return;
             }
             const user = USERS.find(u => u.id === id);
@@ -2376,14 +2335,13 @@
                 showToast('❌ نمی‌تونی مالک رو تغییر بدی', '#f43f5e');
                 return;
             }
-
             user.is_admin = !user.is_admin;
             user.role = user.is_admin ? 'admin' : 'user';
             setStorage(USERS_KEY, USERS);
             loadAdminUsers();
             loadAdminAdmins();
             loadAdminDashboard();
-            showToast(user.is_admin ? '⭐ ادمین شد' : '👤 ادمین حذف شد', '#22c55e');
+            showToast(user.is_admin ? '⭐ ادمین شد' : '👤 حذف ادمینی', '#22c55e');
         }
 
         function deleteUser(id) {
@@ -2450,7 +2408,7 @@
 
         function openAddAdminModal() {
             if (currentUser.role !== 'owner') {
-                showToast('❌ فقط مالک اصلی می‌تونه ادمین اضافه کنه', '#f43f5e');
+                showToast('❌ فقط مالک اصلی', '#f43f5e');
                 return;
             }
             document.getElementById('addAdminModal').classList.add('active');
@@ -2473,7 +2431,7 @@
                 return;
             }
             if (user.is_admin) {
-                showToast('⚠️ این کاربر از قبل ادمینه', '#f59e0b');
+                showToast('⚠️ از قبل ادمینه', '#f59e0b');
                 return;
             }
 
@@ -2491,6 +2449,7 @@
         }
 
         function loadAdminOrders() {
+            loadAllData();
             const tbody = document.getElementById('ordersTable');
             if (ORDERS.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">سفارشی نیست</td></tr>';
@@ -2505,27 +2464,6 @@
                     <td>${new Date(o.created_at).toLocaleDateString('fa-IR')}</td>
                 </tr>
             `).join('');
-        }
-
-        function loadSettings() {
-            const settings = getStorage('endshop_settings', {
-                siteName: 'End Shop',
-                announcement: 'به End Shop خوش آمدید! تخفیف ویژه برای اولین خرید شما!',
-                email: 'support@endshop.ir'
-            });
-            document.getElementById('settingSiteName').value = settings.siteName;
-            document.getElementById('settingAnnouncement').value = settings.announcement;
-            document.getElementById('settingEmail').value = settings.email;
-        }
-
-        function saveSettings() {
-            const settings = {
-                siteName: document.getElementById('settingSiteName').value,
-                announcement: document.getElementById('settingAnnouncement').value,
-                email: document.getElementById('settingEmail').value
-            };
-            setStorage('endshop_settings', settings);
-            showToast('✅ تنظیمات ذخیره شد', '#22c55e');
         }
 
         // ============================================================
