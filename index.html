@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="https://cdn.imgurl.ir/uploads/a38216_End_shop.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -92,6 +92,9 @@
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.5px;
+    font-family: 'Orbitron', 'Vazirmatn', sans-serif;
+    font-weight: 900;
+    letter-spacing: 1px;
   }
   nav .nav-actions { display: flex; align-items: center; gap: 8px; }
   .icon-btn {
@@ -176,6 +179,8 @@
     background: linear-gradient(135deg, var(--primary), var(--accent));
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-family: 'Orbitron', 'Vazirmatn', sans-serif;
+    letter-spacing: 2px;
   }
   .hero p {
     color: var(--text-2);
@@ -542,6 +547,113 @@
     min-height: 18px;
   }
 
+  /* ===== Auth Pages ===== */
+  .auth-page {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .auth-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 36px 30px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp .4s cubic-bezier(.4,0,.2,1);
+  }
+  .auth-head {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .auth-head .auth-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 16px;
+    box-shadow: 0 8px 25px rgba(124,58,237,0.4);
+  }
+  .auth-head h2 {
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+  .auth-head p {
+    color: var(--text-3);
+    font-size: 0.85rem;
+  }
+  .auth-page .field {
+    margin-bottom: 16px;
+  }
+  .auth-page .field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-2);
+    margin-bottom: 6px;
+  }
+  .auth-page .field input {
+    width: 100%;
+    padding: 13px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.92rem;
+    font-family: 'Vazirmatn', Tahoma;
+    outline: none;
+    transition: all .2s;
+  }
+  .auth-page .field input:focus {
+    border-color: var(--primary);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  }
+  .auth-page .btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    border: none;
+    color: white;
+    border-radius: 11px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Vazirmatn', Tahoma;
+    transition: all .2s;
+    margin-top: 8px;
+  }
+  .auth-page .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.4); }
+  .auth-page .btn.green { background: linear-gradient(135deg, var(--accent), #059669); }
+  .auth-err {
+    color: var(--danger);
+    font-size: 0.82rem;
+    text-align: center;
+    margin-top: 12px;
+    min-height: 18px;
+  }
+  .auth-switch {
+    text-align: center;
+    margin-top: 18px;
+    color: var(--text-2);
+    font-size: 0.85rem;
+  }
+  .auth-switch a {
+    color: var(--primary-2);
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .auth-switch a:hover { text-decoration: underline; }
+
   /* ===== Cart ===== */
   .cart-page { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
   .cart-item {
@@ -840,6 +952,11 @@
     display: flex; align-items: center; justify-content: center;
     color: white;
   }
+  footer .footer-logo span {
+    font-family: 'Orbitron', 'Vazirmatn', sans-serif;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
   footer .links {
     display: flex; justify-content: center;
     gap: 20px;
@@ -901,6 +1018,25 @@
     .cart-item .icon-box { width: 50px; height: 50px; font-size: 1.4rem; }
     #toast { right: 15px; left: 15px; max-width: none; }
   }
+
+  /* ===== Tabs (Admin) ===== */
+  .tab {
+    flex: 1;
+    padding: 10px 8px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--text-2);
+    cursor: pointer;
+    font-family: 'Vazirmatn', Tahoma;
+    transition: all .2s;
+  }
+  .tab.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; }
+  .tab:hover:not(.active) { background: var(--surface); color: var(--text); }
+  .admin-tab-content { display: none; }
+  .admin-tab-content.active { display: block; }
 </style>
 </head>
 <body>
@@ -977,16 +1113,24 @@
   <div class="support-grid">
     <div class="support-card">
       <div class="icon">🟣</div>
-      <h3>کانال روبیکا</h3>
-      <p>سریع‌ترین راه ارتباطی با ما و پشتیبانی سفارشات</p>
+      <h3>کانال اصلی EndShop</h3>
+      <p>جدیدترین محصولات، تخفیف‌ها و محتوای ماینکرفت</p>
+      <a href="https://rubika.ir/channelart_minecraft" target="_blank">
+        🟣 عضویت در کانال
+      </a>
+    </div>
+    <div class="support-card">
+      <div class="icon">💬</div>
+      <h3>پشتیبانی و خرید</h3>
+      <p>برای خرید، پیگیری سفارش و پشتیبانی به این لینک مراجعه کن</p>
       <a href="https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG" target="_blank">
-        🟣 پیوستن به کانال
+        💬 پشتیبانی خرید
       </a>
     </div>
     <div class="support-card">
       <div class="icon">✉️</div>
       <h3>ایمیل پشتیبانی</h3>
-      <p>برای پیگیری سفارشات و سوالات مهم، به ما ایمیل بزن</p>
+      <p>برای پیگیری سفارشات و سوالات مهم</p>
       <a href="mailto:endshopiran@gmail.com" style="direction: ltr;">
         📧 endshopiran@gmail.com
       </a>
@@ -1006,7 +1150,8 @@
     <a href="#news">📰 اخبار</a>
     <a href="#cart">🛍️ سبد خرید</a>
     <a href="#tracking">📦 پیگیری سفارش</a>
-    <a href="#support">💬 پشتیبانی</a>
+    <a href="https://rubika.ir/channelart_minecraft" target="_blank">🟣 کانال اصلی</a>
+    <a href="https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG" target="_blank">💬 پشتیبانی</a>
   </div>
   <div class="copyright">© ۲۰۲۶ EndShop — تمامی حقوق محفوظ است</div>
 </footer>
@@ -1041,6 +1186,71 @@
       <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="trackOrder()">🔍 جستجو</button>
     </div>
     <div id="trackingResult"></div>
+  </div>
+</section>
+
+<!-- Login Page -->
+<section id="loginPage" style="display: none;">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-head">
+        <div class="auth-icon">🔐</div>
+        <h2>ورود به حساب</h2>
+        <p>برای ادامه، وارد حساب کاربری خود شو</p>
+      </div>
+      <div class="field">
+        <label>ایمیل</label>
+        <input type="email" id="loginEmailPage" placeholder="example@mail.com" style="direction: ltr; text-align: left;">
+      </div>
+      <div class="field">
+        <label>رمز عبور</label>
+        <input type="password" id="loginPasswordPage" placeholder="••••••••">
+      </div>
+      <button class="btn" onclick="doLoginPage()">ورود</button>
+      <div class="auth-err" id="loginErrPage"></div>
+      <div class="auth-switch">
+        حساب نداری؟ <a onclick="window.location.hash='#signup'">ثبت‌نام کن</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Signup Page -->
+<section id="signupPage" style="display: none;">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-head">
+        <div class="auth-icon">✨</div>
+        <h2>ساخت حساب جدید</h2>
+        <p>به EndShop خوش آمدی</p>
+      </div>
+      <div class="field">
+        <label>نام کامل</label>
+        <input type="text" id="regNamePage" placeholder="علی محمدی">
+      </div>
+      <div class="field">
+        <label>ایمیل</label>
+        <input type="email" id="regEmailPage" placeholder="example@mail.com" style="direction: ltr; text-align: left;">
+      </div>
+      <div class="field">
+        <label>شماره تماس</label>
+        <input type="tel" id="regPhonePage" placeholder="09xxxxxxxxx" style="direction: ltr; text-align: left;">
+      </div>
+      <div class="field">
+        <label>آیدی روبیکا <span style="color: var(--danger);">*</span></label>
+        <input type="text" id="regRubikaPage" placeholder="مثلاً @Taha_nistam" style="direction: ltr; text-align: left;">
+        <small style="color: var(--text-3); font-size: 0.75rem; display: block; margin-top: 6px;">آیدی روبیکا برای ارتباط سریع‌تر و ارسال سفارشات</small>
+      </div>
+      <div class="field">
+        <label>رمز عبور</label>
+        <input type="password" id="regPasswordPage" placeholder="حداقل ۴ کاراکتر">
+      </div>
+      <button class="btn green" onclick="doRegisterPage()">ثبت‌نام</button>
+      <div class="auth-err" id="regErrPage"></div>
+      <div class="auth-switch">
+        حساب داری؟ <a onclick="window.location.hash='#login'">وارد شو</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1191,26 +1401,6 @@
   </div>
 </div>
 
-<style>
-  .tab {
-    flex: 1;
-    padding: 10px 8px;
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 0.78rem;
-    color: var(--text-2);
-    cursor: pointer;
-    font-family: 'Vazirmatn', Tahoma;
-    transition: all .2s;
-  }
-  .tab.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; }
-  .tab:hover:not(.active) { background: var(--surface); color: var(--text); }
-  .admin-tab-content { display: none; }
-  .admin-tab-content.active { display: block; }
-</style>
-
 <div id="toast"></div>
 
 <script>
@@ -1246,6 +1436,7 @@ function loadGun() {
 const ADMIN_EMAIL = 'tahadaneshbayan2@gmail.com';
 const SUPPORT_URL = 'https://rubika.ir/joing/BBGECEHBI0ZUKUJGHRKAHZRVFTMYZLGG';
 const SUPPORT_EMAIL = 'endshopiran@gmail.com';
+const MAIN_CHANNEL = 'https://rubika.ir/channelart_minecraft';
 
 /* =========================================================
    🎨 انیمیشن 3D
@@ -1319,12 +1510,86 @@ document.getElementById('userBtn').addEventListener('click', () => {
   if (user) {
     openProfile();
   } else {
-    openAuth('login');
+    window.location.hash = '#login';
   }
 });
 
 /* =========================================================
-   🔐 Auth
+   🔐 Auth Pages
+   ========================================================= */
+function doRegisterPage() {
+  const name = document.getElementById('regNamePage').value.trim();
+  const email = document.getElementById('regEmailPage').value.trim();
+  const phone = document.getElementById('regPhonePage').value.trim();
+  const rubika = document.getElementById('regRubikaPage').value.trim();
+  const password = document.getElementById('regPasswordPage').value;
+  const err = document.getElementById('regErrPage');
+
+  if (!name || !email || !phone || !rubika || !password) {
+    err.textContent = '❌ همه فیلدها را پر کن!';
+    return;
+  }
+  if (password.length < 4) {
+    err.textContent = '❌ رمز عبور حداقل ۴ کاراکتر!';
+    return;
+  }
+  if (!email.includes('@')) {
+    err.textContent = '❌ ایمیل معتبر نیست!';
+    return;
+  }
+
+  const users = JSON.parse(localStorage.getItem('endshop_users') || '[]');
+  if (users.find(u => u.email === email)) {
+    err.textContent = '❌ این ایمیل قبلاً ثبت شده!';
+    return;
+  }
+
+  const isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  const userData = { name, email, phone, rubika, isAdmin, time: Date.now() };
+  users.push({ ...userData, password });
+  localStorage.setItem('endshop_users', JSON.stringify(users));
+
+  loadGun().then(g => { if (g) g.get('endshop_users').set(userData); });
+
+  setCurrentUser({ name, email, phone, rubika, isAdmin });
+  err.textContent = '';
+  showToast('✅ خوش آمدی ' + name + (isAdmin ? ' 👑 (ادمین)' : ''));
+  window.location.hash = '#home';
+}
+
+function doLoginPage() {
+  const email = document.getElementById('loginEmailPage').value.trim();
+  const password = document.getElementById('loginPasswordPage').value;
+  const err = document.getElementById('loginErrPage');
+
+  if (!email || !password) {
+    err.textContent = '❌ همه فیلدها را پر کن!';
+    return;
+  }
+
+  const users = JSON.parse(localStorage.getItem('endshop_users') || '[]');
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if (!user) {
+    err.textContent = '❌ ایمیل یا رمز عبور اشتباه!';
+    return;
+  }
+
+  const isAdmin = user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  setCurrentUser({
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    rubika: user.rubika || '',
+    isAdmin
+  });
+  err.textContent = '';
+  showToast('✅ خوش آمدی ' + user.name + (isAdmin ? ' 👑' : ''));
+  window.location.hash = '#home';
+}
+
+/* =========================================================
+   🔐 Auth (Modal - قدیمی، برای سازگاری)
    ========================================================= */
 let authMode = 'login';
 
@@ -1342,13 +1607,14 @@ function openAuth(mode) {
       <div class="field"><label>رمز عبور</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
       <button class="btn" onclick="doLogin()">ورود</button>
     `;
-    switchEl.innerHTML = 'حساب نداری؟ <a onclick="openAuth(\'signup\')">ثبت‌نام کن</a>';
+    switchEl.innerHTML = 'حساب نداری؟ <a onclick="window.location.hash=\'#signup\'">ثبت‌نام کن</a>';
   } else {
     title.textContent = 'ساخت حساب جدید';
     forms.innerHTML = `
       <div class="field"><label>نام کامل</label><input type="text" id="regName" placeholder="علی محمدی"></div>
       <div class="field"><label>ایمیل</label><input type="email" id="regEmail" placeholder="example@mail.com" style="direction: ltr; text-align: left;"></div>
       <div class="field"><label>شماره تماس</label><input type="tel" id="regPhone" placeholder="09xxxxxxxxx" style="direction: ltr; text-align: left;"></div>
+      <div class="field"><label>آیدی روبیکا</label><input type="text" id="regRubika" placeholder="@username" style="direction: ltr; text-align: left;"></div>
       <div class="field"><label>رمز عبور</label><input type="password" id="regPassword" placeholder="حداقل ۴ کاراکتر"></div>
       <button class="btn green" onclick="doRegister()">ثبت‌نام</button>
     `;
@@ -1361,10 +1627,11 @@ function doRegister() {
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const phone = document.getElementById('regPhone').value.trim();
+  const rubika = document.getElementById('regRubika').value.trim();
   const password = document.getElementById('regPassword').value;
   const err = document.getElementById('authErr');
 
-  if (!name || !email || !phone || !password) { err.textContent = '❌ همه فیلدها را پر کن!'; return; }
+  if (!name || !email || !phone || !rubika || !password) { err.textContent = '❌ همه فیلدها را پر کن!'; return; }
   if (password.length < 4) { err.textContent = '❌ رمز عبور حداقل ۴ کاراکتر!'; return; }
   if (!email.includes('@')) { err.textContent = '❌ ایمیل معتبر نیست!'; return; }
 
@@ -1372,13 +1639,13 @@ function doRegister() {
   if (users.find(u => u.email === email)) { err.textContent = '❌ این ایمیل قبلاً ثبت شده!'; return; }
 
   const isAdmin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-  const userData = { name, email, phone, isAdmin, time: Date.now() };
+  const userData = { name, email, phone, rubika, isAdmin, time: Date.now() };
   users.push({ ...userData, password });
   localStorage.setItem('endshop_users', JSON.stringify(users));
 
   loadGun().then(g => { if (g) g.get('endshop_users').set(userData); });
 
-  setCurrentUser({ name, email, phone, isAdmin });
+  setCurrentUser({ name, email, phone, rubika, isAdmin });
   err.textContent = '';
   closeModal('authModal');
   showToast('✅ خوش آمدی ' + name + (isAdmin ? ' 👑 (ادمین)' : ''));
@@ -1398,7 +1665,7 @@ function doLogin() {
   if (!user) { err.textContent = '❌ ایمیل یا رمز عبور اشتباه!'; return; }
 
   const isAdmin = user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-  setCurrentUser({ name: user.name, email: user.email, phone: user.phone, isAdmin });
+  setCurrentUser({ name: user.name, email: user.email, phone: user.phone, rubika: user.rubika || '', isAdmin });
   err.textContent = '';
   closeModal('authModal');
   showToast('✅ خوش آمدی ' + user.name + (isAdmin ? ' 👑' : ''));
@@ -1434,7 +1701,8 @@ function openProfile() {
       <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-2)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 900; color: white; margin: 0 auto 12px;">${user.name.charAt(0).toUpperCase()}</div>
       <h3 style="font-size: 1.15rem; margin-bottom: 4px;">${user.name} ${user.isAdmin ? '<span class="admin-badge">👑 ادمین</span>' : ''}</h3>
       <p style="color: var(--text-3); font-size: 0.85rem; direction: ltr;">${user.email}</p>
-      <p style="color: var(--text-3); font-size: 0.85rem; direction: ltr;">${user.phone || ''}</p>
+      <p style="color: var(--text-3); font-size: 0.85rem; direction: ltr;">📱 ${user.phone || ''}</p>
+      <p style="color: var(--text-3); font-size: 0.85rem; direction: ltr;">🟣 ${user.rubika || '-'}</p>
     </div>
     ${user.isAdmin ? '<button class="btn" onclick="closeModal(\'profileModal\'); openAdmin();" style="margin-bottom: 12px;">🎛️ ورود به پنل مدیریت</button>' : ''}
     <h3 style="font-size: 0.95rem; margin: 18px 0 12px;">📦 سفارشات من</h3>
@@ -1617,7 +1885,7 @@ function getStatusLabel(status) {
 
 async function checkout() {
   const user = getCurrentUser();
-  if (!user) { showToast('⚠️ اول وارد حساب کاربری شو!'); openAuth('login'); return; }
+  if (!user) { showToast('⚠️ اول وارد حساب کاربری شو!'); window.location.hash = '#login'; return; }
 
   const cart = getCart();
   if (cart.length === 0) { showToast('❌ سبد خریدت خالیه'); return; }
@@ -1638,6 +1906,7 @@ async function checkout() {
     userName: user.name,
     userEmail: user.email,
     userPhone: user.phone,
+    userRubika: user.rubika || '',
     status: 'pending',
     time: Date.now()
   };
@@ -1664,7 +1933,7 @@ async function checkout() {
   document.getElementById('successCode').textContent = trackingCode;
   openModal('successModal');
 
-  // انتقال به کانال پشتیبانی
+  // انتقال به کانال پشتیبانی خرید
   setTimeout(() => {
     window.open(SUPPORT_URL, '_blank');
   }, 800);
@@ -1727,6 +1996,7 @@ async function trackOrder() {
         <div class="info-row"><span class="label">📦 کد پیگیری</span><span class="value" style="direction: ltr; font-family: monospace; color: var(--primary-2);">${order.trackingCode}</span></div>
         <div class="info-row"><span class="label">👤 نام</span><span class="value">${order.userName}</span></div>
         <div class="info-row"><span class="label">📱 شماره</span><span class="value" style="direction: ltr;">${order.userPhone}</span></div>
+        <div class="info-row"><span class="label">🟣 روبیکا</span><span class="value" style="direction: ltr;">${order.userRubika || '-'}</span></div>
         <div class="info-row"><span class="label">🕐 تاریخ</span><span class="value">${date}</span></div>
         <div class="info-row"><span class="label">📋 وضعیت</span><span class="value" style="color: var(--warning);">${getStatusLabel(status)}</span></div>
         <div class="info-row"><span class="label">🛒 محصولات</span><span class="value">${order.products.length} مورد</span></div>
@@ -1829,7 +2099,6 @@ async function saveProduct() {
 }
 
 function editProduct(id) {
-  // پیدا کردن محصول از GunDB
   loadGun().then(g => {
     g.get('endshop_products').map().on((p, pid) => {
       if (pid !== id || !p) return;
@@ -2021,6 +2290,7 @@ async function loadAdminOrders() {
             👤 ${escapeHTML(o.userName || '-')}<br>
             📧 <span style="direction: ltr;">${escapeHTML(o.userEmail || '-')}</span><br>
             📱 <span style="direction: ltr;">${escapeHTML(o.userPhone || '-')}</span><br>
+            🟣 <span style="direction: ltr;">${escapeHTML(o.userRubika || '-')}</span><br>
             🛒 ${o.products ? o.products.length : 0} محصول — 💰 ${(o.total || 0).toLocaleString('fa-IR')} تومان<br>
             🕐 ${date}
           </div>
@@ -2068,6 +2338,7 @@ function displayUsers(users, el) {
         <div style="font-weight: 700; margin-bottom: 4px;">${escapeHTML(u.name)} ${u.isAdmin ? '<span class="admin-badge">👑</span>' : ''}</div>
         <div style="font-size: 0.78rem; color: var(--text-2); direction: ltr;">📧 ${escapeHTML(u.email)}</div>
         <div style="font-size: 0.78rem; color: var(--text-2); direction: ltr;">📱 ${escapeHTML(u.phone || '-')}</div>
+        <div style="font-size: 0.78rem; color: var(--text-2); direction: ltr;">🟣 ${escapeHTML(u.rubika || '-')}</div>
         <div style="font-size: 0.72rem; color: var(--text-3); margin-top: 4px;">🕐 ${date}</div>
       </div>
     `;
@@ -2199,6 +2470,8 @@ function showAllPages() {
   });
   document.getElementById('cartPage').style.display = 'none';
   document.getElementById('trackingPage').style.display = 'none';
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('signupPage').style.display = 'none';
 }
 
 function handleRoute() {
@@ -2213,6 +2486,14 @@ function handleRoute() {
   } else if (hash === 'tracking') {
     hideAllPages();
     document.getElementById('trackingPage').style.display = 'block';
+    window.scrollTo({ top: 0 });
+  } else if (hash === 'login') {
+    hideAllPages();
+    document.getElementById('loginPage').style.display = 'block';
+    window.scrollTo({ top: 0 });
+  } else if (hash === 'signup') {
+    hideAllPages();
+    document.getElementById('signupPage').style.display = 'block';
     window.scrollTo({ top: 0 });
   } else {
     showAllPages();
@@ -2309,4 +2590,4 @@ updateCartBadge();
 startDiscountTimer();
 </script>
 </body>
-  </html>
+</html>
