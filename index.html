@@ -4,23 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>End Shop - فروشگاه تخصصی ماینکرافت</title>
-    <meta name="description" content="End Shop - فروشگاه تخصصی ماینکرافت | تامبنیل، اسکین، آواتار، توتم، ادیت ویدیو و سایت" />
-    <meta name="robots" content="index, follow" />
+    <meta name="description" content="End Shop - فروشگاه تخصصی ماینکرافت" />
     <meta name="theme-color" content="#7c3aed" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
     
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Vazirmatn', sans-serif;
             background: #0a0a14;
             color: #e0e0e0;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
         }
         body::before {
@@ -29,18 +27,127 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background: 
                 radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.04) 0%, transparent 70%);
+                radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
-        .container { max-width: 1400px; width: 100%; margin: 0 auto; padding: 0 30px 30px; flex: 1; position: relative; z-index: 1; }
         a { text-decoration: none; color: inherit; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0a14; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #3b82f6); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #a855f7); border-radius: 10px; }
 
-        /* HEADER */
+        /* ===== SCREENS ===== */
+        .screen { display: none; min-height: 100vh; }
+        .screen.active { display: block; }
+
+        /* ===== AUTH SCREEN ===== */
+        .auth-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .auth-box {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.95), rgba(16, 16, 32, 0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 28px;
+            padding: 40px 35px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+        }
+        .auth-logo { text-align: center; margin-bottom: 30px; }
+        .auth-logo i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .auth-logo h1 { font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: 1px; }
+        .auth-logo h1 span {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .auth-logo p { color: #8a8aaa; font-size: 0.85rem; margin-top: 6px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            color: #a855f7;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .input-wrap { position: relative; }
+        .input-wrap i {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7c3aed;
+            font-size: 0.9rem;
+        }
+        .input-wrap input {
+            width: 100%;
+            padding: 13px 45px 13px 16px;
+            background: rgba(10, 10, 20, 0.6);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 14px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-wrap input:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary:hover { transform: scale(0.98); box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .toggle-mode {
+            text-align: center;
+            margin-top: 20px;
+            color: #8a8aaa;
+            font-size: 0.85rem;
+        }
+        .toggle-mode a { color: #a855f7; font-weight: 700; cursor: pointer; }
+        .toggle-mode a:hover { text-decoration: underline; }
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .message.error { display: block; background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3); }
+        .message.success { display: block; background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .message.info { display: block; background: rgba(124, 58, 237, 0.15); color: #a855f7; border: 1px solid rgba(124, 58, 237, 0.3); }
+        .hidden { display: none !important; }
+
+        /* ===== HEADER ===== */
         .main-header {
             background: rgba(10, 10, 20, 0.92);
             backdrop-filter: blur(20px);
@@ -63,30 +170,30 @@
         .logo-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .logo-icon {
             font-size: 1.8rem;
-            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             padding: 6px 12px;
         }
-        .shop-title { font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: 1px; }
-        .shop-title span { 
+        .shop-title { font-size: 1.6rem; font-weight: 800; color: #fff; letter-spacing: 1px; }
+        .shop-title span {
             background: linear-gradient(135deg, #7c3aed, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .shop-title .sub { font-size: 0.7rem; color: #8a8aaa; display: block; letter-spacing: 3px; }
+        .shop-title .sub { font-size: 0.6rem; color: #8a8aaa; display: block; letter-spacing: 2px; }
 
-        .main-nav { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+        .main-nav { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
         .main-nav a {
             color: #8a8aaa;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
             padding: 6px 4px;
             transition: 0.3s;
-            position: relative;
             display: flex;
             align-items: center;
             gap: 6px;
+            cursor: pointer;
         }
         .main-nav a:hover, .main-nav a.active { color: #a855f7; }
         .main-nav a .badge-nav {
@@ -121,16 +228,14 @@
             font-size: 0.9rem;
             padding: 8px 0;
             width: 100%;
-            direction: rtl;
             font-family: inherit;
         }
-
         .user-area { display: flex; align-items: center; gap: 10px; }
-        .user-area .user-btn {
+        .user-btn {
             background: transparent;
             border: none;
             color: #8a8aaa;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: 0.3s;
             padding: 6px 14px;
@@ -140,25 +245,32 @@
             gap: 6px;
             font-family: inherit;
         }
-        .user-area .user-btn:hover { color: #a855f7; background: rgba(124, 58, 237, 0.1); }
-        .user-area .user-btn .user-email {
-            font-size: 0.8rem;
-            max-width: 100px;
+        .user-btn:hover { color: #a855f7; background: rgba(124, 58, 237, 0.1); }
+        .user-btn .user-email {
+            font-size: 0.78rem;
+            max-width: 120px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             color: #a855f7;
         }
-        .user-area .admin-link {
+        .admin-link {
             background: linear-gradient(135deg, #7c3aed, #a855f7);
             color: #fff !important;
             padding: 6px 14px !important;
             border-radius: 30px !important;
             font-size: 0.75rem !important;
-            display: none;
+        }
+        .owner-crown {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 800;
         }
 
-        /* ANNOUNCEMENT */
+        /* ===== ANNOUNCEMENT ===== */
         .announcement-bar {
             background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(59, 130, 246, 0.15));
             border-bottom: 1px solid rgba(124, 58, 237, 0.2);
@@ -183,11 +295,14 @@
             font-size: 0.65rem;
         }
 
+        /* ===== CONTAINER ===== */
+        .container { max-width: 1400px; width: 100%; margin: 0 auto; padding: 0 30px 30px; position: relative; z-index: 1; }
+
         .page { display: none; animation: fadePage 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadePage { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* HERO */
+        /* ===== HERO ===== */
         .hero-slider {
             background: linear-gradient(145deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.05));
             border-radius: 30px;
@@ -248,7 +363,7 @@
         .hero-content .btn-hero:hover { transform: scale(0.97); box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3); }
         .hero-image { font-size: 6rem; color: rgba(124, 58, 237, 0.15); position: relative; z-index: 1; }
 
-        /* PRODUCTS */
+        /* ===== PRODUCTS ===== */
         .category-section { margin-bottom: 50px; }
         .section-header {
             display: flex;
@@ -259,7 +374,7 @@
             gap: 12px;
         }
         .section-header h2 {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #fff;
             padding-right: 16px;
@@ -288,9 +403,9 @@
         }
         .loading-grid {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             color: #8a8aaa;
-            font-size: 1rem;
+            font-size: 0.9rem;
             grid-column: 1 / -1;
         }
         .loading-grid i { font-size: 2rem; display: block; margin-bottom: 16px; color: #7c3aed; }
@@ -306,8 +421,8 @@
             height: 100%;
             position: relative;
         }
-        .product-card:hover { 
-            transform: translateY(-8px); 
+        .product-card:hover {
+            transform: translateY(-8px);
             border-color: rgba(168, 85, 247, 0.5);
             box-shadow: 0 15px 50px rgba(124, 58, 237, 0.2);
         }
@@ -322,22 +437,15 @@
             overflow: hidden;
             position: relative;
         }
-        .product-icon::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at center, rgba(124, 58, 237, 0.15), transparent 70%);
-        }
-        .product-icon i { font-size: 4rem; color: #a855f7; opacity: 0.7; transition: 0.4s; position: relative; z-index: 1; }
+        .product-icon i { font-size: 4rem; color: #a855f7; opacity: 0.7; transition: 0.4s; }
         .product-card:hover .product-icon i { opacity: 1; transform: scale(1.15); }
-        .product-icon img { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1; }
+        .product-icon img { width: 100%; height: 100%; object-fit: cover; }
         .product-info { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
         .product-name { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
         .product-desc { font-size: 0.78rem; color: #8a8aaa; margin-bottom: 12px; flex: 1; min-height: 30px; line-height: 1.5; }
         .price-row { display: flex; align-items: center; justify-content: space-between; margin-top: auto; gap: 8px; }
         .price-box { font-size: 1.1rem; font-weight: 800; color: #a855f7; direction: ltr; }
         .price-box .currency { font-size: 0.7rem; color: #8a8aaa; margin-right: 4px; }
-        
         .btn-buy {
             background: rgba(124, 58, 237, 0.15);
             border: 1px solid rgba(124, 58, 237, 0.3);
@@ -356,7 +464,6 @@
         }
         .btn-buy:hover { background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; border-color: transparent; }
         .btn-buy.in-cart { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border-color: transparent; }
-
         .wishlist-btn {
             position: absolute;
             top: 12px;
@@ -374,11 +481,9 @@
             transition: 0.3s;
             z-index: 2;
             font-family: inherit;
-            backdrop-filter: blur(10px);
         }
         .wishlist-btn:hover { color: #f43f5e; transform: scale(1.1); border-color: #f43f5e; }
         .wishlist-btn.active { color: #f43f5e; border-color: #f43f5e; }
-
         .product-badge {
             position: absolute;
             top: 12px;
@@ -393,7 +498,7 @@
         }
         .product-badge.new { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; }
 
-        /* CART */
+        /* ===== CART ===== */
         .cart-content {
             background: rgba(20, 20, 35, 0.6);
             border-radius: 24px;
@@ -412,13 +517,10 @@
             margin-bottom: 10px;
             flex-wrap: wrap;
             gap: 12px;
-            transition: 0.3s;
         }
-        .cart-item:hover { border-color: rgba(168, 85, 247, 0.4); }
         .cart-item-info { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; flex: 1; min-width: 200px; }
         .cart-item-img {
-            width: 52px;
-            height: 52px;
+            width: 52px; height: 52px;
             border-radius: 12px;
             background: rgba(124, 58, 237, 0.1);
             border: 1px solid rgba(124, 58, 237, 0.2);
@@ -432,7 +534,6 @@
         .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
         .cart-item-name { font-weight: 700; color: #fff; font-size: 0.9rem; }
         .cart-item-price { color: #a855f7; direction: ltr; font-weight: 600; font-size: 0.85rem; }
-
         .quantity-selector {
             display: flex;
             align-items: center;
@@ -443,8 +544,7 @@
             padding: 3px;
         }
         .quantity-btn {
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             border-radius: 50%;
             border: none;
             background: rgba(124, 58, 237, 0.15);
@@ -459,21 +559,12 @@
         }
         .quantity-btn:hover:not(:disabled) { background: #7c3aed; color: #fff; }
         .quantity-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .quantity-number {
-            min-width: 36px;
-            text-align: center;
-            font-weight: 800;
-            font-size: 0.95rem;
-            color: #fff;
-            direction: ltr;
-        }
-
+        .quantity-number { min-width: 36px; text-align: center; font-weight: 800; font-size: 0.95rem; color: #fff; direction: ltr; }
         .cart-item-remove {
             background: rgba(244, 63, 94, 0.1);
             border: none;
             color: #f43f5e;
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             font-size: 0.9rem;
             cursor: pointer;
@@ -481,117 +572,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
         }
         .cart-item-remove:hover { background: #f43f5e; color: #fff; }
-
-        /* COUPON */
-        .es-coupon-section {
-            background: rgba(124, 58, 237, 0.05);
-            border: 2px dashed rgba(124, 58, 237, 0.25);
-            border-radius: 18px;
-            padding: 18px;
-            margin-top: 18px;
-            display: none;
-        }
-        .es-coupon-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #fff;
-            font-weight: 700;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-        }
-        .es-coupon-title i { color: #a855f7; }
-        .es-coupon-input-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        .es-coupon-input {
-            flex: 1;
-            min-width: 150px;
-            padding: 11px 18px;
-            background: rgba(10, 10, 20, 0.6);
-            border: 1px solid rgba(124, 58, 237, 0.25);
-            border-radius: 60px;
-            color: #e0e0e0;
-            font-family: inherit;
-            font-size: 0.9rem;
-            outline: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            direction: ltr;
-            text-align: center;
-        }
-        .es-coupon-input:focus { border-color: #7c3aed; }
-        .es-coupon-btn {
-            padding: 11px 26px;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border: none;
-            border-radius: 60px;
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-        .es-coupon-btn:hover { transform: scale(0.97); }
-        .es-coupon-message {
-            margin-top: 12px;
-            padding: 10px 16px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: none;
-        }
-        .es-coupon-message.success { display: block; background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
-        .es-coupon-message.error { display: block; background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3); }
-        .es-coupon-applied {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            border-radius: 14px;
-            padding: 12px 16px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .es-coupon-applied-info { display: flex; align-items: center; gap: 10px; color: #22c55e; font-weight: 700; font-size: 0.85rem; }
-        .es-coupon-remove {
-            background: #f43f5e;
-            border: none;
-            color: #fff;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-        .es-coupon-remove:hover { transform: scale(1.1); }
-
-        .auto-discount-banner {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            border-radius: 14px;
-            padding: 12px 18px;
-            margin-top: 12px;
-            display: none;
-            align-items: center;
-            gap: 12px;
-            color: #22c55e;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-        .auto-discount-banner.show { display: flex; }
-        .auto-discount-banner i { font-size: 1.2rem; }
-
         .cart-footer {
             border-top: 1px solid rgba(124, 58, 237, 0.15);
             padding-top: 18px;
@@ -607,34 +589,7 @@
         .cart-empty { text-align: center; color: #8a8aaa; padding: 40px 0; }
         .cart-empty i { font-size: 3rem; display: block; margin-bottom: 16px; color: #7c3aed; opacity: 0.3; }
 
-        /* CHECKOUT FORM */
-        .checkout-form {
-            background: rgba(124, 58, 237, 0.05);
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(124, 58, 237, 0.15);
-        }
-        .checkout-form h4 { color: #fff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-        .checkout-form h4 i { color: #a855f7; }
-        .checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .checkout-grid .full { grid-column: 1 / -1; }
-        .checkout-grid label { font-size: 0.8rem; color: #8a8aaa; display: block; margin-bottom: 4px; }
-        .checkout-grid input {
-            width: 100%;
-            padding: 10px 16px;
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            border-radius: 12px;
-            background: rgba(10, 10, 20, 0.6);
-            color: #e0e0e0;
-            outline: none;
-            font-family: inherit;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-        .checkout-grid input:focus { border-color: #7c3aed; }
-
-        /* PROFILE */
+        /* ===== PROFILE ===== */
         .profile-content {
             background: rgba(20, 20, 35, 0.6);
             border-radius: 24px;
@@ -643,7 +598,7 @@
             margin-bottom: 20px;
         }
         .profile-info { display: flex; flex-direction: column; gap: 12px; }
-        .profile-info .info-row {
+        .info-row {
             display: flex;
             gap: 12px;
             align-items: center;
@@ -653,93 +608,12 @@
             border: 1px solid rgba(124, 58, 237, 0.12);
             flex-wrap: wrap;
         }
-        .profile-info .info-row i { color: #a855f7; font-size: 1rem; width: 26px; }
-        .profile-info .info-row .label { color: #8a8aaa; font-weight: 500; font-size: 0.85rem; }
-        .profile-info .info-row .value { color: #fff; font-weight: 600; direction: ltr; font-size: 0.9rem; }
+        .info-row i { color: #a855f7; font-size: 1rem; width: 26px; }
+        .info-row .label { color: #8a8aaa; font-weight: 500; font-size: 0.85rem; }
+        .info-row .value { color: #fff; font-weight: 600; direction: ltr; font-size: 0.9rem; }
         .profile-actions { display: flex; gap: 14px; margin-top: 24px; flex-wrap: wrap; }
 
-        .profile-orders {
-            background: rgba(20, 20, 35, 0.6);
-            border-radius: 24px;
-            padding: 28px 32px;
-            border: 1px solid rgba(124, 58, 237, 0.15);
-        }
-        .profile-orders h3 { font-size: 1.2rem; margin-bottom: 20px; color: #fff; display: flex; align-items: center; gap: 10px; }
-        .profile-orders h3 i { color: #a855f7; }
-        .order-card {
-            background: rgba(124, 58, 237, 0.05);
-            border: 1px solid rgba(124, 58, 237, 0.15);
-            border-radius: 14px;
-            padding: 16px 18px;
-            margin-bottom: 12px;
-            transition: 0.3s;
-        }
-        .order-card:hover { border-color: rgba(168, 85, 247, 0.4); }
-        .order-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(124, 58, 237, 0.15);
-        }
-        .order-tracking { font-weight: 800; color: #a855f7; font-size: 0.9rem; direction: ltr; display: flex; align-items: center; gap: 8px; }
-        .order-status { padding: 4px 14px; border-radius: 30px; font-size: 0.72rem; font-weight: 700; }
-        .order-status.pending { background: #f59e0b; color: #000; }
-        .order-status.processing { background: #8b5cf6; color: #fff; }
-        .order-status.shipped { background: #22c55e; color: #000; }
-        .order-status.delivered { background: #3b82f6; color: #fff; }
-        .order-status.paid { background: #22c55e; color: #000; }
-        .order-status.failed { background: #f43f5e; color: #fff; }
-        .order-items-list { display: flex; flex-direction: column; gap: 8px; }
-        .order-item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: rgba(10, 10, 20, 0.4);
-            border-radius: 10px;
-            border: 1px solid rgba(124, 58, 237, 0.1);
-            font-size: 0.8rem;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .order-item-row .name { font-weight: 600; color: #fff; }
-        .order-item-row .qty { color: #8a8aaa; font-size: 0.75rem; }
-        .order-item-row .price { color: #a855f7; font-weight: 700; direction: ltr; }
-        .order-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(124, 58, 237, 0.15);
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .order-total { font-size: 1rem; font-weight: 800; color: #fff; }
-        .order-total span { color: #a855f7; direction: ltr; }
-        .order-date { color: #8a8aaa; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; }
-
-        /* BUTTONS */
-        .btn-primary {
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border: none;
-            border-radius: 60px;
-            padding: 12px 28px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: inherit;
-        }
-        .btn-primary:hover { transform: scale(0.97); box-shadow: 0 8px 30px rgba(124, 58, 237, 0.3); }
+        /* ===== BUTTONS ===== */
         .btn-secondary {
             background: rgba(124, 58, 237, 0.1);
             border: 1px solid rgba(124, 58, 237, 0.2);
@@ -773,7 +647,7 @@
         }
         .btn-danger:hover { background: #f43f5e; color: #fff; }
 
-        /* TOAST */
+        /* ===== TOAST ===== */
         .temp-msg {
             position: fixed;
             bottom: 30px;
@@ -795,7 +669,7 @@
         }
         @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
-        /* FOOTER */
+        /* ===== FOOTER ===== */
         .main-footer {
             background: rgba(10, 10, 20, 0.95);
             border-top: 1px solid rgba(124, 58, 237, 0.15);
@@ -812,322 +686,838 @@
         }
         .footer-col h4 { color: #fff; font-size: 1rem; margin-bottom: 14px; border-bottom: 1px solid rgba(124, 58, 237, 0.15); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
         .footer-col h4 i { color: #a855f7; }
-        .footer-col p, .footer-col a { color: #8a8aaa; font-size: 0.85rem; display: block; margin-bottom: 8px; transition: 0.3s; }
+        .footer-col p, .footer-col a { color: #8a8aaa; font-size: 0.85rem; display: block; margin-bottom: 8px; transition: 0.3s; cursor: pointer; }
         .footer-col a:hover { color: #a855f7; padding-right: 6px; }
         .footer-bottom { max-width: 1400px; margin: 20px auto 0; padding: 16px 30px 0; border-top: 1px solid rgba(124, 58, 237, 0.1); text-align: center; color: #8a8aaa; font-size: 0.8rem; }
 
-        /* HIDDEN SOURCE PROTECTION */
-        .source-protection { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 999999; }
+        /* ============================================================
+           ADMIN PANEL
+           ============================================================ */
+        .admin-wrapper { display: flex; min-height: 100vh; }
+        .admin-sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, rgba(26, 26, 46, 0.98) 0%, rgba(16, 16, 32, 0.98) 100%);
+            border-left: 1px solid rgba(124, 58, 237, 0.2);
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .admin-sidebar .logo {
+            text-align: center;
+            padding: 20px 0 30px;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+            margin-bottom: 20px;
+        }
+        .admin-sidebar .logo h2 { font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: 1px; }
+        .admin-sidebar .logo h2 span {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .admin-sidebar .logo .version { font-size: 0.6rem; color: #8a8aaa; display: block; margin-top: 6px; letter-spacing: 2px; }
+        .nav-section {
+            padding: 12px 20px 6px;
+            color: #5a5a7a;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 20px;
+            color: #8a8aaa;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-right: 3px solid transparent;
+            font-size: 0.84rem;
+            position: relative;
+        }
+        .nav-item:hover { background: rgba(124, 58, 237, 0.08); color: #e0e0e0; padding-right: 26px; }
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0.15), transparent);
+            color: #a855f7;
+            border-right-color: #7c3aed;
+        }
+        .nav-item i { width: 22px; font-size: 0.95rem; text-align: center; }
+        .nav-item .badge {
+            margin-right: auto;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+        .nav-item .badge.danger { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        .nav-item .badge.success { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .nav-item .badge.warning { background: linear-gradient(135deg, #f59e0b, #f97316); color: #000; }
 
-        /* RESPONSIVE */
+        .admin-main {
+            margin-right: 260px;
+            flex: 1;
+            padding: 24px 30px;
+            min-height: 100vh;
+        }
+        .admin-top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .admin-top-header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+        .admin-top-header h1 i {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .admin-top-header .user-info { display: flex; align-items: center; gap: 12px; }
+        .admin-top-header .email-box {
+            background: rgba(124, 58, 237, 0.1);
+            padding: 7px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            color: #a855f7;
+            font-size: 0.8rem;
+        }
+        .logout-btn {
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .logout-btn:hover { transform: scale(0.97); box-shadow: 0 6px 20px rgba(244, 63, 94, 0.35); }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background: linear-gradient(145deg, rgba(124, 58, 237, 0.08), rgba(20, 20, 35, 0.6));
+            border: 1px solid rgba(124, 58, 237, 0.15);
+            border-radius: 18px;
+            padding: 20px;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card:hover {
+            border-color: rgba(168, 85, 247, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.15);
+        }
+        .stat-card .stat-icon {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .stat-card .stat-number { font-size: 1.7rem; font-weight: 800; color: #fff; line-height: 1; }
+        .stat-card .stat-label { color: #8a8aaa; font-size: 0.78rem; margin-top: 6px; }
+
+        .section-panel {
+            background: linear-gradient(145deg, rgba(124, 58, 237, 0.05), rgba(20, 20, 35, 0.6));
+            border: 1px solid rgba(124, 58, 237, 0.15);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 25px;
+            display: none;
+        }
+        .section-panel.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .panel-header h2 { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 10px; color: #fff; }
+        .panel-header h2 i { color: #a855f7; }
+
+        .table-wrapper { overflow-x: auto; border-radius: 12px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+        table th {
+            text-align: right;
+            padding: 12px 14px;
+            background: rgba(124, 58, 237, 0.1);
+            color: #a855f7;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+            white-space: nowrap;
+            font-size: 0.78rem;
+        }
+        table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+            color: #c0c0d0;
+        }
+        table tr:hover td { background: rgba(124, 58, 237, 0.06); }
+
+        .status-badge {
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .status-badge.active { background: #22c55e; color: #000; }
+        .status-badge.inactive { background: #6b7280; color: #fff; }
+        .status-badge.owner { background: linear-gradient(135deg, #f59e0b, #f97316); color: #000; }
+        .status-badge.admin { background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; }
+        .status-badge.user { background: rgba(124, 58, 237, 0.2); color: #a855f7; }
+        .status-badge.pending { background: #f59e0b; color: #000; }
+        .status-badge.paid { background: #22c55e; color: #000; }
+        .status-badge.failed { background: #f43f5e; color: #fff; }
+
+        .btn-action {
+            background: transparent;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 8px;
+            padding: 5px 12px;
+            color: #8a8aaa;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            font-size: 0.75rem;
+            margin: 2px;
+        }
+        .btn-action:hover { background: rgba(124, 58, 237, 0.15); color: #fff; }
+        .btn-action.danger:hover { border-color: #f43f5e; color: #f43f5e; background: rgba(244, 63, 94, 0.1); }
+        .btn-action.success:hover { border-color: #22c55e; color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+        .btn-action.primary:hover { border-color: #a855f7; color: #a855f7; background: rgba(168, 85, 247, 0.1); }
+        .btn-action.warning:hover { border-color: #f59e0b; color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+        .btn-action:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .btn-primary-full {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            border: none;
+            border-radius: 12px;
+            padding: 11px 26px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary-full:hover { transform: scale(0.97); box-shadow: 0 6px 24px rgba(124, 58, 237, 0.35); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-grid .full-width { grid-column: 1 / -1; }
+        .form-group { margin-bottom: 0; }
+        .form-group label {
+            display: block;
+            color: #8a8aaa;
+            font-size: 0.78rem;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(10, 10, 20, 0.6);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 12px;
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 0.88rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(6px);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.98), rgba(16, 16, 32, 0.98));
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+        }
+        .modal-box h3 { font-size: 1.15rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #fff; }
+        .modal-box h3 i { color: #a855f7; }
+        .modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+        .modal-actions button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+        .modal-actions .btn-confirm { background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; }
+        .modal-actions .btn-confirm:hover { transform: scale(0.97); }
+        .modal-actions .btn-cancel { background: rgba(124, 58, 237, 0.1); color: #8a8aaa; border: 1px solid rgba(124, 58, 237, 0.2); }
+        .modal-actions .btn-cancel:hover { background: rgba(124, 58, 237, 0.2); color: #fff; }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .header-inner { flex-wrap: wrap; justify-content: center; }
             .logo-area { flex: 1 1 100%; justify-content: center; }
             .main-nav { order: 3; flex: 1 1 100%; justify-content: center; gap: 12px; }
-            .header-left { order: 2; flex: 1 1 100%; justify-content: center; gap: 10px; }
-            .hero-slider { flex-direction: column; text-align: center; padding: 30px 20px; }
+            .header-left { order: 2; flex: 1 1 100%; justify-content: center; }
             .hero-content h1 { font-size: 1.6rem; }
             .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
             .product-icon { height: 130px; }
             .product-icon i { font-size: 3rem; }
-            .cart-item { padding: 12px 14px; }
-            .cart-footer { flex-direction: column; align-items: stretch; }
-            .profile-content, .profile-orders { padding: 18px; }
-            .order-card-header { flex-direction: column; align-items: flex-start; }
-            .checkout-grid { grid-template-columns: 1fr; }
+            .admin-sidebar { width: 60px; }
+            .admin-sidebar .logo h2 { display: none; }
+            .admin-sidebar .logo .version { display: none; }
+            .nav-section { display: none; }
+            .nav-item span { display: none; }
+            .nav-item .badge { display: none; }
+            .nav-item { padding: 14px; justify-content: center; }
+            .admin-main { margin-right: 60px; padding: 12px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
         }
-        @media (max-width: 500px) {
-            .container { padding: 0 12px 20px; }
-            .shop-title { font-size: 1.3rem; }
-            .search-box { flex: 1 1 100%; min-width: 100%; }
-            .hero-content h1 { font-size: 1.3rem; }
-            .products-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .product-icon { height: 100px; }
-            .product-icon i { font-size: 2.2rem; }
-            .product-info { padding: 10px 12px 14px; }
-            .product-name { font-size: 0.75rem; }
-            .price-box { font-size: 0.8rem; }
-            .btn-buy { font-size: 0.6rem; padding: 5px 8px; }
-            .cart-item { flex-direction: column; align-items: stretch; }
-            .cart-item-remove { align-self: flex-end; margin-top: -30px; }
-            .quantity-btn { width: 28px; height: 28px; }
-            .cart-total { font-size: 0.95rem; }
-            .cart-total span { font-size: 1.1rem; }
-        }
-
-        /* NO SELECT */
-        .no-select { user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
-
-        /* DECOY CONTENT */
-        .decoy { display: none !important; visibility: hidden !important; position: absolute !important; left: -9999px !important; }
     </style>
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
-    <!-- SOURCE PROTECTION -->
-    <div class="source-protection"></div>
-
-    <!-- DECOY ELEMENTS (برای گمراه کردن ربات‌ها) -->
-    <div class="decoy" aria-hidden="true" data-secure="true">
-        <div id="hidden-content-1" style="display:none;">End Shop © 2026 - All Rights Reserved</div>
-        <div id="hidden-content-2" style="display:none;">This content is protected</div>
-    </div>
-
-    <!-- ===== HEADER ===== -->
-    <header class="main-header no-select">
-        <div class="header-inner">
-            <div class="logo-area" id="logoHome">
-                <div class="logo-icon"><i class="fas fa-dragon"></i></div>
-                <div class="shop-title">
-                    <span>END</span> SHOP
-                    <span class="sub">MINECRAFT STORE</span>
+    <!-- ============================================================
+         SCREEN: AUTH (LOGIN / REGISTER)
+         ============================================================ -->
+    <div class="screen active" id="screen-auth">
+        <div class="auth-screen">
+            <div class="auth-box">
+                <div class="auth-logo">
+                    <i class="fas fa-dragon"></i>
+                    <h1><span>END</span> SHOP</h1>
+                    <p id="authSubtitle">ورود به حساب کاربری</p>
                 </div>
-            </div>
 
-            <nav class="main-nav">
-                <a href="#" class="active" data-page="products"><i class="fas fa-store"></i> محصولات</a>
-                <a href="#" data-page="wishlist"><i class="fas fa-heart"></i> علاقه‌مندی <span class="badge-nav" id="wishlistBadge">0</span></a>
-                <a href="#" data-page="cart"><i class="fas fa-shopping-cart"></i> سبد خرید <span class="badge-nav" id="navBadge">0</span></a>
-                <a href="#" data-page="profile"><i class="fas fa-user"></i> پروفایل</a>
-            </nav>
+                <div class="message" id="authMessage"></div>
 
-            <div class="header-left">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="جستجو..." />
+                <!-- ورود -->
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>ایمیل</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="loginEmail" placeholder="example@email.com" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>رمز عبور</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="••••••••" required />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" style="margin-top:10px;" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> ورود
+                    </button>
+                </form>
+
+                <!-- ثبت‌نام -->
+                <form id="registerForm" class="hidden">
+                    <div class="form-group">
+                        <label>نام کامل</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="regName" placeholder="نام و نام خانوادگی" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>ایمیل</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="regEmail" placeholder="example@email.com" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>رمز عبور</label>
+                        <div class="input-wrap">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="regPassword" placeholder="حداقل ۶ کاراکتر" required minlength="6" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" style="margin-top:10px;" id="registerBtn">
+                        <i class="fas fa-user-plus"></i> ثبت‌نام
+                    </button>
+                </form>
+
+                <div class="toggle-mode">
+                    <span id="toggleText">حساب نداری؟ </span>
+                    <a id="toggleLink">ثبت‌نام کن</a>
                 </div>
-                <div class="user-area">
-                    <a href="#" class="user-btn" id="userBtn">
-                        <i class="fas fa-user-circle"></i>
-                        <span class="user-email" id="userLabel">ورود</span>
+
+                <div style="text-align:center; margin-top:16px;">
+                    <a onclick="showScreen('shop')" style="color:#8a8aaa; font-size:0.82rem; cursor:pointer;">
+                        <i class="fas fa-arrow-right"></i> ورود به فروشگاه بدون حساب
                     </a>
-                    <a href="admin.html" class="user-btn admin-link" id="adminLink"><i class="fas fa-crown"></i> ادمین</a>
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- ===== ANNOUNCEMENT ===== -->
-    <div class="announcement-bar" id="announcementBar">
-        <p>
-            <span class="badge">📢 اطلاعیه</span>
-            <span id="announcementText">
-                به <strong style="color:#a855f7;">End Shop</strong> خوش آمدید! 
-                <span style="color: #a855f7; font-weight: 700;">تخفیف ویژه</span> 
-                برای اولین خرید شما!
-            </span>
-        </p>
     </div>
 
-    <!-- ===== MAIN ===== -->
-    <main class="container">
-
-        <!-- ===== PRODUCTS ===== -->
-        <section class="page active" id="page-products">
-            <div class="hero-slider no-select">
-                <div class="hero-content">
-                    <div class="badge">🔥 تخفیف ویژه</div>
-                    <h1>به <span>End Shop</span> خوش آمدید</h1>
-                    <p>فروشگاه تخصصی ماینکرافت | تامبنیل، اسکین، آواتار، توتم، ادیت ویدیو و طراحی سایت</p>
-                    <button class="btn-hero" onclick="document.getElementById('searchInput').focus()">
-                        <i class="fas fa-search"></i> جستجو کنید
-                    </button>
-                </div>
-                <div class="hero-image">
-                    <i class="fas fa-dragon"></i>
-                </div>
-            </div>
-
-            <div class="category-section" id="cat-thumbnail">
-                <div class="section-header">
-                    <h2><i class="fas fa-image"></i> تامبنیل</h2>
-                </div>
-                <div class="products-grid" id="grid-thumbnail">
-                    <div class="loading-grid"><i class="fas fa-spinner fa-spin"></i> در حال بارگذاری...</div>
-                </div>
-            </div>
-
-            <div class="category-section" id="cat-avatar">
-                <div class="section-header">
-                    <h2><i class="fas fa-user-astronaut"></i> آواتار و اسکین</h2>
-                </div>
-                <div class="products-grid" id="grid-avatar">
-                    <div class="loading-grid"><i class="fas fa-spinner fa-spin"></i> در حال بارگذاری...</div>
-                </div>
-            </div>
-
-            <div class="category-section" id="cat-totem">
-                <div class="section-header">
-                    <h2><i class="fas fa-skull"></i> توتم ماینکرافت</h2>
-                </div>
-                <div class="products-grid" id="grid-totem">
-                    <div class="loading-grid"><i class="fas fa-spinner fa-spin"></i> در حال بارگذاری...</div>
-                </div>
-            </div>
-
-            <div class="category-section" id="cat-video">
-                <div class="section-header">
-                    <h2><i class="fas fa-video"></i> ادیت ویدیو</h2>
-                </div>
-                <div class="products-grid" id="grid-video">
-                    <div class="loading-grid"><i class="fas fa-spinner fa-spin"></i> در حال بارگذاری...</div>
-                </div>
-            </div>
-
-            <div class="category-section" id="cat-website">
-                <div class="section-header">
-                    <h2><i class="fas fa-globe"></i> طراحی سایت</h2>
-                </div>
-                <div class="products-grid" id="grid-website">
-                    <div class="loading-grid"><i class="fas fa-spinner fa-spin"></i> در حال بارگذاری...</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== WISHLIST ===== -->
-        <section class="page" id="page-wishlist">
-            <div class="section-header" style="padding-top:20px;">
-                <h2><i class="fas fa-heart"></i> علاقه‌مندی‌ها</h2>
-            </div>
-            <div class="products-grid" id="wishlistGrid">
-                <div class="loading-grid"><i class="fas fa-heart"></i> هنوز چیزی اضافه نکردی</div>
-            </div>
-        </section>
-
-        <!-- ===== CART ===== -->
-        <section class="page" id="page-cart">
-            <div class="section-header" style="padding-top:20px;">
-                <h2><i class="fas fa-shopping-cart"></i> سبد خرید</h2>
-            </div>
-            <div class="cart-content">
-                <div class="checkout-form" id="checkoutForm">
-                    <h4><i class="fas fa-user-check"></i> اطلاعات خریدار</h4>
-                    <div class="checkout-grid">
-                        <div>
-                            <label>نام کامل</label>
-                            <input type="text" id="checkoutName" placeholder="نام و نام خانوادگی" />
-                        </div>
-                        <div>
-                            <label>شماره تماس</label>
-                            <input type="text" id="checkoutPhone" placeholder="مثال: 09123456789" />
-                        </div>
-                        <div class="full">
-                            <label>ایمیل</label>
-                            <input type="email" id="checkoutEmail" placeholder="example@email.com" />
-                        </div>
+    <!-- ============================================================
+         SCREEN: SHOP
+         ============================================================ -->
+    <div class="screen" id="screen-shop">
+        <header class="main-header">
+            <div class="header-inner">
+                <div class="logo-area" onclick="navigateTo('products')">
+                    <div class="logo-icon"><i class="fas fa-dragon"></i></div>
+                    <div class="shop-title">
+                        <span>END</span> SHOP
+                        <span class="sub">MINECRAFT STORE</span>
                     </div>
                 </div>
 
-                <div class="cart-items" id="cartItems">
-                    <div class="cart-empty"><i class="fas fa-shopping-basket"></i> سبد خرید خالی است</div>
-                </div>
+                <nav class="main-nav">
+                    <a class="active" data-page="products"><i class="fas fa-store"></i> محصولات</a>
+                    <a data-page="wishlist"><i class="fas fa-heart"></i> علاقه‌مندی <span class="badge-nav" id="wishlistBadge">0</span></a>
+                    <a data-page="cart"><i class="fas fa-shopping-cart"></i> سبد خرید <span class="badge-nav" id="navBadge">0</span></a>
+                    <a data-page="profile"><i class="fas fa-user"></i> پروفایل</a>
+                </nav>
 
-                <div class="auto-discount-banner" id="autoDiscountBanner">
-                    <i class="fas fa-gift"></i>
-                    <span id="autoDiscountText"></span>
-                </div>
-
-                <div class="es-coupon-section" id="couponSection">
-                    <div class="es-coupon-title">
-                        <i class="fas fa-ticket-alt"></i>
-                        <span>کد تخفیف دارید؟</span>
+                <div class="header-left">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="جستجو..." />
                     </div>
-                    <div class="es-coupon-input-group">
-                        <input type="text" class="es-coupon-input" id="couponInput" placeholder="WELCOME10" />
-                        <button class="es-coupon-btn" id="applyCouponBtn">
-                            <i class="fas fa-check"></i>
-                            اعمال کد
+                    <div class="user-area">
+                        <button class="user-btn" id="userBtn">
+                            <i class="fas fa-user-circle"></i>
+                            <span class="user-email" id="userLabel">ورود</span>
+                        </button>
+                        <button class="user-btn admin-link hidden" id="adminLink" onclick="showScreen('admin')">
+                            <i class="fas fa-crown"></i> پنل ادمین
                         </button>
                     </div>
-                    <div class="es-coupon-message" id="couponMessage"></div>
-                    <div id="couponApplied"></div>
                 </div>
+            </div>
+        </header>
 
-                <div class="cart-footer" id="cartFooter">
-                    <div class="cart-total">
-                        جمع کل: <span id="cartTotal">0</span> <span class="currency" style="font-size:0.8rem;color:#8a8aaa;">تومان</span>
+        <div class="announcement-bar">
+            <p>
+                <span class="badge">📢 اطلاعیه</span>
+                <span>به <strong style="color:#a855f7;">End Shop</strong> خوش آمدید! تخفیف ویژه برای اولین خرید شما!</span>
+            </p>
+        </div>
+
+        <main class="container">
+            <section class="page active" id="page-products">
+                <div class="hero-slider">
+                    <div class="hero-content">
+                        <div class="badge">🔥 تخفیف ویژه</div>
+                        <h1>به <span>End Shop</span> خوش آمدید</h1>
+                        <p>فروشگاه تخصصی ماینکرافت | تامبنیل، اسکین، آواتار، توتم، ادیت ویدیو و طراحی سایت</p>
+                        <button class="btn-hero" onclick="document.getElementById('searchInput').focus()">
+                            <i class="fas fa-search"></i> جستجو کنید
+                        </button>
                     </div>
-                    <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                        <button class="btn-primary" id="checkoutBtn"><i class="fas fa-credit-card"></i> تسویه حساب</button>
-                        <button class="btn-secondary" id="clearCartBtn"><i class="fas fa-trash-alt"></i> خالی کردن</button>
+                    <div class="hero-image"><i class="fas fa-dragon"></i></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="section-header"><h2><i class="fas fa-image"></i> تامبنیل</h2></div>
+                    <div class="products-grid" id="grid-thumbnail"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="section-header"><h2><i class="fas fa-user-astronaut"></i> آواتار و اسکین</h2></div>
+                    <div class="products-grid" id="grid-avatar"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="section-header"><h2><i class="fas fa-skull"></i> توتم ماینکرافت</h2></div>
+                    <div class="products-grid" id="grid-totem"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="section-header"><h2><i class="fas fa-video"></i> ادیت ویدیو</h2></div>
+                    <div class="products-grid" id="grid-video"></div>
+                </div>
+
+                <div class="category-section">
+                    <div class="section-header"><h2><i class="fas fa-globe"></i> طراحی سایت</h2></div>
+                    <div class="products-grid" id="grid-website"></div>
+                </div>
+            </section>
+
+            <section class="page" id="page-wishlist">
+                <div class="section-header" style="padding-top:20px;">
+                    <h2><i class="fas fa-heart"></i> علاقه‌مندی‌ها</h2>
+                </div>
+                <div class="products-grid" id="wishlistGrid">
+                    <div class="loading-grid"><i class="fas fa-heart"></i> هنوز چیزی اضافه نکردی</div>
+                </div>
+            </section>
+
+            <section class="page" id="page-cart">
+                <div class="section-header" style="padding-top:20px;">
+                    <h2><i class="fas fa-shopping-cart"></i> سبد خرید</h2>
+                </div>
+                <div class="cart-content">
+                    <div class="cart-items" id="cartItems">
+                        <div class="cart-empty"><i class="fas fa-shopping-basket"></i> سبد خرید خالی است</div>
+                    </div>
+                    <div class="cart-footer" id="cartFooter" style="display:none;">
+                        <div class="cart-total">
+                            جمع کل: <span id="cartTotal">0</span> <span style="font-size:0.8rem;color:#8a8aaa;">تومان</span>
+                        </div>
+                        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                            <button class="btn-primary" style="width:auto;" onclick="checkout()">
+                                <i class="fas fa-credit-card"></i> تسویه حساب
+                            </button>
+                            <button class="btn-secondary" onclick="clearCart()">
+                                <i class="fas fa-trash-alt"></i> خالی کردن
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- ===== PROFILE ===== -->
-        <section class="page" id="page-profile">
-            <div class="section-header" style="padding-top:20px;">
-                <h2><i class="fas fa-user-circle"></i> پروفایل کاربری</h2>
-            </div>
+            <section class="page" id="page-profile">
+                <div class="section-header" style="padding-top:20px;">
+                    <h2><i class="fas fa-user-circle"></i> پروفایل کاربری</h2>
+                </div>
+                <div class="profile-content" id="profileContent"></div>
+            </section>
+        </main>
 
-            <div class="profile-content" id="profileContent">
-                <div style="text-align:center; padding:40px 0;">
-                    <i class="fas fa-user-circle" style="font-size:4rem; color:#7c3aed; opacity:0.3;"></i>
-                    <p style="margin-top:16px; color:#8a8aaa;">برای مشاهده پروفایل، وارد شوید.</p>
-                    <a href="login.html" class="btn-primary" style="display:inline-block; margin-top:20px; text-decoration:none;">
-                        <i class="fas fa-sign-in-alt"></i> ورود
-                    </a>
+        <footer class="main-footer">
+            <div class="footer-inner">
+                <div class="footer-col">
+                    <h4><i class="fas fa-dragon"></i> End Shop</h4>
+                    <p>فروشگاه تخصصی ماینکرافت با بهترین محصولات دیجیتال.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>دسترسی سریع</h4>
+                    <a onclick="navigateTo('products')">محصولات</a>
+                    <a onclick="navigateTo('cart')">سبد خرید</a>
+                    <a onclick="navigateTo('profile')">پروفایل</a>
+                </div>
+                <div class="footer-col">
+                    <h4>راهنما</h4>
+                    <p>نحوه خرید</p>
+                    <p>روش‌های پرداخت</p>
+                    <p>پشتیبانی</p>
+                </div>
+                <div class="footer-col">
+                    <h4>تماس</h4>
+                    <p><i class="fas fa-envelope"></i> support@endshop.ir</p>
                 </div>
             </div>
+            <div class="footer-bottom">
+                &copy; ۲۰۲۶ <span style="font-weight:700; color:#a855f7;">End Shop</span> &bull; تمام حقوق محفوظ است
+            </div>
+        </footer>
+    </div>
 
-            <div class="profile-orders" id="profileOrders" style="display:none;">
-                <h3><i class="fas fa-shopping-bag"></i> سفارشات من</h3>
-                <div id="ordersList">
-                    <p style="color:#8a8aaa; text-align:center;">در حال بارگذاری...</p>
+    <!-- ============================================================
+         SCREEN: ADMIN PANEL
+         ============================================================ -->
+    <div class="screen" id="screen-admin">
+        <div class="admin-wrapper">
+            <aside class="admin-sidebar">
+                <div class="logo">
+                    <h2><span>END</span> SHOP</h2>
+                    <span class="version">ADMIN PANEL</span>
                 </div>
-            </div>
 
-            <div class="profile-content" style="margin-top:20px;">
-                <h4 style="color:#fff; margin-bottom:12px; display:flex; align-items:center; gap:8px;"><i class="fas fa-truck" style="color:#a855f7;"></i> پیگیری سفارش با کد</h4>
-                <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                    <input type="text" id="trackInput" placeholder="کد پیگیری (TRK-...)" 
-                           style="flex:1; padding:12px 18px; background:rgba(10,10,20,0.6); border:1px solid rgba(124,58,237,0.25); border-radius:60px; color:#e0e0e0; outline:none; font-family:inherit; direction:ltr; min-width:160px;" />
-                    <button class="btn-primary" id="trackBtn">
-                        <i class="fas fa-search"></i> پیگیری
-                    </button>
+                <div class="nav-section">📊 مدیریت</div>
+                <div class="nav-item active" data-section="dashboard"><i class="fas fa-chart-pie"></i><span>داشبورد</span></div>
+                <div class="nav-item" data-section="orders"><i class="fas fa-shopping-bag"></i><span>سفارشات</span><span class="badge danger" id="ordersBadge">0</span></div>
+
+                <div class="nav-section">📦 فروشگاه</div>
+                <div class="nav-item" data-section="products"><i class="fas fa-box"></i><span>محصولات</span><span class="badge" id="productsBadge">0</span></div>
+                <div class="nav-item" data-section="add-product"><i class="fas fa-plus-circle"></i><span>افزودن محصول</span></div>
+
+                <div class="nav-section">👥 کاربران</div>
+                <div class="nav-item" data-section="users"><i class="fas fa-users"></i><span>مدیریت کاربران</span><span class="badge" id="usersBadge">0</span></div>
+                <div class="nav-item" data-section="admins"><i class="fas fa-crown"></i><span>مدیریت ادمین‌ها</span><span class="badge warning" id="adminsBadge">0</span></div>
+
+                <div class="nav-section">⚙️ سیستم</div>
+                <div class="nav-item" data-section="settings"><i class="fas fa-cogs"></i><span>تنظیمات سایت</span></div>
+                <div class="nav-item" onclick="logout()" style="color:#f43f5e; border-top:1px solid rgba(124,58,237,0.15); margin-top:20px; padding-top:16px;">
+                    <i class="fas fa-sign-out-alt"></i><span>خروج</span>
                 </div>
-                <div id="trackResult" style="margin-top:16px; display:none;"></div>
-            </div>
-        </section>
+            </aside>
 
-    </main>
+            <main class="admin-main">
+                <div class="admin-top-header">
+                    <h1><i class="fas fa-crown"></i> پنل مدیریت End Shop</h1>
+                    <div class="user-info">
+                        <span class="email-box" id="adminEmail">admin@endshop.ir</span>
+                        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+                    </div>
+                </div>
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="main-footer">
-        <div class="footer-inner">
-            <div class="footer-col">
-                <h4><i class="fas fa-dragon"></i> End Shop</h4>
-                <p>فروشگاه تخصصی ماینکرافت با بهترین محصولات دیجیتال.</p>
-            </div>
-            <div class="footer-col">
-                <h4>دسترسی سریع</h4>
-                <a href="#" data-page="products">محصولات</a>
-                <a href="#" data-page="cart">سبد خرید</a>
-                <a href="#" data-page="profile">پروفایل</a>
-            </div>
-            <div class="footer-col">
-                <h4>راهنما</h4>
-                <a href="#">نحوه خرید</a>
-                <a href="#">روش‌های پرداخت</a>
-                <a href="#">پشتیبانی</a>
-            </div>
-            <div class="footer-col">
-                <h4>تماس</h4>
-                <p><i class="fas fa-envelope"></i> support@endshop.ir</p>
-                <p><i class="fas fa-phone"></i> ۰۲۱-۱۲۳۴-۵۶۷۸</p>
+                <!-- DASHBOARD -->
+                <section class="section-panel active" id="section-dashboard">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-chart-line"></i> داشبورد</h2>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <div class="stat-number" id="statUsers">0</div>
+                            <div class="stat-label">کاربران</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-crown"></i></div>
+                            <div class="stat-number" id="statAdmins">0</div>
+                            <div class="stat-label">ادمین‌ها</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-box"></i></div>
+                            <div class="stat-number" id="statProducts">0</div>
+                            <div class="stat-label">محصولات</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
+                            <div class="stat-number" id="statOrders">0</div>
+                            <div class="stat-label">سفارشات</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ORDERS -->
+                <section class="section-panel" id="section-orders">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-shopping-bag"></i> سفارشات</h2>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>کد</th><th>خریدار</th><th>مبلغ</th><th>وضعیت</th><th>تاریخ</th></tr></thead>
+                            <tbody id="ordersTable"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- PRODUCTS -->
+                <section class="section-panel" id="section-products">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-box"></i> مدیریت محصولات</h2>
+                        <span style="color:#8a8aaa; font-size:0.82rem;" id="productsCount">تعداد: 0</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>ID</th><th>نام</th><th>دسته</th><th>قیمت</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                            <tbody id="productsTable"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ADD PRODUCT -->
+                <section class="section-panel" id="section-add-product">
+                    <div class="panel-header">
+                        <h2 id="productFormTitle"><i class="fas fa-plus-circle"></i> افزودن محصول</h2>
+                    </div>
+                    <form id="addProductForm">
+                        <input type="hidden" id="productEditMode" value="add" />
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>شناسه *</label>
+                                <input type="text" id="productId" placeholder="thumb-weak" required style="direction:ltr;" />
+                            </div>
+                            <div class="form-group">
+                                <label>نام *</label>
+                                <input type="text" id="productName" required />
+                            </div>
+                            <div class="form-group">
+                                <label>دسته *</label>
+                                <select id="productCategory" required>
+                                    <option value="thumbnail">تامبنیل</option>
+                                    <option value="avatar">آواتار و اسکین</option>
+                                    <option value="totem">توتم</option>
+                                    <option value="video">ادیت ویدیو</option>
+                                    <option value="website">طراحی سایت</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>قیمت (تومان) *</label>
+                                <input type="number" id="productPrice" required />
+                            </div>
+                            <div class="form-group">
+                                <label>آیکون</label>
+                                <input type="text" id="productIcon" value="fa-cube" style="direction:ltr;" />
+                            </div>
+                            <div class="form-group">
+                                <label>وضعیت</label>
+                                <select id="productStatus">
+                                    <option value="active">فعال</option>
+                                    <option value="inactive">غیرفعال</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>توضیحات</label>
+                                <textarea id="productDescription"></textarea>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:12px; margin-top:16px;">
+                            <button type="submit" class="btn-primary-full"><i class="fas fa-save"></i> ذخیره</button>
+                            <button type="button" class="btn-action" onclick="resetProductForm()" style="padding:11px 20px;">لغو</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- USERS -->
+                <section class="section-panel" id="section-users">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-users"></i> مدیریت کاربران</h2>
+                        <span style="color:#8a8aaa; font-size:0.82rem;" id="usersCount">تعداد: 0</span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>ID</th><th>ایمیل</th><th>نام</th><th>نقش</th><th>تاریخ ثبت</th><th>عملیات</th></tr></thead>
+                            <tbody id="usersTable"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ADMINS MANAGEMENT -->
+                <section class="section-panel" id="section-admins">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-crown"></i> مدیریت ادمین‌ها</h2>
+                        <button class="btn-primary-full" onclick="openAddAdminModal()" style="padding:10px 24px;">
+                            <i class="fas fa-plus"></i> افزودن ادمین
+                        </button>
+                    </div>
+                    <div style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); border-radius:12px; padding:14px; margin-bottom:20px; color:#f59e0b; font-size:0.85rem;">
+                        <i class="fas fa-info-circle"></i> <strong>توجه:</strong> فقط مالک اصلی (<span style="color:#f97316; direction:ltr; display:inline-block;">tahadaneshbayan2@gmail.com</span>) می‌تونه ادمین اضافه یا حذف کنه.
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>ایمیل</th><th>نام</th><th>نقش</th><th>تاریخ</th><th>عملیات</th></tr></thead>
+                            <tbody id="adminsTable"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SETTINGS -->
+                <section class="section-panel" id="section-settings">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-cogs"></i> تنظیمات سایت</h2>
+                        <button class="btn-primary-full" onclick="saveSettings()" style="padding:10px 24px;">
+                            <i class="fas fa-save"></i> ذخیره
+                        </button>
+                    </div>
+                    <div class="form-grid" style="max-width:600px;">
+                        <div class="form-group full-width">
+                            <label>نام سایت</label>
+                            <input type="text" id="settingSiteName" value="End Shop" />
+                        </div>
+                        <div class="form-group full-width">
+                            <label>متن اطلاعیه</label>
+                            <textarea id="settingAnnouncement">به End Shop خوش آمدید! تخفیف ویژه برای اولین خرید شما!</textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>ایمیل پشتیبانی</label>
+                            <input type="email" id="settingEmail" value="support@endshop.ir" style="direction:ltr;" />
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MODALS
+         ============================================================ -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-box" style="max-width:450px;">
+            <h3 id="modalTitle">تأیید</h3>
+            <p id="modalMessage" style="color:#8a8aaa;">آیا مطمئن هستید؟</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">انصراف</button>
+                <button class="btn-confirm" id="modalConfirmBtn">تأیید</button>
             </div>
         </div>
-        <div class="footer-bottom">
-            &copy; ۲۰۲۶ <span style="font-weight:700; color:#a855f7;">End Shop</span> &bull; تمام حقوق محفوظ است
-        </div>
-    </footer>
+    </div>
 
-    <!-- ===== SCRIPT ===== -->
+    <div class="modal-overlay" id="addAdminModal">
+        <div class="modal-box">
+            <h3><i class="fas fa-crown"></i> افزودن ادمین جدید</h3>
+            <div class="form-group" style="margin-top:16px;">
+                <label>ایمیل کاربر</label>
+                <input type="email" id="newAdminEmail" placeholder="user@example.com" style="direction:ltr;" />
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="document.getElementById('addAdminModal').classList.remove('active')">انصراف</button>
+                <button class="btn-confirm" onclick="addNewAdmin()">افزودن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         JAVASCRIPT
+         ============================================================ -->
     <script>
-        // ================================================================
-        // SOURCE PROTECTION
-        // ================================================================
+        // ============================================================
+        // ⚙️ CONFIG - فقط این ایمیل مالک اصلیه
+        // ============================================================
+        const OWNER_EMAIL = 'tahadaneshbayan2@gmail.com';
+        const SESSION_KEY = 'endshop_session';
+        const USERS_KEY = 'endshop_users';
+        const PRODUCTS_KEY = 'endshop_products';
+        const ORDERS_KEY = 'endshop_orders';
+
+        // ============================================================
+        // 🔒 SOURCE PROTECTION
+        // ============================================================
         document.addEventListener('keydown', function(e) {
             if (
                 (e.ctrlKey && e.key === 'u') ||
@@ -1138,158 +1528,90 @@
                 return false;
             }
         });
-        
-        // Disable right click
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
 
-        // Disable text selection on non-input elements
-        document.addEventListener('selectstart', function(e) {
-            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-                e.preventDefault();
-                return false;
-            }
-        });
-
-        // Disable drag
-        document.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-
-        // Obfuscate console
-        (function() {
-            const originalLog = console.log;
-            console.log = function() {
-                if (arguments.length > 0 && typeof arguments[0] === 'string' && arguments[0].includes('End Shop')) {
-                    originalLog.apply(console, arguments);
-                }
-            };
-        })();
-
-        // ================================================================
-        // API CONFIG
-        // ================================================================
-        const API_URL = 'api.php';
-        const SESSION_KEY = 'endshop_session';
-
-        let PRODUCTS = [];
+        // ============================================================
+        // 🎮 STATE
+        // ============================================================
+        let currentUser = null;
         let CART = [];
         let WISHLIST = [];
-        let APPLIED_COUPON = null;
-        let AUTO_DISCOUNT = { discount: 0, percent: 0, message: '' };
+        let PRODUCTS = [];
+        let USERS = [];
+        let ORDERS = [];
 
-        // ================================================================
-        // BUILT-IN PRODUCTS (اضافه شده)
-        // ================================================================
-        const BUILTIN_PRODUCTS = [
-            {
-                id: 'thumb-weak',
-                name: 'تامبنیل ضعیف',
-                description: 'تامبنیل ساده و اقتصادی برای ویدیوهای ماینکرافت',
-                price: 5000,
-                category: 'thumbnail',
-                icon: 'fa-image',
-                image: null,
-                stock: 999,
-                status: 'active'
-            },
-            {
-                id: 'thumb-medium',
-                name: 'تامبنیل متوسط',
-                description: 'تامبنیل با کیفیت متوسط و طراحی حرفه‌ای',
-                price: 10000,
-                category: 'thumbnail',
-                icon: 'fa-image',
-                image: null,
-                stock: 999,
-                status: 'active'
-            },
-            {
-                id: 'thumb-strong',
-                name: 'تامبنیل قوی',
-                description: 'تامبنیل حرفه‌ای با کیفیت بالا و افکت‌های ویژه',
-                price: 30000,
-                category: 'thumbnail',
-                icon: 'fa-image',
-                image: null,
-                stock: 999,
-                status: 'active'
-            },
-            {
-                id: 'avatar-minecraft',
-                name: 'آواتار ماینکرفتی',
-                description: 'آواتار اختصاصی ماینکرافت با طراحی دلخواه',
-                price: 10000,
-                category: 'avatar',
-                icon: 'fa-user-astronaut',
-                image: null,
-                stock: 999,
-                status: 'active'
-            },
-            {
-                id: 'totem-skin',
-                name: 'توتم با اسکین شما',
-                description: 'توتم اختصاصی با اسکین ماینکرافت شما',
-                price: 10000,
-                category: 'totem',
-                icon: 'fa-skull',
-                image: null,
-                stock: 999,
-                status: 'active'
-            },
-            {
-                id: 'video-edit',
-                name: 'ادیت ویدیو',
-                description: 'ادیت حرفه‌ای ویدیوهای ماینکرافت با افکت‌های ویژه',
-                price: 20000,
-                category: 'video',
-                icon: 'fa-video',
-                image: null,
-                stock: 999,
-                status: 'active'
-            },
-            {
-                id: 'skin-custom',
-                name: 'اسکین سفارشی',
-                description: 'اسکین ماینکرافت سفارشی با طراحی اختصاصی',
-                price: 10000,
-                category: 'avatar',
-                icon: 'fa-user-astronaut',
-                image: null,
-                stock: 999,
-                status: 'active'
-            },
-            {
-                id: 'website-with-domain',
-                name: 'سایت با دامنه',
-                description: 'طراحی سایت اختصاصی با دامنه و هاست رایگان',
-                price: 250000,
-                category: 'website',
-                icon: 'fa-globe',
-                image: null,
-                stock: 10,
-                status: 'active'
-            },
-            {
-                id: 'website-without-domain',
-                name: 'سایت بدون دامنه',
-                description: 'طراحی سایت اختصاصی بدون دامنه (فقط سورس کد)',
-                price: 100000,
-                category: 'website',
-                icon: 'fa-globe',
-                image: null,
-                stock: 10,
-                status: 'active'
-            }
+        // ============================================================
+        // 📦 محصولات پیش‌فرض
+        // ============================================================
+        const DEFAULT_PRODUCTS = [
+            { id: 'thumb-weak', name: 'تامبنیل ضعیف', description: 'تامبنیل ساده و اقتصادی', price: 5000, category: 'thumbnail', icon: 'fa-image', status: 'active' },
+            { id: 'thumb-medium', name: 'تامبنیل متوسط', description: 'تامبنیل با کیفیت متوسط', price: 10000, category: 'thumbnail', icon: 'fa-image', status: 'active' },
+            { id: 'thumb-strong', name: 'تامبنیل قوی', description: 'تامبنیل حرفه‌ای با کیفیت بالا', price: 30000, category: 'thumbnail', icon: 'fa-image', status: 'active' },
+            { id: 'avatar-minecraft', name: 'آواتار ماینکرفتی', description: 'آواتار اختصاصی ماینکرافت', price: 10000, category: 'avatar', icon: 'fa-user-astronaut', status: 'active' },
+            { id: 'totem-skin', name: 'توتم با اسکین شما', description: 'توتم اختصاصی با اسکین شما', price: 10000, category: 'totem', icon: 'fa-skull', status: 'active' },
+            { id: 'video-edit', name: 'ادیت ویدیو', description: 'ادیت حرفه‌ای ویدیوهای ماینکرافت', price: 20000, category: 'video', icon: 'fa-video', status: 'active' },
+            { id: 'skin-custom', name: 'اسکین سفارشی', description: 'اسکین ماینکرافت سفارشی', price: 10000, category: 'avatar', icon: 'fa-user-astronaut', status: 'active' },
+            { id: 'website-with-domain', name: 'سایت با دامنه', description: 'طراحی سایت با دامنه و هاست', price: 250000, category: 'website', icon: 'fa-globe', status: 'active' },
+            { id: 'website-without-domain', name: 'سایت بدون دامنه', description: 'طراحی سایت بدون دامنه', price: 100000, category: 'website', icon: 'fa-globe', status: 'active' }
         ];
 
-        // ================================================================
-        // HELPERS
-        // ================================================================
-        function showTemporaryMessage(msg, color = '#7c3aed') {
+        // ============================================================
+        // 💾 STORAGE
+        // ============================================================
+        function getStorage(key, defaultValue = []) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : defaultValue;
+            } catch (e) { return defaultValue; }
+        }
+
+        function setStorage(key, value) {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch (e) { console.error(e); }
+        }
+
+        function loadAllData() {
+            PRODUCTS = getStorage(PRODUCTS_KEY, null);
+            if (!PRODUCTS) {
+                PRODUCTS = [...DEFAULT_PRODUCTS];
+                setStorage(PRODUCTS_KEY, PRODUCTS);
+            }
+
+            USERS = getStorage(USERS_KEY, []);
+            ORDERS = getStorage(ORDERS_KEY, []);
+
+            // اطمینان از وجود مالک
+            if (!USERS.find(u => u.email === OWNER_EMAIL)) {
+                USERS.push({
+                    id: 1,
+                    email: OWNER_EMAIL,
+                    password: 'owner123',
+                    full_name: 'مالک اصلی',
+                    role: 'owner',
+                    is_admin: true,
+                    created_at: new Date().toISOString()
+                });
+                setStorage(USERS_KEY, USERS);
+            }
+
+            // بارگذاری session
+            const session = getStorage(SESSION_KEY, null);
+            if (session) currentUser = session;
+        }
+
+        // ============================================================
+        // 🎯 SCREEN MANAGEMENT
+        // ============================================================
+        function showScreen(name) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen-' + name).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================================
+        // 💬 TOAST
+        // ============================================================
+        function showToast(msg, color = '#7c3aed') {
             const old = document.querySelector('.temp-msg');
             if (old) old.remove();
             const div = document.createElement('div');
@@ -1305,18 +1627,18 @@
             }, 3000);
         }
 
-        function formatPrice(price) {
-            return Number(price).toLocaleString();
+        function showAuthMessage(msg, type = 'error') {
+            const box = document.getElementById('authMessage');
+            box.textContent = msg;
+            box.className = 'message ' + type;
+            setTimeout(() => { box.style.display = 'none'; }, 5000);
         }
 
-        function getSession() {
-            try {
-                const data = localStorage.getItem(SESSION_KEY);
-                if (!data) return null;
-                const session = JSON.parse(data);
-                if (!session.user_id || !session.email) return null;
-                return session;
-            } catch (e) { return null; }
+        // ============================================================
+        // 💰 HELPERS
+        // ============================================================
+        function formatPrice(price) {
+            return Number(price).toLocaleString();
         }
 
         function getCartTotal() {
@@ -1327,123 +1649,239 @@
             return CART.reduce((sum, item) => sum + (item.quantity || 1), 0);
         }
 
-        async function apiCall(action, data = {}) {
-            try {
-                const body = Object.keys(data).length > 0 ? JSON.stringify(data) : '{}';
-                const response = await fetch(`${API_URL}?action=${action}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: body
-                });
-                if (!response.ok) return { success: false, error: `خطای سرور: ${response.status}` };
-                return await response.json();
-            } catch (error) {
-                return { success: false, error: 'مشکل در ارتباط با سرور' };
-            }
-        }
+        // ============================================================
+        // 🔐 AUTH
+        // ============================================================
+        let isLoginMode = true;
+        const toggleLink = document.getElementById('toggleLink');
+        const toggleText = document.getElementById('toggleText');
 
-        // ================================================================
-        // NAVIGATION
-        // ================================================================
-        const navLinks = document.querySelectorAll('.main-nav a[data-page]');
-        const pages = {
-            products: document.getElementById('page-products'),
-            wishlist: document.getElementById('page-wishlist'),
-            cart: document.getElementById('page-cart'),
-            profile: document.getElementById('page-profile')
-        };
-
-        function navigateTo(pageId) {
-            Object.values(pages).forEach(p => p.classList.remove('active'));
-            if (pages[pageId]) pages[pageId].classList.add('active');
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.dataset.page === pageId) link.classList.add('active');
-            });
-            if (pageId === 'cart') renderCart();
-            if (pageId === 'profile') renderProfile();
-            if (pageId === 'wishlist') renderWishlist();
-        }
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const page = link.dataset.page;
-                if (page) navigateTo(page);
-            });
-        });
-
-        document.getElementById('logoHome').addEventListener('click', () => navigateTo('products'));
-        document.querySelectorAll('.footer-col a[data-page]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const page = link.dataset.page;
-                if (page) navigateTo(page);
-            });
-        });
-
-        // ================================================================
-        // AUTH UI
-        // ================================================================
-        function updateAuthUI() {
-            const session = getSession();
-            const userLabel = document.getElementById('userLabel');
-            const userBtn = document.getElementById('userBtn');
-            const adminLink = document.getElementById('adminLink');
-
-            if (session) {
-                userLabel.textContent = session.email.length > 18 ? session.email.slice(0, 16) + '...' : session.email;
-                userBtn.onclick = function(e) {
-                    e.preventDefault();
-                    if (confirm('آیا می‌خواهید خارج شوید؟')) {
-                        logoutUser();
-                    }
-                };
-                if (session.is_admin === true || session.is_admin == 1) {
-                    adminLink.style.display = 'inline-flex';
-                } else {
-                    adminLink.style.display = 'none';
-                }
+        toggleLink.addEventListener('click', function() {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+                document.getElementById('authSubtitle').textContent = 'ورود به حساب کاربری';
+                toggleText.textContent = 'حساب نداری؟ ';
+                toggleLink.textContent = 'ثبت‌نام کن';
             } else {
-                userLabel.textContent = 'ورود';
-                userBtn.onclick = function() { window.location.href = 'login.html'; };
-                adminLink.style.display = 'none';
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.remove('hidden');
+                document.getElementById('authSubtitle').textContent = 'ساخت حساب جدید';
+                toggleText.textContent = 'حساب داری؟ ';
+                toggleLink.textContent = 'وارد شو';
             }
-        }
+            document.getElementById('authMessage').style.display = 'none';
+        });
 
-        function logoutUser() {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+
+            // 🌟 چک مالک اصلی - اگه ایمیل مالک بود، خودکار ادمین میشه
+            if (email === OWNER_EMAIL.toLowerCase()) {
+                // اگه کاربر وجود داره رمز رو چک کن
+                let owner = USERS.find(u => u.email.toLowerCase() === email);
+                if (owner) {
+                    if (owner.password !== password) {
+                        showAuthMessage('❌ رمز عبور اشتباه است', 'error');
+                        return;
+                    }
+                } else {
+                    // اگه وجود نداره، خودکار بسازش
+                    owner = {
+                        id: Date.now(),
+                        email: email,
+                        password: password,
+                        full_name: 'مالک اصلی',
+                        role: 'owner',
+                        is_admin: true,
+                        created_at: new Date().toISOString()
+                    };
+                    USERS.push(owner);
+                    setStorage(USERS_KEY, USERS);
+                }
+
+                // اطمینان از اینکه نقش مالک داره
+                owner.role = 'owner';
+                owner.is_admin = true;
+                setStorage(USERS_KEY, USERS);
+
+                currentUser = {
+                    user_id: owner.id,
+                    email: owner.email,
+                    full_name: owner.full_name,
+                    role: 'owner',
+                    is_admin: true
+                };
+                setStorage(SESSION_KEY, currentUser);
+
+                showAuthMessage('👑 خوش آمدید مالک اصلی! در حال انتقال به پنل...', 'success');
+                setTimeout(() => {
+                    showScreen('admin');
+                    initAdmin();
+                }, 800);
+                return;
+            }
+
+            // کاربر عادی
+            const user = USERS.find(u => u.email.toLowerCase() === email);
+            if (!user) {
+                showAuthMessage('❌ کاربری با این ایمیل پیدا نشد', 'error');
+                return;
+            }
+            if (user.password !== password) {
+                showAuthMessage('❌ رمز عبور اشتباه است', 'error');
+                return;
+            }
+
+            currentUser = {
+                user_id: user.id,
+                email: user.email,
+                full_name: user.full_name,
+                role: user.role || 'user',
+                is_admin: user.is_admin || false
+            };
+            setStorage(SESSION_KEY, currentUser);
+
+            showAuthMessage('✅ ورود موفق!', 'success');
+            setTimeout(() => {
+                if (currentUser.is_admin) {
+                    showScreen('admin');
+                    initAdmin();
+                } else {
+                    showScreen('shop');
+                    initShop();
+                }
+            }, 800);
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const full_name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value;
+
+            if (password.length < 6) {
+                showAuthMessage('❌ رمز عبور باید حداقل ۶ کاراکتر باشد', 'error');
+                return;
+            }
+
+            // چک تکراری
+            if (USERS.find(u => u.email.toLowerCase() === email)) {
+                showAuthMessage('❌ این ایمیل قبلاً ثبت شده', 'error');
+                return;
+            }
+
+            // 🌟 چک اگه ایمیل مالک باشه
+            const isOwner = email === OWNER_EMAIL.toLowerCase();
+
+            const newUser = {
+                id: Date.now(),
+                email: email,
+                password: password,
+                full_name: full_name,
+                role: isOwner ? 'owner' : 'user',
+                is_admin: isOwner,
+                created_at: new Date().toISOString()
+            };
+            USERS.push(newUser);
+            setStorage(USERS_KEY, USERS);
+
+            currentUser = {
+                user_id: newUser.id,
+                email: newUser.email,
+                full_name: newUser.full_name,
+                role: newUser.role,
+                is_admin: newUser.is_admin
+            };
+            setStorage(SESSION_KEY, currentUser);
+
+            if (isOwner) {
+                showAuthMessage('👑 ثبت‌نام مالک اصلی! در حال انتقال به پنل...', 'success');
+                setTimeout(() => {
+                    showScreen('admin');
+                    initAdmin();
+                }, 800);
+            } else {
+                showAuthMessage('✅ ثبت‌نام موفق!', 'success');
+                setTimeout(() => {
+                    showScreen('shop');
+                    initShop();
+                }, 800);
+            }
+        });
+
+        function logout() {
+            if (!confirm('خارج می‌شی؟')) return;
             localStorage.removeItem(SESSION_KEY);
+            currentUser = null;
             CART = [];
             WISHLIST = [];
-            APPLIED_COUPON = null;
-            updateAuthUI();
+            showScreen('auth');
+            showToast('🚪 خارج شدید', '#f43f5e');
+        }
+
+        // ============================================================
+        // 🛒 SHOP INIT
+        // ============================================================
+        function initShop() {
+            updateUserUI();
             renderProducts();
             renderCart();
+            updateBadges();
             renderProfile();
-            renderWishlist();
-            showTemporaryMessage('🚪 خارج شدید', '#f43f5e');
             navigateTo('products');
         }
 
-        // ================================================================
-        // PRODUCTS
-        // ================================================================
-        async function loadProducts() {
-            try {
-                const result = await apiCall('getProducts');
-                if (result.success && result.data && result.data.length > 0) {
-                    // اگه محصولات از سرور اومد، اونها رو استفاده کن
-                    PRODUCTS = result.data;
+        function updateUserUI() {
+            const userLabel = document.getElementById('userLabel');
+            const adminLink = document.getElementById('adminLink');
+            const userBtn = document.getElementById('userBtn');
+
+            if (currentUser) {
+                const displayName = currentUser.role === 'owner' ? '👑 مالک' : (currentUser.email.length > 18 ? currentUser.email.slice(0, 16) + '...' : currentUser.email);
+                userLabel.textContent = displayName;
+                userBtn.onclick = function() {
+                    if (confirm('خارج می‌شی؟')) logout();
+                };
+                if (currentUser.is_admin) {
+                    adminLink.classList.remove('hidden');
                 } else {
-                    // در غیر این صورت محصولات داخلی رو استفاده کن
-                    PRODUCTS = [...BUILTIN_PRODUCTS];
+                    adminLink.classList.add('hidden');
                 }
-            } catch (e) {
-                PRODUCTS = [...BUILTIN_PRODUCTS];
+            } else {
+                userLabel.textContent = 'ورود';
+                userBtn.onclick = function() { showScreen('auth'); };
+                adminLink.classList.add('hidden');
             }
-            renderProducts();
         }
 
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const el = document.getElementById('page-' + page);
+            if (el) el.classList.add('active');
+
+            document.querySelectorAll('.main-nav a').forEach(a => {
+                a.classList.remove('active');
+                if (a.dataset.page === page) a.classList.add('active');
+            });
+
+            if (page === 'cart') renderCart();
+            if (page === 'profile') renderProfile();
+            if (page === 'wishlist') renderWishlist();
+        }
+
+        document.querySelectorAll('.main-nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                if (a.dataset.page) navigateTo(a.dataset.page);
+            });
+        });
+
+        // ============================================================
+        // 📦 PRODUCTS RENDERING
+        // ============================================================
         function renderProducts(filterText = '') {
             const grids = {
                 thumbnail: document.getElementById('grid-thumbnail'),
@@ -1453,51 +1891,31 @@
                 website: document.getElementById('grid-website')
             };
 
-            // پاک کردن همه گریدها
-            Object.values(grids).forEach(g => {
-                if (g) g.innerHTML = '';
-            });
+            Object.values(grids).forEach(g => { if (g) g.innerHTML = ''; });
 
             const lowerFilter = filterText.toLowerCase().trim();
-            let filtered = PRODUCTS;
+            const activeProducts = PRODUCTS.filter(p => p.status === 'active');
+            let filtered = activeProducts;
             if (lowerFilter) {
-                filtered = PRODUCTS.filter(p =>
+                filtered = activeProducts.filter(p =>
                     p.name.toLowerCase().includes(lowerFilter) ||
                     (p.description || '').toLowerCase().includes(lowerFilter)
                 );
             }
 
-            if (filtered.length === 0) {
-                grids.thumbnail.innerHTML = `<div class="loading-grid"><i class="fas fa-search"></i> هیچ محصولی یافت نشد</div>`;
-                return;
-            }
-
-            // دسته‌بندی محصولات
-            const categorized = {
-                thumbnail: [],
-                avatar: [],
-                totem: [],
-                video: [],
-                website: []
-            };
-
+            const categorized = { thumbnail: [], avatar: [], totem: [], video: [], website: [] };
             filtered.forEach(p => {
-                if (categorized[p.category]) {
-                    categorized[p.category].push(p);
-                }
+                if (categorized[p.category]) categorized[p.category].push(p);
             });
 
-            // رندر هر دسته
             Object.entries(categorized).forEach(([cat, products]) => {
                 const grid = grids[cat];
                 if (!grid) return;
                 if (products.length === 0) {
-                    grid.innerHTML = '<div class="loading-grid" style="padding:20px;"><i class="fas fa-box-open"></i> محصولی در این دسته نیست</div>';
+                    grid.innerHTML = '<div class="loading-grid" style="padding:20px;"><i class="fas fa-box-open"></i> محصولی نیست</div>';
                     return;
                 }
-                products.forEach(p => {
-                    grid.appendChild(createProductCard(p));
-                });
+                products.forEach(p => grid.appendChild(createProductCard(p)));
             });
         }
 
@@ -1505,852 +1923,658 @@
             const card = document.createElement('div');
             card.className = 'product-card';
 
-            let iconHtml = p.image
-                ? `<img src="${p.image}" alt="${p.name}" />`
-                : `<i class="fas ${p.icon || 'fa-cube'}"></i>`;
-
             const inCart = CART.some(item => item.id === p.id);
-            const inWishlist = WISHLIST.some(item => item.product_id === p.id);
+            const inWishlist = WISHLIST.includes(p.id);
             const btnClass = inCart ? 'btn-buy in-cart' : 'btn-buy';
             const btnText = inCart ? '✓ در سبد' : 'خرید';
             const wishlistClass = inWishlist ? 'wishlist-btn active' : 'wishlist-btn';
 
-            // بج "جدید" برای محصولات خاص
             let badgeHtml = '';
             if (p.id === 'website-with-domain' || p.id === 'website-without-domain') {
                 badgeHtml = '<span class="product-badge new">🆕 جدید</span>';
             }
 
             card.innerHTML = `
-                <button class="${wishlistClass}" onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist('${p.id}')">
+                <button class="${wishlistClass}" onclick="event.stopPropagation(); toggleWishlist('${p.id}')">
                     <i class="fas fa-heart"></i>
                 </button>
                 ${badgeHtml}
-                <div class="product-icon">${iconHtml}</div>
+                <div class="product-icon"><i class="fas ${p.icon || 'fa-cube'}"></i></div>
                 <div class="product-info">
                     <div class="product-name">${p.name}</div>
                     <div class="product-desc">${p.description || ''}</div>
                     <div class="price-row">
                         <div class="price-box">${formatPrice(p.price)} <span class="currency">تومان</span></div>
-                        <button class="${btnClass}" data-id="${p.id}" onclick="event.stopPropagation(); addToCart('${p.id}')">
+                        <button class="${btnClass}" onclick="event.stopPropagation(); addToCart('${p.id}')">
                             <i class="fas fa-cart-plus"></i> ${btnText}
                         </button>
                     </div>
                 </div>
             `;
-
             return card;
         }
 
-        // ================================================================
-        // WISHLIST
-        // ================================================================
-        async function loadWishlist() {
-            const session = getSession();
-            if (!session) {
-                WISHLIST = [];
-                updateWishlistBadge();
+        // ============================================================
+        // ❤️ WISHLIST
+        // ============================================================
+        function toggleWishlist(productId) {
+            if (!currentUser) {
+                showToast('⚠️ لطفاً وارد شوید', '#f59e0b');
+                setTimeout(() => showScreen('auth'), 1000);
                 return;
             }
-
-            try {
-                const result = await apiCall('getWishlist', { user_id: session.user_id });
-                if (result.success && result.data) {
-                    WISHLIST = result.data;
-                } else {
-                    WISHLIST = [];
-                }
-            } catch (e) {
-                WISHLIST = [];
+            const idx = WISHLIST.indexOf(productId);
+            if (idx > -1) {
+                WISHLIST.splice(idx, 1);
+                showToast('💔 از علاقه‌مندی حذف شد', '#f43f5e');
+            } else {
+                WISHLIST.push(productId);
+                showToast('❤️ به علاقه‌مندی اضافه شد', '#22c55e');
             }
-            updateWishlistBadge();
-            renderProducts(document.getElementById('searchInput').value);
-        }
-
-        async function toggleWishlist(productId) {
-            const session = getSession();
-            if (!session) {
-                showTemporaryMessage('⚠️ لطفاً وارد شوید.', '#f59e0b');
-                setTimeout(() => window.location.href = 'login.html', 1500);
-                return;
-            }
-
-            try {
-                const result = await apiCall('toggleWishlist', {
-                    user_id: session.user_id,
-                    product_id: productId
-                });
-
-                if (result.success) {
-                    showTemporaryMessage(result.message, result.in_wishlist ? '#22c55e' : '#f43f5e');
-                    await loadWishlist();
-                } else {
-                    showTemporaryMessage('❌ ' + result.error, '#f43f5e');
-                }
-            } catch (e) {
-                // حالت آفلاین
-                const existing = WISHLIST.findIndex(item => item.product_id === productId);
-                if (existing > -1) {
-                    WISHLIST.splice(existing, 1);
-                    showTemporaryMessage('💔 از علاقه‌مندی حذف شد', '#f43f5e');
-                } else {
-                    WISHLIST.push({ product_id: productId });
-                    showTemporaryMessage('❤️ به علاقه‌مندی اضافه شد', '#22c55e');
-                }
-                updateWishlistBadge();
-                renderProducts(document.getElementById('searchInput').value);
-                renderWishlist();
-            }
-        }
-
-        function updateWishlistBadge() {
-            const badge = document.getElementById('wishlistBadge');
-            if (badge) badge.textContent = WISHLIST.length;
+            updateBadges();
+            renderProducts(document.getElementById('searchInput')?.value || '');
         }
 
         function renderWishlist() {
             const grid = document.getElementById('wishlistGrid');
             if (WISHLIST.length === 0) {
-                grid.innerHTML = `<div class="loading-grid"><i class="fas fa-heart"></i> هنوز چیزی به علاقه‌مندی‌ها اضافه نکردی</div>`;
+                grid.innerHTML = '<div class="loading-grid"><i class="fas fa-heart"></i> هنوز چیزی اضافه نکردی</div>';
                 return;
             }
-
             grid.innerHTML = '';
-            WISHLIST.forEach(item => {
-                const p = PRODUCTS.find(x => x.id === item.product_id);
-                if (!p) return;
-                const card = createProductCard(p);
-                grid.appendChild(card);
+            WISHLIST.forEach(id => {
+                const p = PRODUCTS.find(x => x.id === id);
+                if (p) grid.appendChild(createProductCard(p));
             });
         }
 
-        // ================================================================
-        // CART
-        // ================================================================
-        async function loadCart() {
-            const session = getSession();
-            if (!session) {
-                CART = [];
-                renderCart();
-                updateCartBadge();
+        function updateBadges() {
+            document.getElementById('wishlistBadge').textContent = WISHLIST.length;
+            document.getElementById('navBadge').textContent = getCartQuantity();
+        }
+
+        // ============================================================
+        // 🛒 CART
+        // ============================================================
+        function addToCart(productId) {
+            if (!currentUser) {
+                showToast('⚠️ لطفاً وارد شوید', '#f59e0b');
+                setTimeout(() => showScreen('auth'), 1000);
                 return;
             }
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
 
-            try {
-                const result = await apiCall('getCart', { user_id: session.user_id });
-                if (result.success && result.data) {
-                    CART = result.data.map(item => ({
-                        id: item.product_id,
-                        name: item.name,
-                        price: item.price,
-                        image: item.image,
-                        icon: item.icon || 'fa-cube',
-                        quantity: item.quantity || 1
-                    }));
-                } else {
-                    CART = [];
-                }
-            } catch (e) {
-                CART = [];
+            const existing = CART.find(i => i.id === productId);
+            if (existing) {
+                existing.quantity = (existing.quantity || 1) + 1;
+            } else {
+                CART.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    icon: product.icon,
+                    quantity: 1
+                });
             }
             renderCart();
-            updateCartBadge();
+            updateBadges();
+            renderProducts(document.getElementById('searchInput')?.value || '');
+            showToast(`✅ "${product.name}" اضافه شد`, '#22c55e');
         }
 
         function renderCart() {
             const container = document.getElementById('cartItems');
             const totalSpan = document.getElementById('cartTotal');
             const footer = document.getElementById('cartFooter');
-            const couponSection = document.getElementById('couponSection');
 
             if (CART.length === 0) {
-                container.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-basket"></i> سبد خرید خالی است</div>`;
-                if (footer) footer.style.display = 'none';
-                if (couponSection) couponSection.style.display = 'none';
-                if (totalSpan) totalSpan.textContent = '0';
-                document.getElementById('autoDiscountBanner').classList.remove('show');
+                container.innerHTML = '<div class="cart-empty"><i class="fas fa-shopping-basket"></i> سبد خرید خالی است</div>';
+                footer.style.display = 'none';
                 return;
             }
 
-            if (footer) footer.style.display = 'flex';
-            if (couponSection) couponSection.style.display = 'block';
-
-            let html = '';
-            CART.forEach(item => {
-                const quantity = item.quantity || 1;
-                let imgHtml = item.image
-                    ? `<img src="${item.image}" style="width:100%;height:100%;object-fit:cover;" />`
-                    : `<i class="fas ${item.icon || 'fa-cube'}"></i>`;
-
-                html += `
-                    <div class="cart-item" data-id="${item.id}">
-                        <div class="cart-item-info">
-                            <div class="cart-item-img">${imgHtml}</div>
-                            <div>
-                                <div class="cart-item-name">${item.name}</div>
-                                <div class="cart-item-price">${formatPrice(item.price)} تومان</div>
-                            </div>
+            footer.style.display = 'flex';
+            container.innerHTML = CART.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-img"><i class="fas ${item.icon || 'fa-cube'}"></i></div>
+                        <div>
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${formatPrice(item.price)} تومان</div>
                         </div>
-                        <div class="quantity-selector">
-                            <button class="quantity-btn" onclick="changeQuantity('${item.id}', -1)" ${quantity <= 1 ? 'disabled' : ''}>
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <span class="quantity-number">${quantity}</span>
-                            <button class="quantity-btn" onclick="changeQuantity('${item.id}', 1)">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">
-                            <i class="fas fa-trash-alt"></i>
+                    </div>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="changeQuantity('${item.id}', -1)" ${item.quantity <= 1 ? 'disabled' : ''}>
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="quantity-number">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="changeQuantity('${item.id}', 1)">
+                            <i class="fas fa-plus"></i>
                         </button>
                     </div>
-                `;
-            });
-
-            container.innerHTML = html;
-            updateFinalTotal();
-        }
-
-        async function changeQuantity(productId, delta) {
-            const session = getSession();
-            if (!session) {
-                // حالت آفلاین
-                const item = CART.find(i => i.id === productId);
-                if (!item) return;
-                const newQty = (item.quantity || 1) + delta;
-                if (newQty < 1) return;
-                item.quantity = newQty;
-                renderCart();
-                updateCartBadge();
-                updateAutoDiscount();
-                return;
-            }
-
-            try {
-                const result = await apiCall('addToCart', {
-                    user_id: session.user_id,
-                    product_id: productId,
-                    quantity: delta
-                });
-
-                if (result.success) {
-                    await loadCart();
-                    await updateAutoDiscount();
-                    renderProducts(document.getElementById('searchInput').value);
-                }
-            } catch (e) {
-                // حالت آفلاین
-                const item = CART.find(i => i.id === productId);
-                if (!item) return;
-                const newQty = (item.quantity || 1) + delta;
-                if (newQty < 1) return;
-                item.quantity = newQty;
-                renderCart();
-                updateCartBadge();
-                updateAutoDiscount();
-            }
-        }
-
-        async function addToCart(productId) {
-            const session = getSession();
-            if (!session) {
-                // حالت آفلاین
-                const product = PRODUCTS.find(p => p.id === productId);
-                if (!product) return;
-                
-                const existing = CART.find(i => i.id === productId);
-                if (existing) {
-                    existing.quantity = (existing.quantity || 1) + 1;
-                } else {
-                    CART.push({
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        image: product.image,
-                        icon: product.icon || 'fa-cube',
-                        quantity: 1
-                    });
-                }
-                renderCart();
-                updateCartBadge();
-                updateAutoDiscount();
-                showTemporaryMessage(`✅ "${product.name}" اضافه شد`, '#22c55e');
-                renderProducts(document.getElementById('searchInput').value);
-                return;
-            }
-
-            const product = PRODUCTS.find(p => p.id === productId);
-            if (!product) return;
-
-            try {
-                const result = await apiCall('addToCart', {
-                    user_id: session.user_id,
-                    product_id: productId,
-                    quantity: 1
-                });
-
-                if (result.success) {
-                    await loadCart();
-                    await updateAutoDiscount();
-                    showTemporaryMessage(`✅ "${product.name}" اضافه شد`, '#22c55e');
-                    renderProducts(document.getElementById('searchInput').value);
-                } else {
-                    showTemporaryMessage('❌ ' + (result.error || 'خطا'), '#f43f5e');
-                }
-            } catch (e) {
-                // حالت آفلاین
-                const existing = CART.find(i => i.id === productId);
-                if (existing) {
-                    existing.quantity = (existing.quantity || 1) + 1;
-                } else {
-                    CART.push({
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        image: product.image,
-                        icon: product.icon || 'fa-cube',
-                        quantity: 1
-                    });
-                }
-                renderCart();
-                updateCartBadge();
-                updateAutoDiscount();
-                showTemporaryMessage(`✅ "${product.name}" اضافه شد`, '#22c55e');
-                renderProducts(document.getElementById('searchInput').value);
-            }
-        }
-
-        async function removeFromCart(productId) {
-            const session = getSession();
-            if (!session) {
-                // حالت آفلاین
-                CART = CART.filter(i => i.id !== productId);
-                renderCart();
-                updateCartBadge();
-                updateAutoDiscount();
-                showTemporaryMessage('🗑️ حذف شد', '#f43f5e');
-                renderProducts(document.getElementById('searchInput').value);
-                return;
-            }
-
-            try {
-                const result = await apiCall('removeFromCart', {
-                    user_id: session.user_id,
-                    product_id: productId
-                });
-
-                if (result.success) {
-                    await loadCart();
-                    await updateAutoDiscount();
-                    showTemporaryMessage('🗑️ حذف شد', '#f43f5e');
-                    renderProducts(document.getElementById('searchInput').value);
-                }
-            } catch (e) {
-                CART = CART.filter(i => i.id !== productId);
-                renderCart();
-                updateCartBadge();
-                updateAutoDiscount();
-                showTemporaryMessage('🗑️ حذف شد', '#f43f5e');
-                renderProducts(document.getElementById('searchInput').value);
-            }
-        }
-
-        function updateCartBadge() {
-            const badge = document.getElementById('navBadge');
-            const totalItems = getCartQuantity();
-            if (badge) badge.textContent = totalItems;
-        }
-
-        // ================================================================
-        // AUTO DISCOUNT
-        // ================================================================
-        async function updateAutoDiscount() {
-            const banner = document.getElementById('autoDiscountBanner');
-            const textEl = document.getElementById('autoDiscountText');
-
-            if (CART.length === 0) {
-                banner.classList.remove('show');
-                AUTO_DISCOUNT = { discount: 0, percent: 0, message: '' };
-                updateFinalTotal();
-                return;
-            }
-
-            try {
-                const result = await apiCall('calculateAutoDiscount', {
-                    total_quantity: getCartQuantity(),
-                    total_amount: getCartTotal()
-                });
-
-                if (result.success && result.discount > 0) {
-                    AUTO_DISCOUNT = result;
-                    textEl.textContent = result.message + ` (تخفیف: ${formatPrice(result.discount)} تومان)`;
-                    banner.classList.add('show');
-                } else {
-                    AUTO_DISCOUNT = { discount: 0, percent: 0, message: '' };
-                    banner.classList.remove('show');
-                }
-            } catch (e) {
-                // تخفیف خودکار پیش‌فرض: 5% برای 3 عدد یا بیشتر
-                const qty = getCartQuantity();
-                if (qty >= 3) {
-                    const discount = Math.round(getCartTotal() * 0.05);
-                    AUTO_DISCOUNT = { discount, percent: 5, message: '🎉 تخفیف خودکار ۵٪ برای خرید ۳ عدد یا بیشتر!' };
-                    textEl.textContent = AUTO_DISCOUNT.message + ` (تخفیف: ${formatPrice(discount)} تومان)`;
-                    banner.classList.add('show');
-                } else {
-                    AUTO_DISCOUNT = { discount: 0, percent: 0, message: '' };
-                    banner.classList.remove('show');
-                }
-            }
-            updateFinalTotal();
-        }
-
-        // ================================================================
-        // COUPON
-        // ================================================================
-        async function applyCoupon() {
-            const codeInput = document.getElementById('couponInput');
-            const applyBtn = document.getElementById('applyCouponBtn');
-            const code = codeInput.value.trim().toUpperCase();
-
-            if (!code) {
-                showCouponMessage('لطفاً کد تخفیف را وارد کنید', 'error');
-                return;
-            }
-
-            const session = getSession();
-            if (!session) {
-                showCouponMessage('لطفاً ابتدا وارد شوید', 'error');
-                return;
-            }
-
-            applyBtn.disabled = true;
-            applyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> بررسی...';
-
-            try {
-                const orderAmount = getCartTotal();
-                const result = await apiCall('validateCoupon', {
-                    code: code,
-                    user_id: session.user_id,
-                    order_amount: orderAmount
-                });
-
-                applyBtn.disabled = false;
-                applyBtn.innerHTML = '<i class="fas fa-check"></i> اعمال کد';
-
-                if (result.success) {
-                    APPLIED_COUPON = result.coupon;
-                    showCouponMessage(`✅ کد "${code}" اعمال شد`, 'success');
-                    showAppliedCoupon();
-                    updateFinalTotal();
-                } else {
-                    APPLIED_COUPON = null;
-                    showCouponMessage('❌ ' + result.error, 'error');
-                }
-            } catch (e) {
-                applyBtn.disabled = false;
-                applyBtn.innerHTML = '<i class="fas fa-check"></i> اعمال کد';
-                showCouponMessage('❌ خطا در ارتباط با سرور', 'error');
-            }
-        }
-
-        function showCouponMessage(msg, type) {
-            const messageEl = document.getElementById('couponMessage');
-            if (!messageEl) return;
-            messageEl.textContent = msg;
-            messageEl.className = 'es-coupon-message ' + type;
-            setTimeout(() => {
-                if (messageEl) messageEl.style.display = 'none';
-            }, 5000);
-        }
-
-        function showAppliedCoupon() {
-            const appliedEl = document.getElementById('couponApplied');
-            if (!appliedEl || !APPLIED_COUPON) return;
-
-            appliedEl.innerHTML = `
-                <div class="es-coupon-applied">
-                    <div class="es-coupon-applied-info">
-                        <i class="fas fa-ticket-alt"></i>
-                        <span>کد "${APPLIED_COUPON.code}" - تخفیف: ${formatPrice(APPLIED_COUPON.discount_amount)} تومان</span>
-                    </div>
-                    <button class="es-coupon-remove" onclick="removeCoupon()">
-                        <i class="fas fa-times"></i>
+                    <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">
+                        <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
-            `;
+            `).join('');
+
+            totalSpan.textContent = formatPrice(getCartTotal());
         }
 
-        function removeCoupon() {
-            APPLIED_COUPON = null;
-            document.getElementById('couponApplied').innerHTML = '';
-            document.getElementById('couponInput').value = '';
-            document.getElementById('couponMessage').style.display = 'none';
-            updateFinalTotal();
-            showTemporaryMessage('🗑️ کد تخفیف حذف شد', '#f59e0b');
+        function changeQuantity(productId, delta) {
+            const item = CART.find(i => i.id === productId);
+            if (!item) return;
+            const newQty = (item.quantity || 1) + delta;
+            if (newQty < 1) return;
+            item.quantity = newQty;
+            renderCart();
+            updateBadges();
         }
 
-        function updateFinalTotal() {
-            const totalSpan = document.getElementById('cartTotal');
-            if (!totalSpan) return;
-
-            const cartTotal = getCartTotal();
-            const couponDiscount = APPLIED_COUPON ? APPLIED_COUPON.discount_amount : 0;
-            const autoDiscount = AUTO_DISCOUNT.discount || 0;
-            const totalDiscount = couponDiscount + autoDiscount;
-            const finalTotal = Math.max(0, cartTotal - totalDiscount);
-
-            if (totalDiscount > 0) {
-                totalSpan.innerHTML = `
-                    <span style="text-decoration:line-through;color:#8a8aaa;font-size:0.9rem;">${formatPrice(cartTotal)}</span>
-                    <span style="color:#22c55e;">${formatPrice(finalTotal)}</span>
-                `;
-            } else {
-                totalSpan.textContent = formatPrice(cartTotal);
-            }
+        function removeFromCart(productId) {
+            CART = CART.filter(i => i.id !== productId);
+            renderCart();
+            updateBadges();
+            renderProducts(document.getElementById('searchInput')?.value || '');
+            showToast('🗑️ حذف شد', '#f43f5e');
         }
 
-        document.getElementById('applyCouponBtn')?.addEventListener('click', applyCoupon);
-        document.getElementById('couponInput')?.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') applyCoupon();
-        });
+        function clearCart() {
+            if (!confirm('سبد خرید خالی بشه؟')) return;
+            CART = [];
+            renderCart();
+            updateBadges();
+            showToast('🧹 سبد خالی شد', '#7c3aed');
+        }
 
-        // ================================================================
-        // CLEAR CART
-        // ================================================================
-        document.getElementById('clearCartBtn').addEventListener('click', async function() {
-            const session = getSession();
-            if (!session) {
-                CART = [];
-                APPLIED_COUPON = null;
-                AUTO_DISCOUNT = { discount: 0, percent: 0, message: '' };
-                document.getElementById('couponApplied').innerHTML = '';
-                document.getElementById('couponInput').value = '';
-                document.getElementById('autoDiscountBanner').classList.remove('show');
-                renderCart();
-                updateCartBadge();
-                showTemporaryMessage('🧹 سبد خرید خالی شد', '#7c3aed');
-                renderProducts(document.getElementById('searchInput').value);
+        function checkout() {
+            if (!currentUser) {
+                showToast('⚠️ لطفاً وارد شوید', '#f59e0b');
+                setTimeout(() => showScreen('auth'), 1000);
                 return;
             }
             if (CART.length === 0) {
-                showTemporaryMessage('⚠️ سبد خرید خالی است', '#f59e0b');
+                showToast('⚠️ سبد خالی است', '#f59e0b');
                 return;
             }
 
-            try {
-                const result = await apiCall('clearCart', { user_id: session.user_id });
-                if (result.success) {
-                    APPLIED_COUPON = null;
-                    AUTO_DISCOUNT = { discount: 0, percent: 0, message: '' };
-                    document.getElementById('couponApplied').innerHTML = '';
-                    document.getElementById('couponInput').value = '';
-                    document.getElementById('autoDiscountBanner').classList.remove('show');
-                    await loadCart();
-                    showTemporaryMessage('🧹 سبد خرید خالی شد', '#7c3aed');
-                    renderProducts(document.getElementById('searchInput').value);
-                }
-            } catch (e) {
-                CART = [];
-                APPLIED_COUPON = null;
-                AUTO_DISCOUNT = { discount: 0, percent: 0, message: '' };
-                document.getElementById('couponApplied').innerHTML = '';
-                document.getElementById('couponInput').value = '';
-                document.getElementById('autoDiscountBanner').classList.remove('show');
-                renderCart();
-                updateCartBadge();
-                showTemporaryMessage('🧹 سبد خرید خالی شد', '#7c3aed');
-                renderProducts(document.getElementById('searchInput').value);
-            }
-        });
+            const tracking = 'TRK-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+            const order = {
+                id: Date.now(),
+                tracking: tracking,
+                user_id: currentUser.user_id,
+                user_email: currentUser.email,
+                customer_name: currentUser.full_name,
+                items: [...CART],
+                total_amount: getCartTotal(),
+                status: 'pending',
+                created_at: new Date().toISOString()
+            };
+            ORDERS.push(order);
+            setStorage(ORDERS_KEY, ORDERS);
 
-        // ================================================================
-        // CHECKOUT
-        // ================================================================
-        document.getElementById('checkoutBtn').addEventListener('click', async function() {
-            const session = getSession();
-            if (!session) {
-                window.location.href = 'login.html';
-                return;
-            }
-            if (CART.length === 0) {
-                showTemporaryMessage('⚠️ سبد خرید خالی است', '#f59e0b');
-                return;
-            }
+            CART = [];
+            renderCart();
+            updateBadges();
 
-            this.disabled = true;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش...';
+            showToast(`✅ سفارش ثبت شد! کد پیگیری: ${tracking}`, '#22c55e');
+        }
 
-            try {
-                const name = document.getElementById('checkoutName').value.trim();
-                const phone = document.getElementById('checkoutPhone').value.trim();
-                const email = document.getElementById('checkoutEmail').value.trim();
-
-                const items = CART.map(item => ({
-                    product_id: item.id,
-                    name: item.name,
-                    price: item.price,
-                    quantity: item.quantity || 1
-                }));
-
-                const couponDiscount = APPLIED_COUPON ? APPLIED_COUPON.discount_amount : 0;
-                const autoDiscount = AUTO_DISCOUNT.discount || 0;
-                const total = Math.max(0, getCartTotal() - couponDiscount - autoDiscount);
-
-                const orderResult = await apiCall('addOrder', {
-                    user_id: session.user_id,
-                    items: items,
-                    total: total,
-                    customer_name: name,
-                    customer_phone: phone,
-                    customer_email: email
-                });
-
-                if (!orderResult.success) {
-                    showTemporaryMessage('❌ ' + orderResult.error, '#f43f5e');
-                    this.disabled = false;
-                    this.innerHTML = '<i class="fas fa-credit-card"></i> تسویه حساب';
-                    return;
-                }
-
-                if (APPLIED_COUPON) {
-                    await apiCall('useCoupon', {
-                        coupon_id: APPLIED_COUPON.id,
-                        user_id: session.user_id,
-                        order_id: orderResult.tracking,
-                        discount_amount: APPLIED_COUPON.discount_amount
-                    });
-                }
-
-                const paymentResult = await apiCall('requestPayment', {
-                    tracking: orderResult.tracking,
-                    email: email
-                });
-
-                if (!paymentResult.success) {
-                    showTemporaryMessage('❌ ' + paymentResult.error, '#f43f5e');
-                    this.disabled = false;
-                    this.innerHTML = '<i class="fas fa-credit-card"></i> تسویه حساب';
-                    return;
-                }
-
-                CART = [];
-                APPLIED_COUPON = null;
-                AUTO_DISCOUNT = { discount: 0, percent: 0, message: '' };
-                renderCart();
-                updateCartBadge();
-
-                if (paymentResult.payment_url) {
-                    window.location.href = paymentResult.payment_url;
-                }
-            } catch (error) {
-                showTemporaryMessage('❌ خطا: ' + error.message, '#f43f5e');
-                this.disabled = false;
-                this.innerHTML = '<i class="fas fa-credit-card"></i> تسویه حساب';
-            }
-        });
-
-        // ================================================================
-        // PROFILE
-        // ================================================================
-        async function renderProfile() {
+        // ============================================================
+        // 👤 PROFILE
+        // ============================================================
+        function renderProfile() {
             const container = document.getElementById('profileContent');
-            const ordersSection = document.getElementById('profileOrders');
-            const ordersList = document.getElementById('ordersList');
-            const session = getSession();
 
-            if (!session) {
+            if (!currentUser) {
                 container.innerHTML = `
                     <div style="text-align:center; padding:40px 0;">
                         <i class="fas fa-user-circle" style="font-size:4rem; color:#7c3aed; opacity:0.3;"></i>
                         <p style="margin-top:16px; color:#8a8aaa;">برای مشاهده پروفایل، وارد شوید.</p>
-                        <a href="login.html" class="btn-primary" style="display:inline-block; margin-top:20px; text-decoration:none;">
+                        <button class="btn-primary" style="width:auto; margin-top:20px;" onclick="showScreen('auth')">
                             <i class="fas fa-sign-in-alt"></i> ورود
-                        </a>
+                        </button>
                     </div>
                 `;
-                ordersSection.style.display = 'none';
                 return;
             }
 
-            let orders = [];
-            try {
-                const ordersResult = await apiCall('getUserOrders', { user_id: session.user_id });
-                orders = ordersResult.success ? ordersResult.data : [];
-            } catch (e) {
-                orders = [];
-            }
+            const userOrders = ORDERS.filter(o => o.user_id === currentUser.user_id);
+            const totalSpent = userOrders.reduce((s, o) => s + Number(o.total_amount || 0), 0);
 
-            const totalSpent = orders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+            let roleText = 'کاربر عادی';
+            if (currentUser.role === 'owner') roleText = '👑 مالک اصلی';
+            else if (currentUser.is_admin) roleText = '⭐ ادمین';
 
             container.innerHTML = `
                 <div class="profile-info">
-                    <div class="info-row"><i class="fas fa-envelope"></i> <span class="label">ایمیل:</span> <span class="value">${session.email}</span></div>
-                    <div class="info-row"><i class="fas fa-user-tag"></i> <span class="label">نام:</span> <span class="value">${session.full_name || 'کاربر'}</span></div>
-                    ${session.is_admin ? '<div class="info-row"><i class="fas fa-crown"></i> <span class="label">نوع:</span> <span class="value" style="color:#f59e0b;">ادمین</span></div>' : ''}
-                    <div class="info-row"><i class="fas fa-shopping-bag"></i> <span class="label">تعداد سفارشات:</span> <span class="value">${orders.length}</span></div>
+                    <div class="info-row"><i class="fas fa-envelope"></i> <span class="label">ایمیل:</span> <span class="value">${currentUser.email}</span></div>
+                    <div class="info-row"><i class="fas fa-user-tag"></i> <span class="label">نام:</span> <span class="value">${currentUser.full_name || 'کاربر'}</span></div>
+                    <div class="info-row"><i class="fas fa-crown"></i> <span class="label">نقش:</span> <span class="value" style="color:#f59e0b;">${roleText}</span></div>
+                    <div class="info-row"><i class="fas fa-shopping-bag"></i> <span class="label">تعداد سفارشات:</span> <span class="value">${userOrders.length}</span></div>
                     <div class="info-row"><i class="fas fa-dollar-sign"></i> <span class="label">مجموع خرید:</span> <span class="value" style="color:#22c55e;">${formatPrice(totalSpent)} تومان</span></div>
                 </div>
                 <div class="profile-actions">
-                    <button class="btn-danger" onclick="logoutUser()">
-                        <i class="fas fa-sign-out-alt"></i> خروج
-                    </button>
-                </div>
-            `;
-
-            if (orders.length > 0) {
-                ordersSection.style.display = 'block';
-                ordersList.innerHTML = orders.map(order => renderOrderCard(order)).join('');
-            } else {
-                ordersSection.style.display = 'block';
-                ordersList.innerHTML = `<p style="color:#8a8aaa; text-align:center; padding:20px;">هنوز سفارشی ثبت نکردی</p>`;
-            }
-        }
-
-        function renderOrderCard(order) {
-            const items = order.items_parsed || [];
-            const statusMap = {
-                pending: 'در انتظار پرداخت',
-                processing: 'در حال پردازش',
-                shipped: 'ارسال شده',
-                delivered: 'تحویل داده شده',
-                paid: 'پرداخت شده',
-                failed: 'ناموفق'
-            };
-
-            const itemsHtml = items.map(item => `
-                <div class="order-item-row">
-                    <span class="name">${item.name}</span>
-                    <span class="qty">${item.quantity} عدد</span>
-                    <span class="price">${formatPrice(item.price)} تومان</span>
-                </div>
-            `).join('');
-
-            const date = order.created_at ? new Date(order.created_at).toLocaleDateString('fa-IR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            }) : '—';
-
-            return `
-                <div class="order-card">
-                    <div class="order-card-header">
-                        <div class="order-tracking">
-                            <i class="fas fa-barcode"></i>
-                            ${order.tracking}
-                        </div>
-                        <span class="order-status ${order.status}">${statusMap[order.status] || order.status}</span>
-                    </div>
-                    <div class="order-items-list">
-                        ${itemsHtml || '<p style="color:#8a8aaa;">اطلاعات محصولات موجود نیست</p>'}
-                    </div>
-                    <div class="order-footer">
-                        <div class="order-total">
-                            جمع کل: <span>${formatPrice(order.total_amount)} تومان</span>
-                        </div>
-                        <div class="order-date">
-                            <i class="fas fa-calendar-alt"></i>
-                            ${date}
-                        </div>
-                    </div>
+                    ${currentUser.is_admin ? `<button class="btn-primary" style="width:auto;" onclick="showScreen('admin'); initAdmin();"><i class="fas fa-crown"></i> پنل ادمین</button>` : ''}
+                    <button class="btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
                 </div>
             `;
         }
 
-        // ================================================================
-        // TRACK ORDER
-        // ================================================================
-        document.getElementById('trackBtn').addEventListener('click', async function() {
-            const code = document.getElementById('trackInput').value.trim();
-            const resultDiv = document.getElementById('trackResult');
-
-            if (!code) {
-                resultDiv.style.display = 'block';
-                resultDiv.innerHTML = `<p style="color:#f43f5e; padding:16px;">⚠️ کد پیگیری را وارد کنید</p>`;
+        // ============================================================
+        // 🎛️ ADMIN PANEL
+        // ============================================================
+        function initAdmin() {
+            if (!currentUser || !currentUser.is_admin) {
+                showToast('❌ دسترسی ندارید', '#f43f5e');
+                showScreen('shop');
                 return;
             }
 
-            try {
-                const result = await apiCall('getOrderByTracking', { tracking: code });
+            document.getElementById('adminEmail').textContent = currentUser.email + (currentUser.role === 'owner' ? ' 👑' : '');
+            loadAdminDashboard();
+            loadAdminProducts();
+            loadAdminUsers();
+            loadAdminOrders();
+            loadAdminAdmins();
+            loadSettings();
+        }
 
-                if (!result.success) {
-                    resultDiv.style.display = 'block';
-                    resultDiv.innerHTML = `<p style="color:#f43f5e; padding:16px;">❌ ${result.error}</p>`;
-                    return;
-                }
+        document.querySelectorAll('.nav-item[data-section]').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+                const section = this.dataset.section;
+                document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById('section-' + section)?.classList.add('active');
 
-                const order = result.data;
-                const items = order.items_parsed || [];
-                const statusMap = {
-                    pending: 'در انتظار پرداخت',
-                    processing: 'در حال پردازش',
-                    shipped: 'ارسال شده',
-                    delivered: 'تحویل داده شده',
-                    paid: 'پرداخت شده',
-                    failed: 'ناموفق'
+                const loads = {
+                    dashboard: loadAdminDashboard,
+                    products: loadAdminProducts,
+                    users: loadAdminUsers,
+                    orders: loadAdminOrders,
+                    admins: loadAdminAdmins,
+                    settings: loadSettings
                 };
-
-                const itemsHtml = items.map(item => `
-                    <div class="order-item-row">
-                        <span class="name">${item.name}</span>
-                        <span class="qty">${item.quantity} عدد</span>
-                        <span class="price">${formatPrice(item.price)} تومان</span>
-                    </div>
-                `).join('');
-
-                resultDiv.style.display = 'block';
-                resultDiv.innerHTML = `
-                    <div class="order-card">
-                        <div class="order-card-header">
-                            <div class="order-tracking">
-                                <i class="fas fa-barcode"></i>
-                                ${order.tracking}
-                            </div>
-                            <span class="order-status ${order.status}">${statusMap[order.status] || order.status}</span>
-                        </div>
-                        <div class="order-items-list">
-                            ${itemsHtml}
-                        </div>
-                        <div class="order-footer">
-                            <div class="order-total">
-                                جمع کل: <span>${formatPrice(order.total_amount)} تومان</span>
-                            </div>
-                            <div class="order-date">
-                                <i class="fas fa-calendar-alt"></i>
-                                ${order.created_at ? new Date(order.created_at).toLocaleDateString('fa-IR') : '—'}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } catch (e) {
-                resultDiv.style.display = 'block';
-                resultDiv.innerHTML = `<p style="color:#f43f5e; padding:16px;">❌ خطا در ارتباط با سرور</p>`;
-            }
+                if (loads[section]) loads[section]();
+            });
         });
 
-        // ================================================================
-        // SEARCH
-        // ================================================================
+        function loadAdminDashboard() {
+            document.getElementById('statUsers').textContent = USERS.length;
+            document.getElementById('statAdmins').textContent = USERS.filter(u => u.is_admin).length;
+            document.getElementById('statProducts').textContent = PRODUCTS.length;
+            document.getElementById('statOrders').textContent = ORDERS.length;
+
+            document.getElementById('usersBadge').textContent = USERS.length;
+            document.getElementById('productsBadge').textContent = PRODUCTS.length;
+            document.getElementById('ordersBadge').textContent = ORDERS.length;
+            document.getElementById('adminsBadge').textContent = USERS.filter(u => u.is_admin).length;
+        }
+
+        function loadAdminProducts() {
+            const tbody = document.getElementById('productsTable');
+            document.getElementById('productsCount').textContent = `تعداد: ${PRODUCTS.length}`;
+
+            const categoryMap = {
+                thumbnail: 'تامبنیل',
+                avatar: 'آواتار',
+                totem: 'توتم',
+                video: 'ویدیو',
+                website: 'سایت'
+            };
+
+            tbody.innerHTML = PRODUCTS.map(p => `
+                <tr>
+                    <td><strong style="color:#a855f7;">${p.id}</strong></td>
+                    <td>${p.name}</td>
+                    <td>${categoryMap[p.category] || p.category}</td>
+                    <td>${formatPrice(p.price)} تومان</td>
+                    <td><span class="status-badge ${p.status}">${p.status === 'active' ? 'فعال' : 'غیرفعال'}</span></td>
+                    <td>
+                        <button class="btn-action primary" onclick="editProduct('${p.id}')" title="ویرایش"><i class="fas fa-edit"></i></button>
+                        <button class="btn-action ${p.status === 'active' ? 'warning' : 'success'}" onclick="toggleProductStatus('${p.id}')" title="فعال/غیرفعال">
+                            <i class="fas ${p.status === 'active' ? 'fa-eye-slash' : 'fa-eye'}"></i>
+                        </button>
+                        <button class="btn-action danger" onclick="deleteProduct('${p.id}')" title="حذف"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('') || '<tr><td colspan="6" style="text-align:center;">محصولی نیست</td></tr>';
+        }
+
+        function editProduct(id) {
+            const p = PRODUCTS.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('productEditMode').value = 'edit';
+            document.getElementById('productFormTitle').innerHTML = `<i class="fas fa-edit"></i> ویرایش: ${p.name}`;
+            document.getElementById('productId').value = p.id;
+            document.getElementById('productId').disabled = true;
+            document.getElementById('productName').value = p.name;
+            document.getElementById('productCategory').value = p.category;
+            document.getElementById('productPrice').value = p.price;
+            document.getElementById('productIcon').value = p.icon || 'fa-cube';
+            document.getElementById('productStatus').value = p.status;
+            document.getElementById('productDescription').value = p.description || '';
+
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelector('[data-section="add-product"]').classList.add('active');
+            document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('section-add-product').classList.add('active');
+        }
+
+        function resetProductForm() {
+            document.getElementById('addProductForm').reset();
+            document.getElementById('productEditMode').value = 'add';
+            document.getElementById('productFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> افزودن محصول';
+            document.getElementById('productId').disabled = false;
+            document.getElementById('productIcon').value = 'fa-cube';
+        }
+
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const mode = document.getElementById('productEditMode').value;
+            const data = {
+                id: document.getElementById('productId').value.trim(),
+                name: document.getElementById('productName').value.trim(),
+                category: document.getElementById('productCategory').value,
+                price: parseInt(document.getElementById('productPrice').value),
+                icon: document.getElementById('productIcon').value.trim() || 'fa-cube',
+                status: document.getElementById('productStatus').value,
+                description: document.getElementById('productDescription').value.trim()
+            };
+
+            if (!data.id || !data.name || !data.price) {
+                showToast('⚠️ فیلدهای ضروری را پر کن', '#f59e0b');
+                return;
+            }
+
+            if (mode === 'edit') {
+                const idx = PRODUCTS.findIndex(p => p.id === data.id);
+                if (idx > -1) PRODUCTS[idx] = { ...PRODUCTS[idx], ...data };
+                showToast('✅ ویرایش شد', '#22c55e');
+            } else {
+                if (PRODUCTS.find(p => p.id === data.id)) {
+                    showToast('❌ شناسه تکراری است', '#f43f5e');
+                    return;
+                }
+                PRODUCTS.push(data);
+                showToast('✅ اضافه شد', '#22c55e');
+            }
+
+            setStorage(PRODUCTS_KEY, PRODUCTS);
+            resetProductForm();
+            loadAdminProducts();
+            loadAdminDashboard();
+
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelector('[data-section="products"]').classList.add('active');
+            document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('section-products').classList.add('active');
+        });
+
+        function toggleProductStatus(id) {
+            const p = PRODUCTS.find(x => x.id === id);
+            if (!p) return;
+            p.status = p.status === 'active' ? 'inactive' : 'active';
+            setStorage(PRODUCTS_KEY, PRODUCTS);
+            loadAdminProducts();
+            showToast('✅ تغییر کرد', '#22c55e');
+        }
+
+        function deleteProduct(id) {
+            openModal('حذف محصول', 'مطمئنی؟', () => {
+                PRODUCTS = PRODUCTS.filter(p => p.id !== id);
+                setStorage(PRODUCTS_KEY, PRODUCTS);
+                loadAdminProducts();
+                loadAdminDashboard();
+                showToast('✅ حذف شد', '#22c55e');
+            });
+        }
+
+        function loadAdminUsers() {
+            const tbody = document.getElementById('usersTable');
+            document.getElementById('usersCount').textContent = `تعداد: ${USERS.length}`;
+
+            tbody.innerHTML = USERS.map(u => {
+                let roleText = '👤 کاربر';
+                let roleClass = 'user';
+                if (u.role === 'owner') { roleText = '👑 مالک'; roleClass = 'owner'; }
+                else if (u.is_admin) { roleText = '⭐ ادمین'; roleClass = 'admin'; }
+
+                const isOwner = u.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+                const canManage = currentUser.role === 'owner' && !isOwner;
+
+                return `
+                    <tr>
+                        <td>${u.id}</td>
+                        <td style="direction:ltr;font-size:0.75rem;">${u.email}</td>
+                        <td>${u.full_name || '—'}</td>
+                        <td><span class="status-badge ${roleClass}">${roleText}</span></td>
+                        <td>${new Date(u.created_at).toLocaleDateString('fa-IR')}</td>
+                        <td>
+                            ${canManage ? `
+                                <button class="btn-action ${u.is_admin ? 'warning' : 'success'}" onclick="toggleUserAdmin(${u.id})" title="${u.is_admin ? 'حذف ادمینی' : 'ادمین کن'}">
+                                    <i class="fas ${u.is_admin ? 'fa-crown' : 'fa-user-shield'}"></i>
+                                </button>
+                                <button class="btn-action danger" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>
+                            ` : '<span style="color:#5a5a7a;font-size:0.7rem;">—</span>'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function toggleUserAdmin(id) {
+            if (currentUser.role !== 'owner') {
+                showToast('❌ فقط مالک می‌تونه ادمین بده', '#f43f5e');
+                return;
+            }
+            const user = USERS.find(u => u.id === id);
+            if (!user) return;
+            if (user.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
+                showToast('❌ نمی‌تونی مالک رو تغییر بدی', '#f43f5e');
+                return;
+            }
+
+            user.is_admin = !user.is_admin;
+            user.role = user.is_admin ? 'admin' : 'user';
+            setStorage(USERS_KEY, USERS);
+            loadAdminUsers();
+            loadAdminAdmins();
+            loadAdminDashboard();
+            showToast(user.is_admin ? '⭐ ادمین شد' : '👤 ادمین حذف شد', '#22c55e');
+        }
+
+        function deleteUser(id) {
+            if (currentUser.role !== 'owner') {
+                showToast('❌ فقط مالک', '#f43f5e');
+                return;
+            }
+            const user = USERS.find(u => u.id === id);
+            if (!user) return;
+            if (user.email.toLowerCase() === OWNER_EMAIL.toLowerCase()) {
+                showToast('❌ نمی‌تونی مالک رو حذف کنی', '#f43f5e');
+                return;
+            }
+            openModal('حذف کاربر', `حذف "${user.email}"؟`, () => {
+                USERS = USERS.filter(u => u.id !== id);
+                setStorage(USERS_KEY, USERS);
+                loadAdminUsers();
+                loadAdminAdmins();
+                loadAdminDashboard();
+                showToast('✅ حذف شد', '#22c55e');
+            });
+        }
+
+        function loadAdminAdmins() {
+            const tbody = document.getElementById('adminsTable');
+            const admins = USERS.filter(u => u.is_admin);
+            document.getElementById('adminsBadge').textContent = admins.length;
+
+            tbody.innerHTML = admins.map(u => {
+                const isOwner = u.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+                const canRemove = currentUser.role === 'owner' && !isOwner;
+
+                return `
+                    <tr>
+                        <td style="direction:ltr;font-size:0.75rem;">${u.email}</td>
+                        <td>${u.full_name || '—'}</td>
+                        <td><span class="status-badge ${isOwner ? 'owner' : 'admin'}">${isOwner ? '👑 مالک اصلی' : '⭐ ادمین'}</span></td>
+                        <td>${new Date(u.created_at).toLocaleDateString('fa-IR')}</td>
+                        <td>
+                            ${canRemove ? `<button class="btn-action danger" onclick="removeAdmin(${u.id})"><i class="fas fa-user-minus"></i> حذف ادمینی</button>` : '<span style="color:#5a5a7a;font-size:0.7rem;">—</span>'}
+                        </td>
+                    </tr>
+                `;
+            }).join('') || '<tr><td colspan="5" style="text-align:center;">ادمینی نیست</td></tr>';
+        }
+
+        function removeAdmin(id) {
+            if (currentUser.role !== 'owner') {
+                showToast('❌ فقط مالک', '#f43f5e');
+                return;
+            }
+            const user = USERS.find(u => u.id === id);
+            if (!user) return;
+            openModal('حذف ادمینی', `حذف ادمینی "${user.email}"؟`, () => {
+                user.is_admin = false;
+                user.role = 'user';
+                setStorage(USERS_KEY, USERS);
+                loadAdminUsers();
+                loadAdminAdmins();
+                loadAdminDashboard();
+                showToast('✅ حذف شد', '#22c55e');
+            });
+        }
+
+        function openAddAdminModal() {
+            if (currentUser.role !== 'owner') {
+                showToast('❌ فقط مالک اصلی می‌تونه ادمین اضافه کنه', '#f43f5e');
+                return;
+            }
+            document.getElementById('addAdminModal').classList.add('active');
+        }
+
+        function addNewAdmin() {
+            if (currentUser.role !== 'owner') {
+                showToast('❌ فقط مالک', '#f43f5e');
+                return;
+            }
+            const email = document.getElementById('newAdminEmail').value.trim().toLowerCase();
+            if (!email) {
+                showToast('⚠️ ایمیل رو وارد کن', '#f59e0b');
+                return;
+            }
+
+            const user = USERS.find(u => u.email.toLowerCase() === email);
+            if (!user) {
+                showToast('❌ کاربری با این ایمیل پیدا نشد', '#f43f5e');
+                return;
+            }
+            if (user.is_admin) {
+                showToast('⚠️ این کاربر از قبل ادمینه', '#f59e0b');
+                return;
+            }
+
+            user.is_admin = true;
+            user.role = 'admin';
+            setStorage(USERS_KEY, USERS);
+
+            document.getElementById('newAdminEmail').value = '';
+            document.getElementById('addAdminModal').classList.remove('active');
+
+            loadAdminUsers();
+            loadAdminAdmins();
+            loadAdminDashboard();
+            showToast('⭐ ادمین اضافه شد', '#22c55e');
+        }
+
+        function loadAdminOrders() {
+            const tbody = document.getElementById('ordersTable');
+            if (ORDERS.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">سفارشی نیست</td></tr>';
+                return;
+            }
+            tbody.innerHTML = ORDERS.map(o => `
+                <tr>
+                    <td><strong style="color:#a855f7;">${o.tracking}</strong></td>
+                    <td>${o.customer_name || o.user_email || '—'}</td>
+                    <td>${formatPrice(o.total_amount)} تومان</td>
+                    <td><span class="status-badge ${o.status}">${o.status}</span></td>
+                    <td>${new Date(o.created_at).toLocaleDateString('fa-IR')}</td>
+                </tr>
+            `).join('');
+        }
+
+        function loadSettings() {
+            const settings = getStorage('endshop_settings', {
+                siteName: 'End Shop',
+                announcement: 'به End Shop خوش آمدید! تخفیف ویژه برای اولین خرید شما!',
+                email: 'support@endshop.ir'
+            });
+            document.getElementById('settingSiteName').value = settings.siteName;
+            document.getElementById('settingAnnouncement').value = settings.announcement;
+            document.getElementById('settingEmail').value = settings.email;
+        }
+
+        function saveSettings() {
+            const settings = {
+                siteName: document.getElementById('settingSiteName').value,
+                announcement: document.getElementById('settingAnnouncement').value,
+                email: document.getElementById('settingEmail').value
+            };
+            setStorage('endshop_settings', settings);
+            showToast('✅ تنظیمات ذخیره شد', '#22c55e');
+        }
+
+        // ============================================================
+        // 🔧 MODAL
+        // ============================================================
+        let modalCallback = null;
+        function openModal(title, message, callback) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('confirmModal').classList.add('active');
+            modalCallback = callback;
+        }
+        function closeModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+            modalCallback = null;
+        }
+        document.getElementById('modalConfirmBtn').addEventListener('click', function() {
+            if (modalCallback) modalCallback();
+            closeModal();
+        });
+
+        // ============================================================
+        // 🔍 SEARCH
+        // ============================================================
         let searchTimeout;
-        document.getElementById('searchInput').addEventListener('input', function() {
+        document.getElementById('searchInput')?.addEventListener('input', function() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 renderProducts(this.value);
             }, 300);
         });
 
-        // ================================================================
-        // INIT
-        // ================================================================
-        async function init() {
-            updateAuthUI();
-            await loadProducts();
-            await loadCart();
-            await loadWishlist();
-            await updateAutoDiscount();
-            renderProfile();
+        // ============================================================
+        // 🚀 INIT
+        // ============================================================
+        function init() {
+            loadAllData();
+
+            if (currentUser) {
+                if (currentUser.is_admin) {
+                    showScreen('admin');
+                    initAdmin();
+                } else {
+                    showScreen('shop');
+                    initShop();
+                }
+            } else {
+                showScreen('auth');
+            }
         }
 
         init();
